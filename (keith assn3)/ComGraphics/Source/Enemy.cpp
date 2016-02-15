@@ -34,13 +34,13 @@ short Enemy::GetResources()
 
 float Enemy::GetDistance()
 {
-	Vector3 view = target - EnemyPos;
+	Vector3 view = (target - EnemyPos).Normalized();
 	return sqrt(pow(view.x, 2) + pow(view.y, 2) + pow(view.z, 2));
 }
 
 void Enemy::EnemyMove(double dt)
 {
-	Vector3 view = target - EnemyPos;
+	Vector3 view = (target - EnemyPos).Normalized();
 	if (!InRangeOfPlayer())
 	{
 		InrangeTokite = false;
@@ -59,13 +59,13 @@ void Enemy::EnemyTakeDmg(int Dmg)
 
 void Enemy::EnemyShootAt(Vector3 target)
 {
-	Vector3 view = target - EnemyPos;
+	Vector3 view = (target - EnemyPos).Normalized();
 
 }
 
 void Enemy::EnemyKite(double dt)
 {
-	Vector3 view = target - EnemyPos;
+	Vector3 view = (target - EnemyPos).Normalized();
 	Vector3 right = view.Cross(Vector3(0, 1, 0));
 	if (InrangeTokite == true)
 	{
