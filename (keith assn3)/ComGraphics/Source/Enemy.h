@@ -4,7 +4,7 @@
 class Enemy
 {
 public:
-	Enemy(int hp,int attack,int movespeed,Vector3 pos);
+	Enemy(int hp,int attack,int movespeed,Vector3 pos,int range);
 	~Enemy();
 	int GetEnemyHp();
 	int GetEnemyAtt();
@@ -15,7 +15,7 @@ public:
 	Vector3 GetEnemypos();
 	Vector3 EnemyKiting();			//Shoot ,stop ,move again
 
-	void EnemyMove();				//move to find
+	void EnemyMove(double dt);				//move to find
 	void EnemyTakeDmg();
 	void EnemyShootAt();			//accuracy of the enemy
 
@@ -25,11 +25,13 @@ private:
 	int Hp;
 	int AttackDamage;
 	int Movespeed;
+	int range;
 	short Resources;
 	bool dead;
 	bool InrangeTokite;					//in range to start kiteing
 
 	Vector3 EnemyPos;
+	Vector3 target;
 };
 
 
