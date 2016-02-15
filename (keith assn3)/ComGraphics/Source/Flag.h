@@ -5,13 +5,15 @@
 class Flag
 {
 public:
+	//Constructors : Defaulting HP as 100, friendly flag.
 	Flag();
+	Flag(const Vector3 coords);
 	~Flag();
-	float FlagHeightCoord();			//Flag rises return new coord
-	float FlagTakeDmg();				//Flag minus hp
-	float FlagRepair();					//Flag plus hp
+	float FlagHeightCoord(float target);			//Flag rises return new coord
+	short FlagTakeDmg(short amount);				//Flag minus hp
+	short FlagRepair();					//Flag plus hp
 private:
-	float flagHp;	  //Hp of the flag base
+	short flagHp;	  //Hp of the flag base
 	float flagRotate; // rotation of flag
 	float flagheight; //Height of flag risen
 	bool flagRise;    //if flag is risen

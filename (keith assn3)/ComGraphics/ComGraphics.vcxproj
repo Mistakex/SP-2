@@ -16,6 +16,7 @@
     <ClCompile Include="Source\Camera.cpp" />
     <ClCompile Include="Source\Camera2.cpp" />
     <ClCompile Include="Source\Camera3.cpp" />
+    <ClCompile Include="Source\Flag.cpp" />
     <ClCompile Include="Source\LoadOBJ.cpp" />
     <ClCompile Include="Source\LoadTGA.cpp" />
     <ClCompile Include="Source\main.cpp" />
@@ -30,6 +31,7 @@
     <ClInclude Include="Source\Camera.h" />
     <ClInclude Include="Source\Camera2.h" />
     <ClInclude Include="Source\Camera3.h" />
+    <ClInclude Include="Source\Flag.h" />
     <ClInclude Include="Source\Light.h" />
     <ClInclude Include="Source\LoadOBJ.h" />
     <ClInclude Include="Source\LoadTGA.h" />
