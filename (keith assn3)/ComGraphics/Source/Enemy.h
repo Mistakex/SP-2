@@ -4,32 +4,35 @@
 class Enemy
 {
 public:
-	Enemy(int hp,int attack,int movespeed,Vector3 pos);
+	Enemy(int hp,int attack,int movespeed,Vector3 pos,int range);
 	~Enemy();
 	int GetEnemyHp();
 	int GetEnemyAtt();
 	int GetMovespeed();
 	short GetResources();
+	float GetDistance();
 	
 
 	Vector3 GetEnemypos();
 	Vector3 EnemyKiting();			//Shoot ,stop ,move again
 
-	void EnemyMove();				//move to find
-	void EnemyTakeDmg();
+	void EnemyMove(double dt);				//move to find
+	void EnemyTakeDmg(int Dmg);
 	void EnemyShootAt();			//accuracy of the enemy
 
 	bool InRangeOfPlayer();		// dist away from player
-	bool isdead();					//dead or not
+	bool isDead();					//dead or not
 private:
 	int Hp;
 	int AttackDamage;
-	int Movespeed;
+	int MoveSpeed;
+	int range;
 	short Resources;
 	bool dead;
 	bool InrangeTokite;					//in range to start kiteing
 
 	Vector3 EnemyPos;
+	Vector3 target;
 };
 
 
