@@ -21,7 +21,4 @@ private:
 	Vector3 FLAG; // coordinates of flag
 };
 
-
-
-
 #endif // !FLAG_H
