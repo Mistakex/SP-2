@@ -88,7 +88,7 @@ private:
 	void RenderMesh(Mesh *mesh, bool enableLight);
 	void RenderSkybox();
 
-	void RenderAlien();
+	void RenderAlien(float armRotate = 0);
 
 	void checkCollision(const Vector3 &center, float x1, float z1, float y1);
 

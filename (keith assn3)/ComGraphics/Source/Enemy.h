@@ -4,7 +4,7 @@
 class Enemy
 {
 public:
-	Enemy(int hp,int attack,int movespeed,Vector3 pos,int range);
+	Enemy(Vector3 pos,Vector3 tar,int hp = 100, int attack = 5, int movespeed = 10, int range = 10);
 	~Enemy();
 	int GetEnemyHp();
 	int GetEnemyAtt();
@@ -15,15 +15,17 @@ public:
 
 	Vector3 GetEnemypos();
 	Vector3 EnemyKiting();			//Shoot ,stop ,move again
-	void EnemyShootAt(Vector3 target);
 
 	void EnemyKite(double dt);
 	void EnemyMove(double dt);				//move to find
 	void EnemyTakeDmg(int Dmg);
 	void EnemyShootAt(Vector3 target);			//accuracy of the enemy
+	float findDirection();
 
 	bool InRangeOfPlayer();		// dist away from player
 	bool isDead();					//dead or not
+	Vector3 EnemyPos;
+	Vector3 target;
 private:
 	int Hp;
 	int AttackDamage;
@@ -31,10 +33,9 @@ private:
 	int range;
 	short Resources;
 	bool dead;
-	bool InrangeTokite;					//in range to start kiteing
+	double KiteTimer;
 
-	Vector3 EnemyPos;
-	Vector3 target;
+
 };
 
 

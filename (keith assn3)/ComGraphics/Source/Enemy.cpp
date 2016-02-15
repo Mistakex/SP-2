@@ -2,10 +2,12 @@
 
 
 
-Enemy::Enemy(int hp, int attack, int movespeed, Vector3 pos, int range) : Hp(100), AttackDamage(5), MoveSpeed(10)
+Enemy::Enemy(Vector3 pos,Vector3 tar, int hp, int attack, int movespeed, int range) : Hp(hp), AttackDamage(attack), MoveSpeed(movespeed)
 {
 	EnemyPos = pos;
+	target = tar;
 	this->range = range;
+	KiteTimer = 0;
 }
 
 Enemy::~Enemy()
@@ -34,21 +36,27 @@ short Enemy::GetResources()
 
 float Enemy::GetDistance()
 {
-	Vector3 view = (target - EnemyPos).Normalized();
+	Vector3 view = target - EnemyPos;
 	return sqrt(pow(view.x, 2) + pow(view.y, 2) + pow(view.z, 2));
 }
 
 void Enemy::EnemyMove(double dt)
 {
-	Vector3 view = (target - EnemyPos).Normalized();
-	if (!InRangeOfPlayer())
+	Vector3 view = Vector3(0, 0, 0);
+	if (target != EnemyPos)
+		view = (target - EnemyPos).Normalized();
+		
+	if (GetDistance() > range + KiteTimer)
 	{
-		InrangeTokite = false;
-		EnemyPos -= view*dt;
+		EnemyPos += Vector3(view.x,0,view.z)*MoveSpeed*dt;
 	}
-	else
+	else if (KiteTimer < 10)
 	{
-		InrangeTokite = true;
+		EnemyKite(dt);
+	}
+	else if (KiteTimer >= 10)
+	{
+		KiteTimer = 0;
 	}
 }
 
@@ -59,17 +67,32 @@ void Enemy::EnemyTakeDmg(int Dmg)
 
 void Enemy::EnemyShootAt(Vector3 target)
 {
-	Vector3 view = (target - EnemyPos).Normalized();
+	if (target != EnemyPos)
+		Vector3 view = (target - EnemyPos).Normalized();
+	else
+		Vector3 view = Vector3(0, 0, 0);
 
+}
+
+float Enemy::findDirection()
+{
+	Vector3 view = target - EnemyPos;
+	if (target.z > EnemyPos.z)
+		return Math::RadianToDegree(atan(view.x / view.z)) - 180;
+	else
+		return Math::RadianToDegree(atan(view.x / view.z));
 }
 
 void Enemy::EnemyKite(double dt)
 {
-	Vector3 view = (target - EnemyPos).Normalized();
-	Vector3 right = view.Cross(Vector3(0, 1, 0));
-	if (InrangeTokite == true)
+	KiteTimer += dt;
+	if (KiteTimer < 3)
 	{
-		EnemyPos += right*dt;
+		Vector3 view = Vector3(0, 0, 0);
+		if (target != EnemyPos)
+			view = (target - EnemyPos).Normalized();
+		Vector3 right = view.Cross(Vector3(0, 1, 0));
+		EnemyPos += right*(MoveSpeed/2)*dt;
 	}
 }
 
