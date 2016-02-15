@@ -15,10 +15,12 @@ public:
 
 	Vector3 GetEnemypos();
 	Vector3 EnemyKiting();			//Shoot ,stop ,move again
+	void EnemyShootAt(Vector3 target);
 
+	void EnemyKite(double dt);
 	void EnemyMove(double dt);				//move to find
 	void EnemyTakeDmg(int Dmg);
-	void EnemyShootAt();			//accuracy of the enemy
+	void EnemyShootAt(Vector3 target);			//accuracy of the enemy
 
 	bool InRangeOfPlayer();		// dist away from player
 	bool isDead();					//dead or not

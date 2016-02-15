@@ -2,7 +2,7 @@
 
 
 
-Enemy::Enemy(int hp, int attack, int movespeed, Vector3 pos, int range) : Hp(100), AttackDamage(5), Movespeed(10)
+Enemy::Enemy(int hp, int attack, int movespeed, Vector3 pos, int range) : Hp(100), AttackDamage(5), MoveSpeed(10)
 {
 	EnemyPos = pos;
 	this->range = range;
@@ -41,9 +41,14 @@ float Enemy::GetDistance()
 void Enemy::EnemyMove(double dt)
 {
 	Vector3 view = target - EnemyPos;
-	if (GetDistance() >= range )
+	if (!InRangeOfPlayer())
 	{
-		EnemyPos = EnemyPos - view*dt;
+		InrangeTokite = false;
+		EnemyPos -= view*dt;
+	}
+	else
+	{
+		InrangeTokite = true;
 	}
 }
 
@@ -52,8 +57,20 @@ void Enemy::EnemyTakeDmg(int Dmg)
 	Hp -= Dmg;
 }
 
-void Enemy::EnemyShootAt()
+void Enemy::EnemyShootAt(Vector3 target)
 {
+	Vector3 view = target - EnemyPos;
+
+}
+
+void Enemy::EnemyKite(double dt)
+{
+	Vector3 view = target - EnemyPos;
+	Vector3 right = view.Cross(Vector3(0, 1, 0));
+	if (InrangeTokite == true)
+	{
+		EnemyPos += right*dt;
+	}
 }
 
 bool Enemy::InRangeOfPlayer()
