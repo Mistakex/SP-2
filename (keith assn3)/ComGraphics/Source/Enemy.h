@@ -10,21 +10,22 @@ public:
 	int GetEnemyAtt();
 	int GetMovespeed();
 	short GetResources();
+	float GetDistance();
 	
 
 	Vector3 GetEnemypos();
 	Vector3 EnemyKiting();			//Shoot ,stop ,move again
 
 	void EnemyMove(double dt);				//move to find
-	void EnemyTakeDmg();
+	void EnemyTakeDmg(int Dmg);
 	void EnemyShootAt();			//accuracy of the enemy
 
 	bool InRangeOfPlayer();		// dist away from player
-	bool isdead();					//dead or not
+	bool isDead();					//dead or not
 private:
 	int Hp;
 	int AttackDamage;
-	int Movespeed;
+	int MoveSpeed;
 	int range;
 	short Resources;
 	bool dead;
