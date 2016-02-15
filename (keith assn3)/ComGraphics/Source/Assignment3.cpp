@@ -47,7 +47,6 @@ void Assignment3::Init()
 	glBindVertexArray(m_vertexArrayID);
 
 
-
 	m_programID = LoadShaders("Shader//Texture.vertexshader", "Shader//Text.fragmentshader");
 
 	m_parameters[U_MVP] = glGetUniformLocation(m_programID, "MVP");
