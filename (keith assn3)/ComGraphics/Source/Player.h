@@ -23,13 +23,7 @@ private:
 	char WeaponState;		//which weapon u using
 };
 
-Player::Player(int hp)
-{
-}
 
-Player::~Player()
-{
-}
 
 
 #endif // !PLAYER_H
