@@ -34,6 +34,7 @@ private:
 	short Resources;
 	bool dead;
 	double KiteTimer;
+	bool moveRight;
 
 
 };

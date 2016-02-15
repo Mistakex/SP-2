@@ -57,6 +57,14 @@ void Enemy::EnemyMove(double dt)
 	else if (KiteTimer >= 10)
 	{
 		KiteTimer = 0;
+		if (rand() % 2 == 0)
+		{
+			moveRight = true;
+		}
+		else
+		{
+			moveRight = false;
+		}
 	}
 }
 
@@ -92,7 +100,10 @@ void Enemy::EnemyKite(double dt)
 		if (target != EnemyPos)
 			view = (target - EnemyPos).Normalized();
 		Vector3 right = view.Cross(Vector3(0, 1, 0));
-		EnemyPos += right*(MoveSpeed/2)*dt;
+		if (moveRight == true)
+			EnemyPos += right*(MoveSpeed / 2)*dt;
+		else
+			EnemyPos -= right*(MoveSpeed / 2)*dt;
 	}
 }
 
