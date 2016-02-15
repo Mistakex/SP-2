@@ -34,15 +34,24 @@ void Weapon::FireAllow(double dt)
 		}
 	}
 }
+
 bool Weapon::GetAllowFire()
 {
 	return AllowFire;
 }
+
+bool Weapon::GetAllowZoom()
+{
+	return AllowZoom;
+}
+
 bool Weapon::GetZoom()
 {
-	if (AllowZoom == true)
-	{
-		if (Zoom == true){ Zoom = false; }
-		else if (Zoom == false){ Zoom = true; }
-	}
+	//if (AllowZoom == true)
+	//{
+	//	if (Zoom == true){ Zoom = false; }
+	//	else if (Zoom == false){ Zoom = true; }
+	//}
+
+	return Zoom;
 }

@@ -17,11 +17,12 @@ int Player::GetHp()
 int Player::GetResources(int amount)
 {
 	Resources += amount;
+	return Resources;
 }
 
 float Player::WhileMining()
 {
-
+	return 0;
 }
 void Player::TakeDmg(int dmg)
 {

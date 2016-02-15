@@ -8,6 +8,7 @@ public:
 	~Weapon();
 	void FireAllow(double dt);						//Goes into Update
 	bool GetAllowFire();							//Goes into Update
+	bool GetAllowZoom();
 	bool GetZoom();
 private:
 	int Damage;
