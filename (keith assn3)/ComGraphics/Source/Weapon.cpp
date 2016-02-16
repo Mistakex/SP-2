@@ -48,11 +48,20 @@ bool Weapon::GetAllowZoom()
 
 bool Weapon::GetZoom()
 {
-	//if (AllowZoom == true)
-	//{
-	//	if (Zoom == true){ Zoom = false; }
-	//	else if (Zoom == false){ Zoom = true; }
-	//}
+	if (AllowZoom == true)
+	{
+		if (Zoom == true){ Zoom = false; }
+		else if (Zoom == false){ Zoom = true; }
+		return Zoom;
+	}
+	return false;
+}
 
-	return Zoom;
+void Weapon::setUpgradeCost(int newUC)
+{
+	upgradeCost = newUC;
+}
+int Weapon::getUpgradeCost()
+{
+	return upgradeCost;
 }

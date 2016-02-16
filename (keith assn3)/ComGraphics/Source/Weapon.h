@@ -10,7 +10,10 @@ public:
 	bool GetAllowFire();							//Goes into Update
 	bool GetAllowZoom();
 	bool GetZoom();
-
+	int getUpgradeCost();
+	void setUpgradeCost(int newUC);
+	
+	int upgradeCost = Price;
 	int Damage;
 private:
 	int MaxAmmo;

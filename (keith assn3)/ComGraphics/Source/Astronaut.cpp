@@ -1,12 +1,33 @@
 #include "Astronaut.h"
 
 
-Astronaut::Astronaut()
+Astronaut::Astronaut(Vector3 pos)
 {
+	Position = pos;
 }
 
 Astronaut::~Astronaut()
 {
+}
+
+Vector3 Astronaut::GetAstronautPos()
+{
+	return Position;
+}
+
+void Astronaut::AstronautMoveAround()
+{
+
+}
+
+Weapon* Astronaut::UpgradeWeapon(Weapon weap,Player p)
+{
+	if (p.getResources() < weap.getUpgradeCost())
+	{
+		return;
+	}
+	weap.Damage *= 1.5;
+	
 }
 
 

@@ -7,14 +7,16 @@ public:
 	Player(const int &hp);
 	~Player();
 	int GetHp();
-	int GetResources(int amount);
+	int ObtainResources(int amount); // increase resources 
 
 	float WhileMining();	//increase and decrease the value for MiningAction
 	void TakeDmg(int dmg);
 	void RecoverHp(int recovered);
 	void changeWeapon(char weapon);
 	char getWeaponState();
+	int getResources();
 
+	
 	int BulletsInMagzine;	
 	int TotalBullets;		//Reloading
 	bool sprint;			//running or not

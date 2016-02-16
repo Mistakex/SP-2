@@ -14,7 +14,7 @@ int Player::GetHp()
 	return HP;
 }
 
-int Player::GetResources(int amount)
+int Player::ObtainResources(int amount)
 {
 	Resources += amount;
 	return Resources;
@@ -42,4 +42,8 @@ void Player::changeWeapon(char weapon)
 char Player::getWeaponState()
 {
 	return WeaponState;
+}
+int Player::getResources()
+{
+	return Resources;
 }
