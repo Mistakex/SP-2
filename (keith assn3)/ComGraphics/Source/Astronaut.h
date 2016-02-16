@@ -2,6 +2,7 @@
 #define ASTRONAUT_H
 
 #include "Vector3.h"
+
 class Astronaut
 {
 public:
@@ -16,18 +17,6 @@ private:
 	short BulletPrice;
 	Vector3 Position;
 };
-
-Astronaut::Astronaut()
-{
-}
-
-Astronaut::~Astronaut()
-{
-}
-
-
-
-
 
 
 #endif // !ASTRONAUT_H
