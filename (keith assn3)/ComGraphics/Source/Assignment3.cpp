@@ -13,6 +13,7 @@
 #include "Enemy.h"
 #include "CountDown.h"
 #include "Rock.h"
+#include "Flag.h"
 
 #include <stdlib.h>
 #include <sstream>
@@ -220,6 +221,18 @@ void Assignment3::Init()
 	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text", 16, 16);
 	meshList[GEO_TEXT]->textureID = LoadTGA("Image//calibri.tga");
 
+	meshList[GEO_MODEL2] = MeshBuilder::GenerateOBJ("Pole", "OBJ//flagpole.obj");
+	meshList[GEO_MODEL2]->textureID = LoadTGA("Image//flagpoleUV.tga");
+
+	meshList[GEO_MODEL3] = MeshBuilder::GenerateOBJ("OurFlag", "OBJ//flag.obj");
+	meshList[GEO_MODEL3]->textureID = LoadTGA("Image//enemyFlag.tga");
+
+	meshList[GEO_MODEL4] = MeshBuilder::GenerateOBJ("enemyFlag", "OBJ//flag.obj");
+	meshList[GEO_MODEL4]->textureID = LoadTGA("Image//OurFlag.tga");
+
+	meshList[GEO_UNCAPTURED] = MeshBuilder::GenerateTorus("UncapturedZone", Color(1, 0, 0), 18, 18, 1, 0.05);
+	meshList[GEO_CAPTURED] = MeshBuilder::GenerateTorus("CapturedZone", Color(0, 0, 1), 18, 18, 1, 0.05);
+
 	Mtx44 projection;
 	projection.SetToPerspective(70.0f, 4.0f / 3.0f, 0.1f, 5000.0f);
 	projectionStack.LoadMatrix(projection);
@@ -245,7 +258,8 @@ static float flagRotate = 0.f; // rotation of flag
 static bool flagDropped = false; // has the flag started dropping
 static bool flagHasDropped = false; // check if flag has finish dropping
 static bool flagDropFront = true; // which side the flag is dropping towards
-static Vector3 FLAG(5, -1, 0); // coordinates of flag
+static Vector3 FLAG(5, 0, 0); // coordinates of flag
+Flag f(Vector3(0, 0.5, 0));
 //********************************************************************//
 
 //********************ENEMY CLASS***********************************//
@@ -442,6 +456,19 @@ void Assignment3::Update(double dt)
 		}
 	}
 
+	// flag rising up when get close
+	if (f.getMagnitude(camera.position) <= 5)
+	{
+		if (f.flagIsBlue == true)
+		{
+			f.FlagHeightIncrease(2.5, dt);
+		}
+		else if (f.FlagHeightDecrease(0, dt) <= 0)
+		{
+			f.flagIsBlue = true;
+		}
+	}
+
 	// the ship has flown
 	if (shipFlew == true)
 	{
@@ -500,7 +527,7 @@ void Assignment3::Update(double dt)
 		flagDropped = false;
 		flagHasDropped = false;
 		flagDropFront = true;
-		FLAG = Vector3(5,-1,0);
+		f.flagheight = 2;
 
 		SHIP = Vector3(20, 0, 0);
 		shipFlew = false;
@@ -833,12 +860,48 @@ void Assignment3::Render()
 	RenderMesh(meshList[GEO_MODEL1], true);
 	modelStack.PopMatrix();
 
-	//FLAG
+	//POLE
 	modelStack.PushMatrix();
-	modelStack.Translate(FLAG.x, FLAG.y, FLAG.z);
+	modelStack.PushMatrix();
+	modelStack.Scale(2, 2, 2);
+	modelStack.Translate(0, f.FLAGPOLE.y - 1, f.FLAGPOLE.z);
 	modelStack.Rotate(-flagRotate, 0, 0, 1);
 	modelStack.Rotate(90, 0, 1, 0);
 	RenderMesh(meshList[GEO_MODEL2], true);
+	modelStack.PopMatrix();
+	//FLAG
+	if (!f.flagIsBlue)
+	{
+		modelStack.PushMatrix();
+		modelStack.Scale(2, 2, 2);
+		modelStack.Translate(1.5, f.flagheight - 7.5, f.FLAGPOLE.z);
+		modelStack.Rotate(-flagRotate, 0, 0, 1);
+		modelStack.Rotate(90, 0, 1, 0);
+		RenderMesh(meshList[GEO_MODEL3], true);
+		modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+		modelStack.Scale(5, 2, 5);
+		modelStack.Translate(0, f.FLAGPOLE.y - 1, f.FLAGPOLE.z);
+		RenderMesh(meshList[GEO_UNCAPTURED], true);
+		modelStack.PopMatrix();
+	}
+	else
+	{
+		modelStack.PushMatrix();
+		modelStack.Scale(2, 2, 2);
+		modelStack.Translate(1.5, f.flagheight, f.FLAGPOLE.z);
+		modelStack.Rotate(-flagRotate, 0, 0, 1);
+		modelStack.Rotate(90, 0, 1, 0);
+		RenderMesh(meshList[GEO_MODEL4], true);
+		modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+		modelStack.Scale(5, 2, 5);
+		modelStack.Translate(0, f.FLAGPOLE.y - 1, f.FLAGPOLE.z);
+		RenderMesh(meshList[GEO_CAPTURED], true);
+		modelStack.PopMatrix();
+	}
 	modelStack.PopMatrix();
 
 	//CRATERS;

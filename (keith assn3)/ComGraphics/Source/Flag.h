@@ -9,16 +9,24 @@ public:
 	Flag();
 	Flag(const Vector3 &coords);
 	~Flag();
-	float FlagHeightCoord(const float &target,const double &dt);			//Flag rises return new coord
+	float FlagHeightIncrease(const float &target, const double &dt);			//Flag rises return new coord
+	float FlagHeightDecrease(const float &target, const double &dt);
 	short FlagTakeDmg(const short &amount);				//Flag minus hp
 	short FlagRepair();					//Flag plus hp
+	float getMagnitude(const Vector3 &target);
+
+	Vector3 FLAGPOLE; // coordinates of flag
+	Vector3 FLAG;
+	float flagheight = 10; //Height of flag
+	bool flagIsBlue = false;
 private:
+
 	short flagHp;	  //Hp of the flag base
 	float flagRotate; // rotation of flag
-	float flagheight; //Height of flag risen
+
 	bool flagRise;    //if flag is risen
 	bool isEnemyflag; //Enemy or your flag
-	Vector3 FLAG; // coordinates of flag
+
 };
 
 #endif // !FLAG_H
