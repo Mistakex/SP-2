@@ -165,8 +165,6 @@ void Assignment3::Init()
 
 	meshList[GEO_BULLET] = MeshBuilder::GenerateSphere("bullet", Color(1, 1, 1), 3, 3);
 
-	meshList[GEO_SIGN] = MeshBuilder::GenerateCube("sign", Color(0.8, 0.8, 0.2));
-
 	meshList[GEO_BOTTOM] = MeshBuilder::GenerateQuad("quad", Color(1, 1, 1));
 	meshList[GEO_BOTTOM]->textureID = LoadTGA("Image//bottom.tga");
 
@@ -188,18 +186,6 @@ void Assignment3::Init()
 	meshList[GEO_QUAD] = MeshBuilder::GenerateQuad("quad", Color(1, 1, 1));
 	meshList[GEO_QUAD]->textureID = LoadTGA("Image//moon.tga");
 
-	meshList[GEO_HELMET] = MeshBuilder::GenerateQuad("quad", Color(1, 1, 1));
-	meshList[GEO_HELMET]->textureID = LoadTGA("Image//Helmet.tga");
-
-	meshList[GEO_MODEL1] = MeshBuilder::GenerateOBJ("model", "OBJ//SpaceObject.obj");
-	meshList[GEO_MODEL1]->textureID = LoadTGA("Image//outUV2.tga");
-
-	meshList[GEO_MODEL2] = MeshBuilder::GenerateOBJ("Flag", "OBJ//flag.obj");
-	meshList[GEO_MODEL2]->textureID = LoadTGA("Image//flagUV.tga");
-
-	meshList[GEO_BOULDER] = MeshBuilder::GenerateOBJ("Boulder", "OBJ//boulder.obj");
-	meshList[GEO_BOULDER]->textureID = LoadTGA("Image//boulder.tga");
-	
 	meshList[GEO_ROCK] = MeshBuilder::GenerateOBJ("Boulder", "OBJ//Rock.obj");
 	meshList[GEO_ROCK]->textureID = LoadTGA("Image//boulder.tga");
 
@@ -215,20 +201,17 @@ void Assignment3::Init()
 	meshList[GEO_ALIENBODY] = MeshBuilder::GenerateOBJ("alienbody", "OBJ//alienbody.obj");
 	meshList[GEO_ALIENBODY]->textureID = LoadTGA("Image//ALIENBODY.tga");
 
-	meshList[GEO_TENT] = MeshBuilder::GenerateOBJ("alienbody", "OBJ//moonbase.obj");
-	meshList[GEO_TENT]->textureID = LoadTGA("Image//spacetent.tga");
-
 	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text", 16, 16);
 	meshList[GEO_TEXT]->textureID = LoadTGA("Image//calibri.tga");
 
-	meshList[GEO_MODEL2] = MeshBuilder::GenerateOBJ("Pole", "OBJ//flagpole.obj");
-	meshList[GEO_MODEL2]->textureID = LoadTGA("Image//flagpoleUV.tga");
+	meshList[GEO_FLAGPOLE] = MeshBuilder::GenerateOBJ("Pole", "OBJ//flagpole.obj");
+	meshList[GEO_FLAGPOLE]->textureID = LoadTGA("Image//flagpoleUV.tga");
 
-	meshList[GEO_MODEL3] = MeshBuilder::GenerateOBJ("OurFlag", "OBJ//flag.obj");
-	meshList[GEO_MODEL3]->textureID = LoadTGA("Image//enemyFlag.tga");
+	meshList[GEO_ENEMYFLAG] = MeshBuilder::GenerateOBJ("OurFlag", "OBJ//flag.obj");
+	meshList[GEO_ENEMYFLAG]->textureID = LoadTGA("Image//enemyFlag.tga");
 
-	meshList[GEO_MODEL4] = MeshBuilder::GenerateOBJ("enemyFlag", "OBJ//flag.obj");
-	meshList[GEO_MODEL4]->textureID = LoadTGA("Image//OurFlag.tga");
+	meshList[GEO_ALLYFLAG] = MeshBuilder::GenerateOBJ("enemyFlag", "OBJ//flag.obj");
+	meshList[GEO_ALLYFLAG]->textureID = LoadTGA("Image//OurFlag.tga");
 
 	meshList[GEO_UNCAPTURED] = MeshBuilder::GenerateTorus("UncapturedZone", Color(1, 0, 0), 18, 18, 1, 0.05);
 	meshList[GEO_CAPTURED] = MeshBuilder::GenerateTorus("CapturedZone", Color(0, 0, 1), 18, 18, 1, 0.05);
@@ -243,37 +226,14 @@ static float SCALE_LIMIT = 5.f;
 
 static float LSPEED = 10.f; // LIGHT SPEED
 
-//***************CREATE A CLASS WITH THESE VALUES FOR A PLAYER CLASS**************//
-bool moving = false; // Is player moving
-static bool movingUP = true; // is the helmet moving up
-static float helmetY = 0.f; // Y-coordinates of helmet
-static bool retractedHelmet = false; // is the helmet retracted
-static float helmetUP = 0.f; // moving the helmet up when retracted
-static float helmetDebounce = 0.f; // debounce of helmet
-static bool displayMore = false;
-//***********************************************************************//
 
 //****************CREATE FOR FLAG CLASS********************************//
-static float flagRotate = 0.f; // rotation of flag
-static bool flagDropped = false; // has the flag started dropping
-static bool flagHasDropped = false; // check if flag has finish dropping
-static bool flagDropFront = true; // which side the flag is dropping towards
-static Vector3 FLAG(5, 0, 0); // coordinates of flag
 Flag f(Vector3(0, 0.5, 0));
 //********************************************************************//
-
-//********************ENEMY CLASS***********************************//
-static float alienArmRotate = 0.f; // rotation of alien arms
-static float alienY = 0.f; // Y-coordinate of aliens
-static float alienJumping = true; // are the aliens jumping
 
 
 
 //******************************************************************//
-
-Vector3 SHIP(20, 0, 0); // coordinates of SHIP
-static float shipNotiSize = 1.f; // notification size of the Press 'E' 
-static bool shipFlew = false; // has the ship flown
 
 static float skyBoxRotate = 0.f; // rotation of skybox
 
@@ -290,15 +250,13 @@ void Assignment3::Update(double dt)
 
 	// updating 2nd light
 	light[1].position.Set(camera.position.x + camera.target.x/15,
-		camera.position.y + camera.target.y/15 + helmetY * 10 + helmetUP,
+		camera.position.y + camera.target.y/15,
 		camera.position.z + camera.target.z/15);
 	light[1].spotDirection.Set(-(camera.target.x - camera.position.x), -(camera.target.y - camera.position.y), -(camera.target.z - camera.position.z));
 
 	//first light
-	light[0].position.Set(0.f, 5.f + alienY, 20.f);
+	light[0].position.Set(0.f, 5.f, 20.f);
 
-	//debounce of helmet
-	helmetDebounce += 1.f * dt;
 
 	//Alien moving
 	for (int i = 0; i < Aliens.size(); ++i)
@@ -319,35 +277,6 @@ void Assignment3::Update(double dt)
 	framerate << "Framerate:" << 1 / dt;
 
 	//aliens only dance when flag has dropped
-	if (flagHasDropped == true)
-	{
-		if (alienJumping == true)
-		{
-			alienArmRotate += 360.f * dt;
-			alienY += 0.5*dt;
-			if (alienArmRotate >= 180.f)
-			{
-				alienJumping = false;
-			}
-		}
-		else if (alienJumping == false)
-		{
-			alienArmRotate -= 360.f * dt;
-			alienY -= 0.5*dt;
-			if (alienArmRotate <= 0.f)
-			{
-				alienY = 0.f;
-				alienArmRotate = 0.f;
-				alienJumping = true;
-			}
-		}
-	}
-	else
-	{
-		alienArmRotate = 0.f; 
-		alienY = 0.f; 
-		alienJumping = true;
-	}
 
 	//rotation of skybox
 	if (skyBoxRotate < 360.f)
@@ -359,103 +288,7 @@ void Assignment3::Update(double dt)
 		skyBoxRotate = 0.f;
 	}
 
-	// helmet retraction code
-	if (retractedHelmet == true)
-	{
-		if (helmetUP < 1.f)
-		{
-			helmetUP += 0.6*dt;
-		}
-	}
-	else if (retractedHelmet == false)
-	{
-		if (helmetUP > 0.f)
-		{
-			helmetUP -= 0.6*dt;
-		}
-		else
-		{
-			helmetUP = 0.f;
-		}
-	}
-
-	// moving up and down of helmet
-	if (moving == true)
-	{
-		if (movingUP == true)
-		{
-			helmetY += 0.1 * dt;
-			if (helmetY >= 0.01)
-			{
-				movingUP = false;
-			}
-		}
-		else if (movingUP == false)
-		{
-			helmetY -= 0.1 * dt;
-			if (helmetY <= -0.01)
-			{
-				movingUP = true;
-				moving = false;
-			}
-		}
-	}
-	else if (moving == false)
-	{
-		if (helmetY > 0.f)
-		{
-			helmetY -= 0.1 * dt;
-			if (helmetY < 0.f)
-				helmetY = 0.f;
-		}
-		else if (helmetY < 0.f)
-		{
-			helmetY += 0.1 * dt;
-			if (helmetY > 0.f)
-				helmetY = 0.f;
-		}
-	}
 	
-	// flag drop direction
-	if (flagDropped == false
-		&& camera.position.x >= FLAG.x - 1.f && camera.position.x <= FLAG.x + 1.f
-		&& camera.position.y < 2.f
-		&& camera.position.z >= FLAG.z - 1.f && camera.position.z <= FLAG.z + 1.f)
-	{
-		frontPush = (Vector3(camera.target.x, 0.f, camera.target.z) - Vector3(camera.position.x, 0.f, camera.position.z)).Normalized();
-		flagDropped = true;
-		if (camera.position.x <= FLAG.x)
-		{
-			flagDropFront = false;
-		}
-	}
-
-	// flag dropping to side
-	if (flagDropped == true && flagHasDropped == false)
-	{
-		
-		if (flagDropFront == false)
-		{
-			flagRotate += 90.f * dt;
-			FLAG += frontPush * (float)(5.f * dt);
-			if (flagRotate > 90.f)
-			{
-				flagRotate = 90.f;
-				flagHasDropped = true;
-			}
-		}
-		else if (flagDropFront == true)
-		{
-			flagRotate -= 90.f * dt;
-			FLAG += frontPush * (float)(5.f * dt);
-			if (flagRotate < -90.f)
-			{
-				flagRotate = -90.f;
-				flagHasDropped = true;
-			}
-		}
-	}
-
 	// flag rising up when get close
 	if (f.getMagnitude(camera.position) <= 5)
 	{
@@ -469,16 +302,6 @@ void Assignment3::Update(double dt)
 		}
 	}
 
-	// the ship has flown
-	if (shipFlew == true)
-	{
-		if (SHIP.y < 5.f)
-			SHIP += Vector3(-1, 1, 0) * dt;
-		else if (SHIP.x < -5000)
-			shipFlew = false;
-		else
-			SHIP += Vector3(-20, 1, 0) * dt;
-	}
 
 	// backface culling
 	if (Application::IsKeyPressed('1')) //enable back face culling
@@ -490,78 +313,17 @@ void Assignment3::Update(double dt)
 	if (Application::IsKeyPressed('4'))
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //wireframe mode
 
-	// taking off helmet
-	if (Application::IsKeyPressed('F'))
-	{
-		if (retractedHelmet == false && helmetDebounce > 0.3f)
-		{
-			retractedHelmet = true;
-			helmetDebounce = 0.f;
-		}
-		else if (retractedHelmet == true && helmetDebounce > 0.3f)
-		{
-			retractedHelmet = false;
-			helmetDebounce = 0.f;
-		}
-	}
-
-	// display more info
-	if (Application::IsKeyPressed('U'))
-	{
-		if (displayMore == false && helmetDebounce > 0.3f)
-		{
-			displayMore = true;
-			helmetDebounce = 0.f;
-		}
-		else if (displayMore == true && helmetDebounce > 0.3f)
-		{
-			displayMore = false;
-			helmetDebounce = 0.f;
-		}
-	}
-
 	//reset everything
 	if (Application::IsKeyPressed('R'))
 	{
-		flagRotate = 0.f;
-		flagDropped = false;
-		flagHasDropped = false;
-		flagDropFront = true;
+		f.flagIsBlue = false;
 		f.flagheight = 2;
-
-		SHIP = Vector3(20, 0, 0);
-		shipFlew = false;
-
-		retractedHelmet = false;
 	}
 
 	// interact with ship
-	if (Application::IsKeyPressed('E'))
-	{
-		if (camera.position.x > SHIP.x - 6.f && camera.position.x < SHIP.x + 6.f
-			&& camera.position.z > SHIP.z - 6.f && camera.position.z < SHIP.z + 6.f
-			&& shipFlew == false)
-		{
-			shipFlew = true;
-		}
-	}
-	if (camera.position.x > SHIP.x - 6.f && camera.position.x < SHIP.x + 6.f
-		&& camera.position.z > SHIP.z - 6.f && camera.position.z < SHIP.z + 6.f
-		&& shipFlew == false)
-	{
-		if (shipNotiSize < 6.0f)
-		{
-			shipNotiSize += 10.f * dt;
-		}
-	}
-	else
-	{
-		shipNotiSize = 1.f;
-	}
+
 	
 	//checking collisions
-	checkCollision(SHIP, 4.f, 4.f, 3.f);
-	checkCollision(Vector3(9, 0, -20), 5.f, 1.f, 3.f);
 
 
 }
@@ -852,22 +614,13 @@ void Assignment3::Render()
 	RenderMesh(meshList[GEO_QUAD], true);
 	modelStack.PopMatrix();
 
-	//SHIP
-	modelStack.PushMatrix();
-	modelStack.Translate(SHIP.x, SHIP.y, SHIP.z);
-	modelStack.Rotate(4, 0, 0, 1);
-	modelStack.Translate(0, -1, 0);
-	RenderMesh(meshList[GEO_MODEL1], true);
-	modelStack.PopMatrix();
-
 	//POLE
 	modelStack.PushMatrix();
 	modelStack.PushMatrix();
 	modelStack.Scale(2, 2, 2);
 	modelStack.Translate(0, f.FLAGPOLE.y - 1, f.FLAGPOLE.z);
-	modelStack.Rotate(-flagRotate, 0, 0, 1);
 	modelStack.Rotate(90, 0, 1, 0);
-	RenderMesh(meshList[GEO_MODEL2], true);
+	RenderMesh(meshList[GEO_FLAGPOLE], true);
 	modelStack.PopMatrix();
 	//FLAG
 	if (!f.flagIsBlue)
@@ -875,9 +628,8 @@ void Assignment3::Render()
 		modelStack.PushMatrix();
 		modelStack.Scale(2, 2, 2);
 		modelStack.Translate(1.5, f.flagheight - 7.5, f.FLAGPOLE.z);
-		modelStack.Rotate(-flagRotate, 0, 0, 1);
 		modelStack.Rotate(90, 0, 1, 0);
-		RenderMesh(meshList[GEO_MODEL3], true);
+		RenderMesh(meshList[GEO_ENEMYFLAG], true);
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
@@ -891,9 +643,8 @@ void Assignment3::Render()
 		modelStack.PushMatrix();
 		modelStack.Scale(2, 2, 2);
 		modelStack.Translate(1.5, f.flagheight, f.FLAGPOLE.z);
-		modelStack.Rotate(-flagRotate, 0, 0, 1);
 		modelStack.Rotate(90, 0, 1, 0);
-		RenderMesh(meshList[GEO_MODEL4], true);
+		RenderMesh(meshList[GEO_ALLYFLAG], true);
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
@@ -936,55 +687,9 @@ void Assignment3::Render()
 		}
 	}
 
-	//MOONBASE
-
-	for (int j = 0; j < 3; ++j)
-	{
-		for (int i = -1; i < j; ++i)
-		{
-			modelStack.PushMatrix();
-			modelStack.Translate(3 - i * 10, -0.9, -25 - 7 * j);
-			modelStack.Rotate(-135 + j * 45 - i * 45, 0, 1, 0);
-			modelStack.Scale(1 + j*0.5, 1 + j*0.5, 1 + j*0.5);
-			RenderMesh(meshList[GEO_TENT], true);
-			modelStack.PopMatrix();
-		}
-	}
-	modelStack.PushMatrix();
-	modelStack.Translate(5, 0, -20);
-	modelStack.PushMatrix();
-	modelStack.Translate(4, 0, -0.5);
-	modelStack.Scale(10, 2, 1);
-	RenderMesh(meshList[GEO_SIGN], true);
-	modelStack.PopMatrix();
-	RenderText(meshList[GEO_TEXT], "MOON BASE", Color(1, 1, 0));
-	modelStack.PopMatrix();
-
-	// HELMET
+	// FRAMERATE
 
 	modelStack.PushMatrix();
-	RenderModelOnScreen(meshList[GEO_HELMET], true, 120, 0.35, 0.2 + helmetY + helmetUP);
-	RenderTextOnScreen(meshList[GEO_TEXT], framerate.str(), Color(0, 1, 1), 3, 1, 1 + helmetY * 40 + helmetUP * 40);
-	RenderTextOnScreen(meshList[GEO_TEXT], "Push F to take off helmet", Color(0, 1, 1), 3, 1, 18.5 + helmetY * 40 + helmetUP * 40);
-	if (displayMore == false)
-	{
-		RenderTextOnScreen(meshList[GEO_TEXT], "(Press 'U' to see more info)", Color(0, 1, 1), 2.5, 1, 20.5 + helmetY * 48 + helmetUP * 48);
-	}
-	else
-	{
-		RenderTextOnScreen(meshList[GEO_TEXT], "UI only available with helmet on", Color(0, 1, 1), 2, 1, 20.5 + helmetY * 60 + helmetUP * 60);
-		RenderTextOnScreen(meshList[GEO_TEXT], "Some things can only be seen without the helmet", Color(1, 0, 0), 2, 1, 18.5 + helmetY * 60 + helmetUP * 60);
-		RenderTextOnScreen(meshList[GEO_TEXT], "The flag may be scaring extraterrestial life!", Color(0, 1, 0), 2, 1, 16.5 + helmetY * 60 + helmetUP * 60);
-		RenderTextOnScreen(meshList[GEO_TEXT], "Press 'R' to reset", Color(0, 1, 1), 2, 1, 14.5 + helmetY * 60 + helmetUP * 60);
-	}
-	RenderTextOnScreen(meshList[GEO_TEXT], "PD ENTERTAINMENT INC.", Color(0, 1, 0), 2, 1, -15 + helmetY * 60 + helmetUP * 60);
-	if (camera.position.x > SHIP.x - 6.f && camera.position.x < SHIP.x + 6.f
-		&& camera.position.z > SHIP.z - 6.f && camera.position.z < SHIP.z + 6.f
-		&& shipFlew == false)
-	{
-		RenderTextOnScreen(meshList[GEO_TEXT], "Press 'E'", Color(0, 1, 0), shipNotiSize, 3, 5 + helmetY * 20 + helmetUP * 20);
-	}
-
 	framerate.str("");
 	modelStack.PopMatrix();
 
@@ -1007,6 +712,8 @@ void Assignment3::Render()
 			modelStack.PopMatrix();
 		}
 	}
+
+	// ROCKS
 	for (int i = 0; i < Rocks.size(); i++)
 	{
 		modelStack.PushMatrix();
@@ -1014,17 +721,6 @@ void Assignment3::Render()
 		modelStack.Scale(Rocks[i].Size, Rocks[i].Size, Rocks[i].Size);
 		RenderMesh(meshList[GEO_ROCK], true);
 		modelStack.PopMatrix();
-	}
-	for (int j = 0; j < 6; ++j)
-	{
-		for (int i = -1 - j; i < 2 + j; ++i)
-		{
-			modelStack.PushMatrix();
-			modelStack.Translate(i* -3, alienY, 5 + j * 5);
-			modelStack.Rotate(0, 0, 0, 1);
-			RenderAlien(alienArmRotate);
-			modelStack.PopMatrix();
-		}
 	}
 	
 }

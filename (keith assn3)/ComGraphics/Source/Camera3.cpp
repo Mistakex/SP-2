@@ -107,24 +107,20 @@ void Camera3::Update(double dt)
 	if (Application::IsKeyPressed('A'))
 	{
 		position -= right*(WALKSPEED / 2.f);
-		moving = true;
 	}
 	if (Application::IsKeyPressed('D'))
 	{
 		position += right*(WALKSPEED / 2.f);
-		moving = true;
 	}
 	if (Application::IsKeyPressed('W'))
 	{
 		view = (Vector3(target.x,0.f,target.z) - Vector3(position.x,0.f,position.z)).Normalized();
 		position += view * (float)(1.f / WALKSPEED * (float)dt);
-		moving = true;
 	}
 	if (Application::IsKeyPressed('S'))
 	{
 		view = (Vector3(target.x, 0.f, target.z) - Vector3(position.x, 0.f, position.z)).Normalized();
 		position -= view * (float)(1.f / WALKSPEED * (float)dt);
-		moving = true;
 	}
 	if (Application::IsKeyPressed(' '))
 	{
