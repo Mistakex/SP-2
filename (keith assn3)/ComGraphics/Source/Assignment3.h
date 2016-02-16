@@ -6,6 +6,8 @@
 #include "Mesh.h"
 #include "MatrixStack.h"
 #include "Light.h"
+#include"CountDown.h"
+
 
 class Assignment3 : public Scene
 {
@@ -86,13 +88,15 @@ private:
 	void RenderText(Mesh* mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
 	void RenderModelOnScreen(Mesh *mesh, bool enableLight, float size, float x, float y);
-
 	void RenderMesh(Mesh *mesh, bool enableLight);
 	void RenderSkybox();
-
 	void RenderAlien(float armRotate = 0);
 
 	void checkCollision(const Vector3 &center, float x1, float z1, float y1);
+
+	// countdown
+	Countdown countdownRock = Countdown(10.0f);
+
 
 	unsigned m_vertexArrayID;
 	Mesh *meshList[NUM_GEOMETRY];

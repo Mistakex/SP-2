@@ -11,6 +11,8 @@
 #include "Utility.h"
 
 #include "Enemy.h"
+#include "CountDown.h"
+#include "Rock.h"
 
 #include <stdlib.h>
 #include <sstream>
@@ -28,16 +30,16 @@ Assignment3::~Assignment3()
 
 
 vector<Enemy> Aliens;
-
+vector<Rock> Rocks;
 void Assignment3::Init()
 {
+	
 	//srand
-	srand(69);
+	srand(time(NULL));
 	for (int i = 0; i < 3; ++i)
 	{
 		Aliens.push_back(Enemy(Vector3(i, 0, i), Vector3(0, 0, 0)));
 	}
-
 	// Init VBO here
 
 	// Set background color to dark blue
@@ -290,6 +292,14 @@ void Assignment3::Update(double dt)
 		Aliens[i].target = camera.position;
 		Aliens[i].EnemyMove(dt);
 	}
+	//Rocks spwan
+	if (countdownRock.TimeCountDown(dt) <= 0)
+	{
+		countdownRock.resetTime();
+		Rocks.push_back(Rock((rand() % 50, 0, rand() % 50), rand()%6+1));
+		std::cout << "yes" << std::endl;
+	}
+
 
 	//framerate
 	framerate << "Framerate:" << 1 / dt;
@@ -817,15 +827,15 @@ void Assignment3::Render()
 
 	//SHIP
 	modelStack.PushMatrix();
-	modelStack.Translate(SHIP.x,SHIP.y,SHIP.z);
+	modelStack.Translate(SHIP.x, SHIP.y, SHIP.z);
 	modelStack.Rotate(4, 0, 0, 1);
 	modelStack.Translate(0, -1, 0);
 	RenderMesh(meshList[GEO_MODEL1], true);
 	modelStack.PopMatrix();
-	
+
 	//FLAG
 	modelStack.PushMatrix();
-	modelStack.Translate(FLAG.x,FLAG.y,FLAG.z);
+	modelStack.Translate(FLAG.x, FLAG.y, FLAG.z);
 	modelStack.Rotate(-flagRotate, 0, 0, 1);
 	modelStack.Rotate(90, 0, 1, 0);
 	RenderMesh(meshList[GEO_MODEL2], true);
@@ -855,7 +865,7 @@ void Assignment3::Render()
 			for (int j = 0; j < 2; ++j)
 			{
 				modelStack.PushMatrix();
-				modelStack.Translate(-20, -0.5, 10 - j*20);
+				modelStack.Translate(-20, -0.5, 10 - j * 20);
 				modelStack.Scale(3, 2, 3);
 				RenderMesh(meshList[GEO_CRATER], true);
 				modelStack.PopMatrix();
@@ -864,14 +874,14 @@ void Assignment3::Render()
 	}
 
 	//MOONBASE
-	
+
 	for (int j = 0; j < 3; ++j)
 	{
 		for (int i = -1; i < j; ++i)
 		{
 			modelStack.PushMatrix();
-			modelStack.Translate(3 - i*10, -0.9, -25 - 7 * j);
-			modelStack.Rotate(-135 + j*45 - i*45, 0, 1, 0);
+			modelStack.Translate(3 - i * 10, -0.9, -25 - 7 * j);
+			modelStack.Rotate(-135 + j * 45 - i * 45, 0, 1, 0);
 			modelStack.Scale(1 + j*0.5, 1 + j*0.5, 1 + j*0.5);
 			RenderMesh(meshList[GEO_TENT], true);
 			modelStack.PopMatrix();
@@ -885,10 +895,6 @@ void Assignment3::Render()
 	RenderMesh(meshList[GEO_SIGN], true);
 	modelStack.PopMatrix();
 	RenderText(meshList[GEO_TEXT], "MOON BASE", Color(1, 1, 0));
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	RenderMesh(meshList[GEO_ROCK], true);
 	modelStack.PopMatrix();
 
 	// HELMET
@@ -920,7 +926,7 @@ void Assignment3::Render()
 	modelStack.PopMatrix();
 
 	//ALIEN
-	for (int i = 0;i < Aliens.size();++i)
+	for (int i = 0; i < Aliens.size(); ++i)
 	{
 		modelStack.PushMatrix();
 		modelStack.Translate(Aliens[i].EnemyPos.x, Aliens[i].EnemyPos.y, Aliens[i].EnemyPos.z);
@@ -932,13 +938,20 @@ void Assignment3::Render()
 		{
 			modelStack.PushMatrix();
 			modelStack.Translate(Aliens[i].bulletPos.x, Aliens[i].bulletPos.y, Aliens[i].bulletPos.z);
-			
+
 			modelStack.Scale(0.1, 0.1, 0.1);
 			RenderMesh(meshList[GEO_BULLET], true);
 			modelStack.PopMatrix();
 		}
 	}
-
+	for (int i = 0; i < Rocks.size(); i++)
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(Rocks[i].Position.x, 0, Rocks[i].Position.z);
+		modelStack.Scale(Rocks[i].Size, Rocks[i].Size, Rocks[i].Size);
+		RenderMesh(meshList[GEO_ROCK], true);
+		modelStack.PopMatrix();
+	}
 	for (int j = 0; j < 6; ++j)
 	{
 		for (int i = -1 - j; i < 2 + j; ++i)

@@ -9,10 +9,10 @@ public:
 	void ReduceSize();
 	short GetResources();
 	float GetSize();
-private:
-	float Size;
 
+	float Size;
 	Vector3 Position;
+private:
 };
 
 

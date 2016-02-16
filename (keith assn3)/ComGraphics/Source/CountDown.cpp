@@ -11,11 +11,11 @@ float Countdown::TimeCountDown(double dt)
 	{
 		countdown -= dt;
 	}
-	else
-	{
-		countdown = Time;
-	}
-
+	return countdown;
+}
+void Countdown::resetTime()
+{
+	countdown = Time;
 }
 Countdown::~Countdown()
 {
