@@ -24,10 +24,8 @@ Weapon* Astronaut::UpgradeWeapon(Weapon weap,Player p)
 {
 	if (p.getResources() < weap.getUpgradeCost())
 	{
-		return;
+		return 0;
 	}
 	weap.Damage *= 1.5;
 	
 }
-
-
