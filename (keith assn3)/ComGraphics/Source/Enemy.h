@@ -1,6 +1,10 @@
 #ifndef ENEMY_H
 #define ENEMY_H
 #include"Vector3.h"
+#include <vector>
+
+using std::vector;
+
 class Enemy
 {
 public:
@@ -19,7 +23,7 @@ public:
 	void EnemyKite(double dt);
 	void EnemyMove(double dt);				//move to find
 	void EnemyTakeDmg(int Dmg);
-	void EnemyShootAt(Vector3 target);			//accuracy of the enemy
+	void EnemyShootAt(const Vector3 &accuracy);			//shooting of the enemy
 	float findDirection();
 
 	bool InRangeOfPlayer();		// dist away from player
@@ -35,7 +39,8 @@ private:
 	bool dead;
 	double KiteTimer;
 	bool moveRight;
-
+	vector<Vector3> renderedBulletsDirection;
+	vector<Vector3> renderedBulletsPosition;
 
 };
 

@@ -8,6 +8,7 @@ Enemy::Enemy(Vector3 pos,Vector3 tar, int hp, int attack, int movespeed, int ran
 	target = tar;
 	this->range = range;
 	KiteTimer = 0;
+	renderedBullets = 0;
 }
 
 Enemy::~Enemy()
@@ -27,6 +28,11 @@ int Enemy::GetEnemyAtt()
 int Enemy::GetMovespeed()
 {
 	return MoveSpeed;
+}
+
+int Enemy::GetRenderedBullets()
+{
+	return renderedBullets;
 }
 
 short Enemy::GetResources()
@@ -73,14 +79,14 @@ void Enemy::EnemyTakeDmg(int Dmg)
 	Hp -= Dmg;
 }
 
-void Enemy::EnemyShootAt(Vector3 target)
+void Enemy::EnemyShootAt(const Vector3 &accuracy)
 {
-	if (target != EnemyPos)
-		Vector3 view = (target - EnemyPos).Normalized();
-	else
-		Vector3 view = Vector3(0, 0, 0);
-
+	Vector3 view = Vector3(0, 0, 0);
+	if (accuracy != EnemyPos)
+		view = (accuracy - EnemyPos).Normalized();
+		
 }
+
 
 float Enemy::findDirection()
 {

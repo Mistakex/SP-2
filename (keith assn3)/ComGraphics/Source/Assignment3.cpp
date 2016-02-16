@@ -151,6 +151,8 @@ void Assignment3::Init()
 
 	meshList[GEO_LIGHTBALL] = MeshBuilder::GenerateSphere("lightball", Color(1, 1, 1), 10, 20);
 
+	meshList[GEO_BULLET] = MeshBuilder::GenerateSphere("bullet", Color(1, 1, 1), 5, 10);
+
 	meshList[GEO_SIGN] = MeshBuilder::GenerateCube("sign", Color(0.8, 0.8, 0.2));
 
 	meshList[GEO_BOTTOM] = MeshBuilder::GenerateQuad("quad", Color(1, 1, 1));
@@ -927,6 +929,16 @@ void Assignment3::Render()
 	modelStack.Rotate(Alien.findDirection(),0,1,0);
 	RenderAlien();
 	modelStack.PopMatrix();
+
+	for (int i = 0; i < 0; ++i)
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(Alien.EnemyPos.x, Alien.EnemyPos.y, Alien.EnemyPos.z);
+		modelStack.Rotate(Alien.findDirection(), 0, 1, 0);
+		modelStack.Scale(0.5, 0.5, 0.5);
+		RenderMesh(meshList[GEO_BULLET],true);
+		modelStack.PopMatrix();
+	}
 
 	for (int j = 0; j < 6; ++j)
 	{

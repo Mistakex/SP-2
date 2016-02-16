@@ -19,6 +19,7 @@ class Assignment3 : public Scene
 		GEO_FRONT,
 		GEO_BACK,
 		GEO_QUAD,
+		GEO_BULLET,
 		GEO_MODEL1,
 		GEO_MODEL2,
 		GEO_BOULDER,
