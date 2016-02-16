@@ -21,6 +21,9 @@
 using std::cout;
 using std::endl;
 
+vector<Enemy> Aliens;
+vector<Rock> Rocks;
+
 Assignment3::Assignment3()
 {
 }
@@ -28,10 +31,14 @@ Assignment3::Assignment3()
 Assignment3::~Assignment3()
 {
 }
-
-
-vector<Enemy> Aliens;
-vector<Rock> Rocks;
+float Assignment3::getMagnitude(const Vector3 object, const Vector3 target)
+{
+	Vector3 a;
+	a.x = object.x - target.x;
+	a.y = 0;
+	a.z = object.z - target.z;
+	return a.Length();
+}
 void Assignment3::Init()
 {
 	
@@ -267,9 +274,15 @@ void Assignment3::Update(double dt)
 	//Rocks spwan
 	if (countdownRock.TimeCountDown(dt) <= 0)
 	{
-		countdownRock.resetTime();
-		Rocks.push_back(Rock((rand() % 50, 0, rand() % 50), rand()%6+1));
-		std::cout << "yes" << std::endl;
+		randomx = rand() % 100 -50;
+		randomz = rand() % 100 -50;
+		
+		if (getMagnitude(Vector3(randomx, -1, randomz), Vector3(camera.position.x, 0, camera.position.y)) >= 20.0f)
+		{
+			countdownRock.resetTime();
+			Rock newRock(Vector3(randomx, -1, randomz), rand() % 6 + 1);
+			Rocks.push_back(newRock);
+		}
 	}
 
 
@@ -717,7 +730,9 @@ void Assignment3::Render()
 	for (int i = 0; i < Rocks.size(); i++)
 	{
 		modelStack.PushMatrix();
-		modelStack.Translate(Rocks[i].Position.x, 0, Rocks[i].Position.z);
+		modelStack.Translate(Rocks[i].Position.x, Rocks[i].Position.y, Rocks[i].Position.z);
+		std::cout << "x :" << Rocks[i].Position.x << std::endl;
+		std::cout << "z :" << Rocks[i].Position.z << std::endl;
 		modelStack.Scale(Rocks[i].Size, Rocks[i].Size, Rocks[i].Size);
 		RenderMesh(meshList[GEO_ROCK], true);
 		modelStack.PopMatrix();

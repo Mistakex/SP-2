@@ -4,7 +4,9 @@
 Rock::Rock(Vector3 pos, float SizeOfRock)
 {
 	Size = SizeOfRock;
-	Position = pos;
+	Position.x = pos.x;
+	Position.y = pos.y;
+	Position.z = pos.z;
 }
 
 short Rock::GetResources()

@@ -95,7 +95,8 @@ private:
 
 	// countdown
 	Countdown countdownRock = Countdown(10.0f);
-
+	float getMagnitude(const Vector3 user, const Vector3 target);
+	float randomx, randomz;
 
 	unsigned m_vertexArrayID;
 	Mesh *meshList[NUM_GEOMETRY];
