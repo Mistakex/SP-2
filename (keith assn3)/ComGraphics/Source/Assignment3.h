@@ -32,6 +32,7 @@ class Assignment3 : public Scene
 		GEO_ALIENPART,
 		GEO_SIGN,
 		GEO_TENT,
+		GEO_ROCK,
 		NUM_GEOMETRY,
 	};
 	enum UNIFORM_TYPE

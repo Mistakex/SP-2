@@ -196,6 +196,9 @@ void Assignment3::Init()
 
 	meshList[GEO_BOULDER] = MeshBuilder::GenerateOBJ("Boulder", "OBJ//boulder.obj");
 	meshList[GEO_BOULDER]->textureID = LoadTGA("Image//boulder.tga");
+	
+	meshList[GEO_ROCK] = MeshBuilder::GenerateOBJ("Boulder", "OBJ//Rock.obj");
+	meshList[GEO_ROCK]->textureID = LoadTGA("Image//boulder.tga");
 
 	meshList[GEO_CRATER] = MeshBuilder::GenerateOBJ("crater", "OBJ//crater.obj");
 	meshList[GEO_CRATER]->textureID = LoadTGA("Image//crater.tga");
@@ -808,7 +811,7 @@ void Assignment3::Render()
 	//floor
 	modelStack.PushMatrix();
 	modelStack.Translate(0, -1, 0);
-	modelStack.Scale(100, 1, 100);
+	modelStack.Scale(300, 1, 300);
 	RenderMesh(meshList[GEO_QUAD], true);
 	modelStack.PopMatrix();
 
@@ -860,30 +863,6 @@ void Assignment3::Render()
 		}
 	}
 
-	// ROCKS AT PERIMETER
-	for (int i = 0; i < 2; ++i)
-	{
-		for (int j = 0; j < 11; ++j)
-		{
-			modelStack.PushMatrix();
-			modelStack.Translate(-50 + j * 10, 1, -50 + 100*i);
-			modelStack.Scale(10, 5, 10);
-			RenderMesh(meshList[GEO_BOULDER], true);
-			modelStack.PopMatrix();
-		}
-	}
-	for (int i = 0; i < 2; ++i)
-	{
-		for (int j = 0; j < 11; ++j)
-		{
-			modelStack.PushMatrix();
-			modelStack.Translate(-50 + i*100, 1, -50 + j * 10);
-			modelStack.Scale(10, 5, 10);
-			RenderMesh(meshList[GEO_BOULDER], true);
-			modelStack.PopMatrix();
-		}
-	}
-
 	//MOONBASE
 	
 	for (int j = 0; j < 3; ++j)
@@ -906,6 +885,10 @@ void Assignment3::Render()
 	RenderMesh(meshList[GEO_SIGN], true);
 	modelStack.PopMatrix();
 	RenderText(meshList[GEO_TEXT], "MOON BASE", Color(1, 1, 0));
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	RenderMesh(meshList[GEO_ROCK], true);
 	modelStack.PopMatrix();
 
 	// HELMET
