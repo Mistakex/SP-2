@@ -15,6 +15,7 @@ public:
 	int GetMovespeed();
 	short GetResources();
 	float GetDistance();
+	bool GetShooting();
 	
 
 	Vector3 GetEnemypos();
@@ -23,13 +24,16 @@ public:
 	void EnemyKite(double dt);
 	void EnemyMove(double dt);				//move to find
 	void EnemyTakeDmg(int Dmg);
-	void EnemyShootAt(const Vector3 &accuracy);			//shooting of the enemy
+	void EnemyShootAt(const double &dt,const float &bulletSpeed);			//shooting of the enemy
 	float findDirection();
 
 	bool InRangeOfPlayer();		// dist away from player
 	bool isDead();					//dead or not
 	Vector3 EnemyPos;
 	Vector3 target;
+	Vector3 bulletPos;
+	Vector3 bulletTarget;
+
 private:
 	int Hp;
 	int AttackDamage;
@@ -39,6 +43,8 @@ private:
 	bool dead;
 	double KiteTimer;
 	bool moveRight;
+	bool Shooting;
+	float fireDelay;
 	vector<Vector3> renderedBulletsDirection;
 	vector<Vector3> renderedBulletsPosition;
 

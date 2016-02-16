@@ -13,8 +13,10 @@
 #include "Enemy.h"
 
 #include <stdlib.h>
-
 #include <sstream>
+
+using std::cout;
+using std::endl;
 
 Assignment3::Assignment3()
 {
@@ -24,10 +26,17 @@ Assignment3::~Assignment3()
 {
 }
 
+
+vector<Enemy> Aliens;
+
 void Assignment3::Init()
 {
-	//Classes
-
+	//srand
+	srand(69);
+	for (int i = 0; i < 3; ++i)
+	{
+		Aliens.push_back(Enemy(Vector3(i, 0, i), Vector3(0, 0, 0)));
+	}
 
 	// Init VBO here
 
@@ -149,9 +158,9 @@ void Assignment3::Init()
 
 	meshList[GEO_AXES] = MeshBuilder::GenerateAxes("reference", 1000, 1000, 1000);
 
-	meshList[GEO_LIGHTBALL] = MeshBuilder::GenerateSphere("lightball", Color(1, 1, 1), 10, 20);
+	meshList[GEO_LIGHTBALL] = MeshBuilder::GenerateSphere("lightball", Color(1, 1, 0), 10, 20);
 
-	meshList[GEO_BULLET] = MeshBuilder::GenerateSphere("bullet", Color(1, 1, 1), 5, 10);
+	meshList[GEO_BULLET] = MeshBuilder::GenerateSphere("bullet", Color(1, 1, 1), 3, 3);
 
 	meshList[GEO_SIGN] = MeshBuilder::GenerateCube("sign", Color(0.8, 0.8, 0.2));
 
@@ -239,7 +248,8 @@ static float alienArmRotate = 0.f; // rotation of alien arms
 static float alienY = 0.f; // Y-coordinate of aliens
 static float alienJumping = true; // are the aliens jumping
 
-Enemy Alien(Vector3(0, 0, 0),Vector3(0,0,0));
+
+
 //******************************************************************//
 
 Vector3 SHIP(20, 0, 0); // coordinates of SHIP
@@ -256,8 +266,8 @@ static Vector3 frontPush; // direction of push infront of flag
 void Assignment3::Update(double dt)
 {
 	camera.Update(dt);
-
-	Alien.target = Vector3(camera.position.x, camera.position.y, camera.position.z);
+	
+	
 
 	// updating 2nd light
 	light[1].position.Set(camera.position.x + camera.target.x/15,
@@ -272,7 +282,11 @@ void Assignment3::Update(double dt)
 	helmetDebounce += 1.f * dt;
 
 	//Alien moving
-	Alien.EnemyMove(dt);
+	for (int i = 0; i < Aliens.size(); ++i)
+	{
+		Aliens[i].target = camera.position;
+		Aliens[i].EnemyMove(dt);
+	}
 
 	//framerate
 	framerate << "Framerate:" << 1 / dt;
@@ -923,21 +937,23 @@ void Assignment3::Render()
 	modelStack.PopMatrix();
 
 	//ALIEN
-
-	modelStack.PushMatrix();
-	modelStack.Translate(Alien.EnemyPos.x, Alien.EnemyPos.y, Alien.EnemyPos.z);
-	modelStack.Rotate(Alien.findDirection(),0,1,0);
-	RenderAlien();
-	modelStack.PopMatrix();
-
-	for (int i = 0; i < 0; ++i)
+	for (int i = 0;i < Aliens.size();++i)
 	{
 		modelStack.PushMatrix();
-		modelStack.Translate(Alien.EnemyPos.x, Alien.EnemyPos.y, Alien.EnemyPos.z);
-		modelStack.Rotate(Alien.findDirection(), 0, 1, 0);
-		modelStack.Scale(0.5, 0.5, 0.5);
-		RenderMesh(meshList[GEO_BULLET],true);
+		modelStack.Translate(Aliens[i].EnemyPos.x, Aliens[i].EnemyPos.y, Aliens[i].EnemyPos.z);
+		modelStack.Rotate(Aliens[i].findDirection(), 0, 1, 0);
+		RenderAlien();
 		modelStack.PopMatrix();
+
+		if (Aliens[i].GetShooting() == true)
+		{
+			modelStack.PushMatrix();
+			modelStack.Translate(Aliens[i].bulletPos.x, Aliens[i].bulletPos.y, Aliens[i].bulletPos.z);
+			
+			modelStack.Scale(0.1, 0.1, 0.1);
+			RenderMesh(meshList[GEO_BULLET], true);
+			modelStack.PopMatrix();
+		}
 	}
 
 	for (int j = 0; j < 6; ++j)

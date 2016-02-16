@@ -8,7 +8,10 @@ Enemy::Enemy(Vector3 pos,Vector3 tar, int hp, int attack, int movespeed, int ran
 	target = tar;
 	this->range = range;
 	KiteTimer = 0;
-	renderedBullets = 0;
+	Shooting = false;
+	bulletPos = Vector3(0, 0, 0);
+	bulletTarget = Vector3(0, 0, 0);
+	fireDelay = 0;
 }
 
 Enemy::~Enemy()
@@ -30,11 +33,6 @@ int Enemy::GetMovespeed()
 	return MoveSpeed;
 }
 
-int Enemy::GetRenderedBullets()
-{
-	return renderedBullets;
-}
-
 short Enemy::GetResources()
 {
 	return Resources;
@@ -44,6 +42,11 @@ float Enemy::GetDistance()
 {
 	Vector3 view = target - EnemyPos;
 	return sqrt(pow(view.x, 2) + pow(view.y, 2) + pow(view.z, 2));
+}
+
+bool Enemy::GetShooting()
+{
+	return Shooting;
 }
 
 void Enemy::EnemyMove(double dt)
@@ -56,12 +59,14 @@ void Enemy::EnemyMove(double dt)
 	{
 		EnemyPos += Vector3(view.x,0,view.z)*MoveSpeed*dt;
 	}
-	else if (KiteTimer < 10)
+	else if (KiteTimer < 7)
 	{
 		EnemyKite(dt);
+		EnemyShootAt(dt, 10);
 	}
-	else if (KiteTimer >= 10)
+	else if (KiteTimer >= 7)
 	{
+		EnemyShootAt(dt, 10);
 		KiteTimer = 0;
 		if (rand() % 2 == 0)
 		{
@@ -72,6 +77,10 @@ void Enemy::EnemyMove(double dt)
 			moveRight = false;
 		}
 	}
+	else
+	{
+		EnemyShootAt(dt, 10);
+	}
 }
 
 void Enemy::EnemyTakeDmg(int Dmg)
@@ -79,12 +88,27 @@ void Enemy::EnemyTakeDmg(int Dmg)
 	Hp -= Dmg;
 }
 
-void Enemy::EnemyShootAt(const Vector3 &accuracy)
+void Enemy::EnemyShootAt(const double &dt,const float &bulletSpeed)
 {
-	Vector3 view = Vector3(0, 0, 0);
-	if (accuracy != EnemyPos)
-		view = (accuracy - EnemyPos).Normalized();
-		
+	fireDelay += dt;
+	if (fireDelay < 3)
+	{
+		if (Shooting == true)
+		{
+			bulletPos += (bulletTarget - EnemyPos)*bulletSpeed*dt;
+		}
+		else
+		{
+			Shooting = true;
+			bulletPos = EnemyPos;
+			bulletTarget = target + Vector3((rand() % 2)/2.f, (rand() % 2)/2.f, (rand() % 2)/2.f);
+		}
+	}
+	else
+	{
+		Shooting = false;
+		fireDelay = 0;
+	}
 }
 
 
@@ -107,9 +131,9 @@ void Enemy::EnemyKite(double dt)
 			view = (target - EnemyPos).Normalized();
 		Vector3 right = view.Cross(Vector3(0, 1, 0));
 		if (moveRight == true)
-			EnemyPos += right*(MoveSpeed / 2)*dt;
+			EnemyPos += right*(MoveSpeed / 4)*dt;
 		else
-			EnemyPos -= right*(MoveSpeed / 2)*dt;
+			EnemyPos -= right*(MoveSpeed / 4)*dt;
 	}
 }
 
