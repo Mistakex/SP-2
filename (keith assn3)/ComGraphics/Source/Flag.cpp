@@ -4,13 +4,13 @@
 
 Flag::Flag() : flagHp(100), isEnemyflag(false)
 {
-
+	flagheight = 2.5;
 }
 
 Flag::Flag(const Vector3 &coords) : flagHp(100), isEnemyflag(false)
 {
 	FLAGPOLE = coords;
-
+	flagheight = 2.5;
 }
 Flag::~Flag()
 {
@@ -28,15 +28,15 @@ short Flag::FlagTakeDmg(const short &amount)
 	return flagHp;
 }
 
-short Flag::FlagRepair()
+short Flag::FlagRepair(const short &amount)
 {
-	flagHp++;
+	flagHp += amount;
 	return flagHp;
 }
 
 float Flag::FlagHeightIncrease(const float &target, const double &dt)
 {
-	float speed = 1;
+	float speed = 0.1;
 	if (flagheight < target)
 	{
 		flagheight += speed * dt;
@@ -47,12 +47,12 @@ float Flag::FlagHeightIncrease(const float &target, const double &dt)
 
 float Flag::FlagHeightDecrease(const float &target, const double &dt)
 {
-	float speed = 1;
+	float speed = 0.1;
 	if (flagheight > target)
 	{
 		flagheight -= speed * dt;
 	}
-	if (flagheight <= 7.5)
+	if (flagheight <= target)
 	{
 		flagheight = target;
 	}

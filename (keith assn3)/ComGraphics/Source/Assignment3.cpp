@@ -113,9 +113,9 @@ void Assignment3::Init()
 
 	glUseProgram(m_programID);
 
-	light[0].type = Light::LIGHT_POINT;
+	light[0].type = Light::LIGHT_DIRECTIONAL;
 	light[0].position.Set(0.f, 10.f, 20.f);
-	light[0].color.Set(0, 0.5, 0);
+	light[0].color.Set(1, 0, 1);
 	light[0].power = 1;
 	light[0].kC = 1.f;
 	light[0].kL = 0.1f;
@@ -164,7 +164,7 @@ void Assignment3::Init()
 
 
 	//Initialize camera settings
-	camera.Init(Vector3(0, 0, 0), Vector3(10,0,0), Vector3(0, 1, 0));
+	camera.Init(Vector3(0, 0, 10), Vector3(10,0,0), Vector3(0, 1, 0));
 
 	meshList[GEO_AXES] = MeshBuilder::GenerateAxes("reference", 1000, 1000, 1000);
 
@@ -235,7 +235,7 @@ static float LSPEED = 10.f; // LIGHT SPEED
 
 
 //****************CREATE FOR FLAG CLASS********************************//
-Flag f(Vector3(0, 0.5, 0));
+Flag f(Vector3(0, 0.75f, 0));
 //********************************************************************//
 
 
@@ -303,13 +303,13 @@ void Assignment3::Update(double dt)
 
 	
 	// flag rising up when get close
-	if (f.getMagnitude(camera.position) <= 5)
+	if (f.getMagnitude(camera.position) <= 7.5f)
 	{
 		if (f.flagIsBlue == true)
 		{
-			f.FlagHeightIncrease(2.5, dt);
+			f.FlagHeightIncrease(2.5f, dt);
 		}
-		else if (f.FlagHeightDecrease(0, dt) <= 0)
+		else if (f.FlagHeightDecrease(0.2f, dt) <= 0.2f)
 		{
 			f.flagIsBlue = true;
 		}
@@ -332,13 +332,6 @@ void Assignment3::Update(double dt)
 		f.flagIsBlue = false;
 		f.flagheight = 2;
 	}
-
-	// interact with ship
-
-	
-	//checking collisions
-
-
 }
 
 void Assignment3::RenderMesh(Mesh*mesh, bool enableLight) // rendering of meshes
@@ -629,6 +622,7 @@ void Assignment3::Render()
 
 	//POLE
 	modelStack.PushMatrix();
+	modelStack.Scale(1.5, 2, 1.5);
 	modelStack.PushMatrix();
 	modelStack.Scale(2, 2, 2);
 	modelStack.Translate(0, f.FLAGPOLE.y - 1, f.FLAGPOLE.z);
@@ -640,7 +634,7 @@ void Assignment3::Render()
 	{
 		modelStack.PushMatrix();
 		modelStack.Scale(2, 2, 2);
-		modelStack.Translate(1.5, f.flagheight - 7.5, f.FLAGPOLE.z);
+		modelStack.Translate(1.5, f.flagheight, f.FLAGPOLE.z);
 		modelStack.Rotate(90, 0, 1, 0);
 		RenderMesh(meshList[GEO_ENEMYFLAG], true);
 		modelStack.PopMatrix();

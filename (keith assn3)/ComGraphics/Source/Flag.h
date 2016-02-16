@@ -12,12 +12,12 @@ public:
 	float FlagHeightIncrease(const float &target, const double &dt);			//Flag rises return new coord
 	float FlagHeightDecrease(const float &target, const double &dt);
 	short FlagTakeDmg(const short &amount);				//Flag minus hp
-	short FlagRepair();					//Flag plus hp
+	short FlagRepair(const short &amount);				//Flag plus hp
 	float getMagnitude(const Vector3 &target);
 
 	Vector3 FLAGPOLE; // coordinates of flag
 	Vector3 FLAG;
-	float flagheight = 10; //Height of flag
+	float flagheight; //Height of flag
 	bool flagIsBlue = false;
 private:
 
