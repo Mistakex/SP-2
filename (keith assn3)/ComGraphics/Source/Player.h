@@ -15,7 +15,8 @@ public:
 	void changeWeapon(char weapon);
 	char getWeaponState();
 
-	int TotalBullets; //Reloading
+	int BulletsInMagzine;	
+	int TotalBullets;		//Reloading
 	bool sprint;			//running or not
 	char WeaponState;		//which weapon u using
 private:
