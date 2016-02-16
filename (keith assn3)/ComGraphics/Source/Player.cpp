@@ -1,6 +1,6 @@
 #include"Player.h"
 
-Player::Player(int hp) : HP(hp)
+Player::Player(const int &hp) : HP(hp)
 {
 }
 

@@ -4,7 +4,7 @@
 class Player
 {
 public:
-	Player(int hp);
+	Player(const int &hp);
 	~Player();
 	int GetHp();
 	int GetResources(int amount);
