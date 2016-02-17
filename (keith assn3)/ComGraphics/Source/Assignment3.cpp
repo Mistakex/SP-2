@@ -223,9 +223,13 @@ void Assignment3::Init()
 	meshList[GEO_UNCAPTURED] = MeshBuilder::GenerateTorus("UncapturedZone", Color(1, 0, 0), 18, 18, 1, 0.05);
 	meshList[GEO_CAPTURED] = MeshBuilder::GenerateTorus("CapturedZone", Color(0, 0, 1), 18, 18, 1, 0.05);
 
+	meshList[GEO_FULLHP] = MeshBuilder::GenerateCircle("FullHP", Color(0, 1, 0), 36);
+	meshList[GEO_HALFHP] = MeshBuilder::GenerateCircle("HalfHP", Color(1, 0, 0), 36);
+
 	Mtx44 projection;
 	projection.SetToPerspective(70.0f, 4.0f / 3.0f, 0.1f, 5000.0f);
 	projectionStack.LoadMatrix(projection);
+
 }
 
 static float ROT_LIMIT = 45.f;
@@ -248,12 +252,9 @@ static std::stringstream framerate;
 
 static Vector3 frontPush; // direction of push infront of flag
 
-
 void Assignment3::Update(double dt)
 {
 	camera.Update(dt);
-	
-	
 
 	// updating 2nd light
 	light[1].position.Set(camera.position.x + camera.target.x/15,
@@ -644,6 +645,13 @@ void Assignment3::Render()
 		modelStack.Translate(0, f.FLAGPOLE.y - 1, f.FLAGPOLE.z);
 		RenderMesh(meshList[GEO_UNCAPTURED], true);
 		modelStack.PopMatrix();
+
+		if (f.getMagnitude(camera.position) <= 7.5f)
+		{
+			modelStack.PushMatrix();
+			RenderModelOnScreen(meshList[GEO_FULLHP], false, 6, 1.5, 1.5);
+			modelStack.PopMatrix();
+		}
 	}
 	else
 	{
@@ -659,6 +667,13 @@ void Assignment3::Render()
 		modelStack.Translate(0, f.FLAGPOLE.y - 1, f.FLAGPOLE.z);
 		RenderMesh(meshList[GEO_CAPTURED], true);
 		modelStack.PopMatrix();
+
+		if (f.getMagnitude(camera.position) <= 7.5f)
+		{
+			modelStack.PushMatrix();
+			RenderModelOnScreen(meshList[GEO_HALFHP], false, 4, 1.5, 1.5);
+			modelStack.PopMatrix();
+		}
 	}
 	modelStack.PopMatrix();
 

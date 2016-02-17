@@ -2,7 +2,6 @@
 #include "Application.h"
 #include "Mtx44.h"
 
-
 extern GLFWwindow* m_window;
 extern bool moving;
 
