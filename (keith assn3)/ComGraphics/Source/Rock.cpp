@@ -15,7 +15,7 @@ short Rock::GetResources()
 }
 void Rock::ReduceSize()
 {
-	Size-=(rand()%2)/2;
+	Size -= 0.5;
 	GetResources();
 }
 float Rock::GetSize()

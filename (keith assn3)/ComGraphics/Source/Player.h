@@ -21,6 +21,7 @@ public:
 	int TotalBullets;		//Reloading
 	bool sprint;			//running or not
 	char WeaponState;		//which weapon u using
+	
 private:
 	int HP;
 	int Resources;

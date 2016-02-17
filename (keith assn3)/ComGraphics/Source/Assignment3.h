@@ -7,7 +7,7 @@
 #include "MatrixStack.h"
 #include "Light.h"
 #include"CountDown.h"
-
+#include "Player.h"
 
 class Assignment3 : public Scene
 {
@@ -92,11 +92,13 @@ private:
 	void RenderAlien(float armRotate = 0);
 
 	void checkCollision(const Vector3 &center, float x1, float z1, float y1);
+	float getMagnitude(const Vector3 user, const Vector3 target);	//find the magnitude between 2 points
+	float randomx, randomz;											//random locations for the rock spawn
 
 	// countdown
 	Countdown countdownRock = Countdown(10.0f);
-	float getMagnitude(const Vector3 user, const Vector3 target);
-	float randomx, randomz;
+	Countdown countdownMining = Countdown(0.5f);
+	Player player = Player(100);
 
 	unsigned m_vertexArrayID;
 	Mesh *meshList[NUM_GEOMETRY];

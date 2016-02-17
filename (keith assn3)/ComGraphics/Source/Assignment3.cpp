@@ -35,13 +35,13 @@ float Assignment3::getMagnitude(const Vector3 object, const Vector3 target)
 {
 	Vector3 a;
 	a.x = object.x - target.x;
-	a.y = 0;
+	a.y = object.y - target.y;
 	a.z = object.z - target.z;
-	return a.Length();
+	return sqrt(pow(a.x, 2) + pow(a.y, 2) + pow(a.z, 2));
 }
 void Assignment3::Init()
 {
-	
+	player.WeaponState = 4;
 	//srand
 	srand(time(NULL));
 	for (int i = 0; i < 3; ++i)
@@ -277,11 +277,30 @@ void Assignment3::Update(double dt)
 		randomx = rand() % 100 -50;
 		randomz = rand() % 100 -50;
 		
-		if (getMagnitude(Vector3(randomx, -1, randomz), Vector3(camera.position.x, 0, camera.position.y)) >= 20.0f)
+		if (getMagnitude(Vector3(randomx, -1, randomz), Vector3(camera.position.x, -1, camera.position.z)) >= 20.0f)//spwan 20 units away from the player
 		{
 			countdownRock.resetTime();
-			Rock newRock(Vector3(randomx, -1, randomz), rand() % 6 + 1);
+			Rock newRock(Vector3(randomx, -1, randomz), rand() % 4 + 1);
 			Rocks.push_back(newRock);
+		}
+	}
+	//Rock mining
+	if ((Application::IsKeyPressed(VK_LBUTTON)) && (player.WeaponState == 4) && (Rocks.empty() == 0)&& (countdownMining.TimeCountDown(dt)<= 0)) //check for keypress and weapon holding
+	{
+		vector<Rock>::iterator i = Rocks.begin();
+		while ( i != Rocks.end())
+		{
+			if ((getMagnitude(Vector3((*i).Position.x, -1, (*i).Position.z), Vector3(camera.position.x, camera.position.y - 1, camera.position.z)) - (*i).Size * 2.2) < 0)
+			{
+				(*i).ReduceSize();
+				if ((*i).Size <= 0)
+				{
+					Rocks.erase(i);
+				}
+				countdownMining.resetTime();
+				break;
+			}
+			else{ i++; }
 		}
 	}
 
@@ -725,8 +744,6 @@ void Assignment3::Render()
 	{
 		modelStack.PushMatrix();
 		modelStack.Translate(Rocks[i].Position.x, Rocks[i].Position.y, Rocks[i].Position.z);
-		std::cout << "x :" << Rocks[i].Position.x << std::endl;
-		std::cout << "z :" << Rocks[i].Position.z << std::endl;
 		modelStack.Scale(Rocks[i].Size, Rocks[i].Size, Rocks[i].Size);
 		RenderMesh(meshList[GEO_ROCK], true);
 		modelStack.PopMatrix();
