@@ -229,8 +229,11 @@ void Assignment3::Init()
 	meshList[GEO_ALLYFLAG] = MeshBuilder::GenerateOBJ("enemyFlag", "OBJ//flag.obj");
 	meshList[GEO_ALLYFLAG]->textureID = LoadTGA("Image//OurFlag.tga");
 
-	meshList[GEO_PICKAXE] = MeshBuilder::GenerateOBJ("enemyFlag", "OBJ//pickaxe.obj");
+	meshList[GEO_PICKAXE] = MeshBuilder::GenerateOBJ("pickaxe", "OBJ//pickaxe.obj");
 	meshList[GEO_PICKAXE]->textureID = LoadTGA("Image//pickaxeUV.tga");
+
+	meshList[GEO_GUN] = MeshBuilder::GenerateOBJ("gun", "OBJ//gun.obj");
+	meshList[GEO_GUN]->textureID = LoadTGA("Image//gunUV.tga");
 
 	Mtx44 projection;
 	projection.SetToPerspective(70.0f, 4.0f / 3.0f, 0.1f, 5000.0f);
@@ -589,7 +592,7 @@ void Assignment3::RenderUIOnScreen(Mesh *mesh, bool enableLight, float size, flo
 	modelStack.PopMatrix();
 }
 
-void Assignment3::RenderModelOnScreen(Mesh *mesh, bool enableLight, float size, float x, float y,float rotation) // used to render helmet on screen
+void Assignment3::RenderModelOnScreen(Mesh *mesh, bool enableLight, float size, float x, float y,float setRotation,float rotation) // used to render pickaxe on screen
 {
 
 	Mtx44 ortho;
@@ -601,9 +604,10 @@ void Assignment3::RenderModelOnScreen(Mesh *mesh, bool enableLight, float size, 
 	viewStack.LoadIdentity(); //No need camera for ortho mode
 	modelStack.PushMatrix();
 	modelStack.LoadIdentity(); //Reset modelStack
-	modelStack.Translate(x, y, 0);
+	modelStack.Translate(x, y, 10);
 	modelStack.Scale(size, size, size);
-	modelStack.Rotate(-45, 0, 1, 0);
+	//modelStack.Rotate(setRotation, 1, 0, 0);
+	modelStack.Rotate(setRotation, 0, 1, 0);
 	modelStack.Rotate(rotation, 0, 0, 1);
 	
 	RenderMesh(mesh, enableLight);
@@ -612,7 +616,6 @@ void Assignment3::RenderModelOnScreen(Mesh *mesh, bool enableLight, float size, 
 	viewStack.PopMatrix();
 	modelStack.PopMatrix();
 }
-
 
 void Assignment3::Render()
 {
@@ -738,8 +741,9 @@ void Assignment3::Render()
 	modelStack.PopMatrix();
 
 	// pickaxe
+	RenderModelOnScreen(meshList[GEO_PICKAXE], true, 10.f, 70.f, 0.f, -45.f, player.getMiningAction());
+	RenderModelOnScreen(meshList[GEO_GUN], true, 20.f, 60.f, 5.f, 10.f, 3.f);
 
-	RenderModelOnScreen(meshList[GEO_PICKAXE], true, 10.f, 70.f, 0, player.getMiningAction());
 
 	//CRATERS;
 	for (int i = 0; i < 3; ++i)
