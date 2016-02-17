@@ -102,6 +102,7 @@ private:
 	// countdown
 	Countdown countdownRock = Countdown(10.0f);
 	Countdown countdownMining = Countdown(0.5f);
+	Countdown countdownAlienSpawn = Countdown(10.0f);
 	Player player = Player(100);
 
 	unsigned m_vertexArrayID;

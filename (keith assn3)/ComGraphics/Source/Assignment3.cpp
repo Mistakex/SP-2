@@ -270,7 +270,15 @@ void Assignment3::Update(double dt)
 
 	//first light
 	light[0].position.Set(0.f, 5.f, 20.f);
-
+	//Alien Spawn
+	if ((countdownAlienSpawn.TimeCountDown(dt) <= 0) && (Aliens.size()) < 10 &&(f.flagIsBlue == true))
+	{
+		std::cout << "yes" << std::endl;
+		countdownAlienSpawn.resetTime();
+		int spwanAlienz = (rand() % 100 - 50);
+		Enemy newAlien(Vector3(50, 0,spwanAlienz ), Vector3(camera.position.x, -1, camera.position.z), 100, 5, 10, 10);
+		Aliens.push_back(newAlien);
+	}
 
 	//Alien moving
 	for (int i = 0; i < Aliens.size(); ++i)
