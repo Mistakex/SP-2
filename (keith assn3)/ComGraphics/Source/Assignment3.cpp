@@ -226,6 +226,12 @@ void Assignment3::Init()
 	meshList[GEO_FULLHP] = MeshBuilder::GenerateCircle("FullHP", Color(0, 1, 0), 36);
 	meshList[GEO_HALFHP] = MeshBuilder::GenerateCircle("HalfHP", Color(1, 0, 0), 36);
 
+	meshList[GEO_ALLYFLAG] = MeshBuilder::GenerateOBJ("enemyFlag", "OBJ//flag.obj");
+	meshList[GEO_ALLYFLAG]->textureID = LoadTGA("Image//OurFlag.tga");
+
+	meshList[GEO_PICKAXE] = MeshBuilder::GenerateOBJ("enemyFlag", "OBJ//pickaxe.obj");
+	meshList[GEO_PICKAXE]->textureID = LoadTGA("Image//pickaxeUV.tga");
+
 	Mtx44 projection;
 	projection.SetToPerspective(70.0f, 4.0f / 3.0f, 0.1f, 5000.0f);
 	projectionStack.LoadMatrix(projection);
@@ -286,6 +292,7 @@ void Assignment3::Update(double dt)
 		}
 	}
 	//Rock mining
+	player.WhileMining(dt);
 	if ((Application::IsKeyPressed(VK_LBUTTON)) && (player.WeaponState == 4) && (Rocks.empty() == 0)&& (countdownMining.TimeCountDown(dt)<= 0)) //check for keypress and weapon holding
 	{
 		vector<Rock>::iterator i = Rocks.begin();
@@ -293,6 +300,8 @@ void Assignment3::Update(double dt)
 		{
 			if ((getMagnitude(Vector3((*i).Position.x, -1, (*i).Position.z), Vector3(camera.position.x, camera.position.y - 1, camera.position.z)) - (*i).Size * 2.2) < 0)
 			{
+				if (player.isMining == false)
+					player.isMining = true;
 				(*i).ReduceSize();
 				if ((*i).Size <= 0)
 				{
@@ -549,7 +558,7 @@ void Assignment3::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, 
 	glEnable(GL_DEPTH_TEST);
 }
 
-void Assignment3::RenderModelOnScreen(Mesh *mesh, bool enableLight, float size, float x, float y) // used to render helmet on screen
+void Assignment3::RenderUIOnScreen(Mesh *mesh, bool enableLight, float size, float x, float y) // used to render helmet on screen
 {
 
 	Mtx44 ortho;
@@ -570,9 +579,32 @@ void Assignment3::RenderModelOnScreen(Mesh *mesh, bool enableLight, float size, 
 	projectionStack.PopMatrix();
 	viewStack.PopMatrix();
 	modelStack.PopMatrix();
-
-
 }
+
+void Assignment3::RenderModelOnScreen(Mesh *mesh, bool enableLight, float size, float x, float y,float rotation) // used to render helmet on screen
+{
+
+	Mtx44 ortho;
+	ortho.SetToOrtho(0, 80, 0, 60, -30, 30); //size of screen UI
+	projectionStack.PushMatrix();
+	projectionStack.LoadMatrix(ortho);
+
+	viewStack.PushMatrix();
+	viewStack.LoadIdentity(); //No need camera for ortho mode
+	modelStack.PushMatrix();
+	modelStack.LoadIdentity(); //Reset modelStack
+	modelStack.Translate(x, y, 0);
+	modelStack.Scale(size, size, size);
+	modelStack.Rotate(-45, 0, 1, 0);
+	modelStack.Rotate(rotation, 0, 0, 1);
+	
+	RenderMesh(mesh, enableLight);
+
+	projectionStack.PopMatrix();
+	viewStack.PopMatrix();
+	modelStack.PopMatrix();
+}
+
 
 void Assignment3::Render()
 {
@@ -669,7 +701,7 @@ void Assignment3::Render()
 		if (f.getMagnitude(camera.position) <= 7.5f)
 		{
 			modelStack.PushMatrix();
-			RenderModelOnScreen(meshList[GEO_FULLHP], false, 6, 1.5, 1.5);
+			RenderUIOnScreen(meshList[GEO_FULLHP], false, 6, 1.5, 1.5);
 			modelStack.PopMatrix();
 		}
 	}
@@ -691,11 +723,15 @@ void Assignment3::Render()
 		if (f.getMagnitude(camera.position) <= 7.5f)
 		{
 			modelStack.PushMatrix();
-			RenderModelOnScreen(meshList[GEO_HALFHP], false, 4, 1.5, 1.5);
+			RenderUIOnScreen(meshList[GEO_HALFHP], false, 4, 1.5, 1.5);
 			modelStack.PopMatrix();
 		}
 	}
 	modelStack.PopMatrix();
+
+	// pickaxe
+
+	RenderModelOnScreen(meshList[GEO_PICKAXE], true, 10.f, 70.f, 0, player.getMiningAction());
 
 	//CRATERS;
 	for (int i = 0; i < 3; ++i)

@@ -36,6 +36,7 @@ class Assignment3 : public Scene
 		GEO_ALIENBODY,
 		GEO_ALIENPART,
 		GEO_ROCK,
+		GEO_PICKAXE,
 		NUM_GEOMETRY,
 	};
 	enum UNIFORM_TYPE
@@ -88,7 +89,8 @@ public:
 private:
 	void RenderText(Mesh* mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
-	void RenderModelOnScreen(Mesh *mesh, bool enableLight, float size, float x, float y);
+	void RenderUIOnScreen(Mesh *mesh, bool enableLight, float size, float x, float y);
+	void RenderModelOnScreen(Mesh *mesh, bool enableLight, float size, float x, float y,float rotation);
 	void RenderMesh(Mesh *mesh, bool enableLight);
 	void RenderSkybox();
 	void RenderAlien(float armRotate = 0);

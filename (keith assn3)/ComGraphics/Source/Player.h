@@ -9,7 +9,8 @@ public:
 	int GetHp();
 	int ObtainResources(int amount); // increase resources 
 
-	float WhileMining();	//increase and decrease the value for MiningAction
+	void WhileMining(const double &dt);	//increase and decrease the value for MiningAction
+	float getMiningAction();
 	void TakeDmg(int dmg);
 	void RecoverHp(int recovered);
 	void changeWeapon(char weapon);
@@ -20,6 +21,7 @@ public:
 	int BulletsInMagzine;
 	int TotalBullets;		//Reloading
 	bool sprint;			//running or not
+	bool isMining;
 	char WeaponState;		//which weapon u using
 	
 private:
