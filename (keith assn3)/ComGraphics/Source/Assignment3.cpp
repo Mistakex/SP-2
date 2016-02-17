@@ -271,7 +271,7 @@ void Assignment3::Update(double dt)
 		Aliens[i].target = camera.position;
 		Aliens[i].EnemyMove(dt);
 	}
-	//Rocks spwan
+	//Rocks spawn
 	if (countdownRock.TimeCountDown(dt) <= 0)
 	{
 		randomx = rand() % 100 -50;
@@ -309,7 +309,7 @@ void Assignment3::Update(double dt)
 		{
 			f.FlagHeightIncrease(2.5f, dt);
 		}
-		else if (f.FlagHeightDecrease(0.2f, dt) <= 0.2f)
+		else if (f.FlagHeightDecrease(0.5f, dt) <= 0.5f)
 		{
 			f.flagIsBlue = true;
 		}

@@ -16,8 +16,8 @@ public:
 	char getWeaponState();
 	int getResources();
 
-	
-	int BulletsInMagzine;	
+
+	int BulletsInMagzine;
 	int TotalBullets;		//Reloading
 	bool sprint;			//running or not
 	char WeaponState;		//which weapon u using

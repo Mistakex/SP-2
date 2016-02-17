@@ -56,6 +56,5 @@ float Flag::FlagHeightDecrease(const float &target, const double &dt)
 	{
 		flagheight = target;
 	}
-
 	return flagheight;
 }

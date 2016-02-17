@@ -20,12 +20,17 @@ void Astronaut::AstronautMoveAround()
 
 }
 
-Weapon* Astronaut::UpgradeWeapon(Weapon weap,Player p)
+Weapon Astronaut::UpgradeWeapon(Weapon weap,Player p)
 {
 	if (p.getResources() < weap.getUpgradeCost())
 	{
-		return 0;
+		return weap;
 	}
+
+	p.ObtainResources(-(weap.getUpgradeCost()));
+	weap.setUpgradeCost(weap.getUpgradeCost() * 1.5);
 	weap.Damage *= 1.5;
+
+	return weap;
 	
 }
