@@ -100,6 +100,10 @@ void Camera3::Update(double dt)
 			{
 				JUMPING_UP = false;
 			}
+			if (position.y >= 50.f)
+			{
+				position -= Vector3(0.f, 5.5 * dt, 0.f);
+			}
 		}
 		else if (position.y > 6.f && !GetAsyncKeyState(' '))
 		{

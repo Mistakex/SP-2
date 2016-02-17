@@ -115,7 +115,7 @@ void Assignment3::Init()
 
 	light[0].type = Light::LIGHT_DIRECTIONAL;
 	light[0].position.Set(0.f, 10.f, 20.f);
-	light[0].color.Set(1, 0, 1);
+	light[0].color.Set(1, 1, 1);
 	light[0].power = 1;
 	light[0].kC = 1.f;
 	light[0].kL = 0.1f;
@@ -279,7 +279,7 @@ void Assignment3::Update(double dt)
 		Aliens[i].EnemyMove(dt);
 	}
 	//Rocks spawn
-	if (countdownRock.TimeCountDown(dt) <= 0)
+	if (countdownRock.TimeCountDown(dt) <= 0 && Rocks.size() < 10)
 	{
 		randomx = rand() % 100 -50;
 		randomz = rand() % 100 -50;
