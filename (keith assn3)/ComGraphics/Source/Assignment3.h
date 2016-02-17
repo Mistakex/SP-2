@@ -27,6 +27,8 @@ class Assignment3 : public Scene
 		GEO_ALLYFLAG,
 		GEO_UNCAPTURED,
 		GEO_CAPTURED,
+		GEO_FULLHP,
+		GEO_HALFHP,
 		GEO_CRATER,
 		GEO_LIGHTBALL,
 		GEO_TEXT,
