@@ -116,7 +116,7 @@ void Camera3::Update(double dt)
 	{
 		position.y = 0.f;
 	}
-	//movement keys
+	//movement keys are now geood
 	if (Application::IsKeyPressed('A') || Application::IsKeyPressed('D') || Application::IsKeyPressed('W') || Application::IsKeyPressed('S'))
 	{
 		float moveX = 0, moveZ = 0;
