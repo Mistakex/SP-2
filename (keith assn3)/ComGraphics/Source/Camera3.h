@@ -20,6 +20,7 @@ public:
 	virtual void Update(double dt);
 	virtual void Reset();
 	void CameraRotation(float CAMERASPEED);
+	bool checkCollision(const Vector3 &center, const Vector3 &range, float moveX, float moveY);
 };
 
 #endif

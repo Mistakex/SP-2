@@ -66,6 +66,20 @@ static bool JUMPING = false; // is the character jumping?
 static bool JUMPING_UP = true; // is the character in the middle of jumping?
 static float JUMP_SPEED = 10.f; // speed of jump
 
+bool Camera3::checkCollision(const Vector3 &center, const Vector3 &range,float moveX,float moveZ) // used to check collision for objects
+{
+	if (moveX > center.x - range.x && moveX < center.x + range.x
+		&& moveZ > center.z - range.z && moveZ < center.z + range.z
+		&& position.y > center.y - range.y)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 void Camera3::Update(double dt)
 {
 	static const float WALKSPEED = 0.2f; // walkspeed
@@ -102,25 +116,45 @@ void Camera3::Update(double dt)
 	{
 		position.y = 0.f;
 	}
-
 	//movement keys
-	if (Application::IsKeyPressed('A'))
+	if (Application::IsKeyPressed('A') || Application::IsKeyPressed('D') || Application::IsKeyPressed('W') || Application::IsKeyPressed('S'))
 	{
-		position -= right*(WALKSPEED / 2.f);
-	}
-	if (Application::IsKeyPressed('D'))
-	{
-		position += right*(WALKSPEED / 2.f);
-	}
-	if (Application::IsKeyPressed('W'))
-	{
-		view = (Vector3(target.x,0.f,target.z) - Vector3(position.x,0.f,position.z)).Normalized();
-		position += view * (float)(1.f / WALKSPEED * (float)dt);
-	}
-	if (Application::IsKeyPressed('S'))
-	{
-		view = (Vector3(target.x, 0.f, target.z) - Vector3(position.x, 0.f, position.z)).Normalized();
-		position -= view * (float)(1.f / WALKSPEED * (float)dt);
+		float moveX = 0, moveZ = 0;
+		if (Application::IsKeyPressed('A'))
+		{
+			moveX += -right.x*(WALKSPEED / 2.f);
+			moveZ += -right.z*(WALKSPEED / 2.f);
+
+		}
+		if (Application::IsKeyPressed('D'))
+		{
+			moveX += right.x*(WALKSPEED / 2.f);
+			moveZ += right.z*(WALKSPEED / 2.f);
+
+		}
+		if (Application::IsKeyPressed('W'))
+		{
+			view = (Vector3(target.x, 0.f, target.z) - Vector3(position.x, 0.f, position.z)).Normalized();
+			moveX += view.x*(WALKSPEED / 2.f);
+			moveZ += view.z*(WALKSPEED / 2.f);
+
+		}
+		if (Application::IsKeyPressed('S'))
+		{
+			view = (Vector3(target.x, 0.f, target.z) - Vector3(position.x, 0.f, position.z)).Normalized();
+			moveX += -view.x*(WALKSPEED / 2.f);
+			moveZ += -view.z*(WALKSPEED / 2.f);
+
+		}
+
+		if (!checkCollision(Vector3(0, 0, 0), Vector3(1,3,1), moveX + position.x, position.z))
+		{
+			position.x += moveX;
+		}
+		if (!checkCollision(Vector3(0, 0, 0), Vector3(1, 3, 1), position.x, moveZ + position.z))
+		{
+			position.z += moveZ;
+		}
 	}
 	if (Application::IsKeyPressed(' '))
 	{
@@ -129,7 +163,6 @@ void Camera3::Update(double dt)
 			JUMPING = true;
 		}
 	}
-
 
 	// boundaries
 	float bounds = 42.f;
