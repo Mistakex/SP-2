@@ -630,6 +630,7 @@ void Assignment3::Render()
 	modelStack.Rotate(90, 0, 1, 0);
 	RenderMesh(meshList[GEO_FLAGPOLE], true);
 	modelStack.PopMatrix();
+
 	//FLAG
 	if (!f.flagIsBlue)
 	{
