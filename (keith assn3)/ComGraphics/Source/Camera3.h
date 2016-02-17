@@ -1,6 +1,7 @@
 #ifndef CAMERA_3_H
 #define CAMERA_3_H
 
+#include "CountDown.h"
 #include "Camera.h"
 
 class Camera3 : public Camera
@@ -21,6 +22,8 @@ public:
 	virtual void Reset();
 	void CameraRotation(float CAMERASPEED);
 	bool checkCollision(const Vector3 &center, const Vector3 &range, float moveX, float moveY);
+	Countdown delayflight = Countdown(2.f);
+	bool isFlying;
 };
 
 #endif

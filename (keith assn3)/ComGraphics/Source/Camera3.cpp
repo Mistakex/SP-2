@@ -83,6 +83,35 @@ void Camera3::Update(double dt)
 {
 	static const float WALKSPEED = 0.2f; // walkspeed
 	static const float CAMERA_SPEED = 50.f;
+	isFlying = false;
+
+	//flying / jetpack code
+	{
+		if (GetAsyncKeyState(' ') && delayflight.TimeCountDown(dt) <= 0)
+		{
+			isFlying = true;
+		}
+
+		if (isFlying == true && GetAsyncKeyState(' '))
+		{
+			position += Vector3(0.f, 5.5 * dt, 0.f);
+			JUMPING_UP = true;
+			if (position.y < 0.f)
+			{
+				JUMPING_UP = false;
+			}
+		}
+		else if (position.y > 6.f && !GetAsyncKeyState(' '))
+		{
+			position -= Vector3(0.f, 6 * dt, 0.f);
+			JUMPING_UP = true;
+			if (position.y < 6.f)
+			{
+				JUMPING_UP = false;
+			}
+		}
+	}
+
 
 	//jumping code
 	if (JUMPING == true) 
