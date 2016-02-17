@@ -61,6 +61,7 @@ void Weapon::setUpgradeCost(int newUC)
 {
 	upgradeCost = newUC;
 }
+
 int Weapon::getUpgradeCost()
 {
 	return upgradeCost;
