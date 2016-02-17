@@ -592,7 +592,7 @@ void Assignment3::RenderUIOnScreen(Mesh *mesh, bool enableLight, float size, flo
 	modelStack.PopMatrix();
 }
 
-void Assignment3::RenderModelOnScreen(Mesh *mesh, bool enableLight, float size, float x, float y,float setRotation,float rotation) // used to render pickaxe on screen
+void Assignment3::RenderModelOnScreen(Mesh *mesh, bool enableLight, float size, float x, float y,Vector3 rotation) // used to render pickaxe on screen
 {
 
 	Mtx44 ortho;
@@ -606,9 +606,9 @@ void Assignment3::RenderModelOnScreen(Mesh *mesh, bool enableLight, float size, 
 	modelStack.LoadIdentity(); //Reset modelStack
 	modelStack.Translate(x, y, 10);
 	modelStack.Scale(size, size, size);
-	//modelStack.Rotate(setRotation, 1, 0, 0);
-	modelStack.Rotate(setRotation, 0, 1, 0);
-	modelStack.Rotate(rotation, 0, 0, 1);
+	modelStack.Rotate(rotation.x, 1, 0, 0);
+	modelStack.Rotate(rotation.y, 0, 1, 0);
+	modelStack.Rotate(rotation.z, 0, 0, 1);
 	
 	RenderMesh(mesh, enableLight);
 
@@ -741,9 +741,8 @@ void Assignment3::Render()
 	modelStack.PopMatrix();
 
 	// pickaxe
-	RenderModelOnScreen(meshList[GEO_PICKAXE], true, 10.f, 70.f, 0.f, -45.f, player.getMiningAction());
-	RenderModelOnScreen(meshList[GEO_GUN], true, 20.f, 60.f, 5.f, 10.f, 3.f);
-
+	RenderModelOnScreen(meshList[GEO_PICKAXE], true, 10.f, 70.f, 0.f, Vector3(0,-45.f,player.getMiningAction()));
+	RenderModelOnScreen(meshList[GEO_GUN], true, 20.f, 60.f, 5.f, Vector3(10.f, 15.f, 0.f));
 
 	//CRATERS;
 	for (int i = 0; i < 3; ++i)
