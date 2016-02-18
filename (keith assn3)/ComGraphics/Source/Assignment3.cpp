@@ -355,6 +355,7 @@ void Assignment3::Update(double dt)
 	//Timers
 	countdownMining.TimeCountDown(dt);
 	countdownTurretSpawn.TimeCountDown(dt);
+	countdownPistol.TimeCountDown(dt);
 	if (Application::IsKeyPressed(VK_LBUTTON)) //check for keypress and weapon holding
 	{
 		
@@ -380,9 +381,10 @@ void Assignment3::Update(double dt)
 				else{ i++; }
 			}
 		}
-		if (player.WeaponState == 2)
+		if (player.WeaponState == 2 && countdownPistol.GetTimeNow() <= 0)
 		{
 			pistol.Fire();
+			countdownPistol.resetTime();
 		}
 		else if (player.WeaponState == 6 && countdownTurretSpawn.GetTimeNow() <= 0)
 		{
@@ -896,10 +898,10 @@ void Assignment3::Render()
 		modelStack.PopMatrix();
 	}
 
-	for (int i = 0; i < sizeof(pistol.Magazine); ++i)
+	for (int i = 0; i < pistol.AmmoInClip; ++i)
 	{
 		modelStack.PushMatrix();
-		modelStack.Translate(pistol.Magazine->getPosition().x, pistol.Magazine->getPosition().y, pistol.Magazine->getPosition().z);
+		modelStack.Translate(pistol.Magazine[i].getPosition().x, pistol.Magazine[i].getPosition().y, pistol.Magazine[i].getPosition().z);
 		modelStack.Scale(0.1, 0.1, 0.1);
 		RenderMesh(meshList[GEO_BULLET], true);
 		modelStack.PopMatrix();

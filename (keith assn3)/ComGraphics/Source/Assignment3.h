@@ -109,6 +109,7 @@ private:
 	// countdown
 	Countdown countdownRock = Countdown(10.0f);
 	Countdown countdownMining = Countdown(0.5f);
+	Countdown countdownPistol = Countdown(0.1f);
 	Countdown countdownAlienSpawn = Countdown(10.0f);
 	Countdown debounce = Countdown(0.5f);
 	Countdown countdownTurretSpawn = Countdown(15.0f);

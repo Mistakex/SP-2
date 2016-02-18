@@ -1,5 +1,7 @@
 #include "Weapon.h"
 
+#include <iostream>
+
 Weapon::Weapon(const int &dmg, const int &AmmoInMag, const int &MaxAmmoForWeap, const int &PriceOfWeap, const bool &AllowZoomForWeap) : Price(PriceOfWeap)
 {
 	Damage = dmg;
@@ -28,6 +30,7 @@ void Weapon::Fire()
 		Magazine[bulletCount].updatePosition(camera->target);
 		Magazine[bulletCount].setView(camera->view);
 		bulletCount++;
+		std::cout << bulletCount << std::endl;
 	}
 	else
 	{
@@ -68,7 +71,7 @@ int Weapon::getUpgradeCost()
 
 void Weapon::update(double dt)
 {
-	for (int i = 0; i < sizeof(Magazine); ++i)
+	for (int i = 0; i < AmmoInClip; ++i)
 	{
 		if (Magazine[i].getPosition() != Vector3(0,-10,0))
 			Magazine[i].moveBullet(dt);

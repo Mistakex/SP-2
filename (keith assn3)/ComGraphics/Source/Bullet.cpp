@@ -27,7 +27,7 @@ void Bullet::setView(const Vector3 &view)
 
 void Bullet::moveBullet(double dt)
 {
-	float speed = 10;
+	float speed = 100;
 	position += view * speed * dt;
 	if (position.x > 500 || position.y > 500 || position.z > 500
 		|| position.x < -500 || position.y < -500 || position.z < -500)

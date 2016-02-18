@@ -20,9 +20,9 @@ public:
 	Bullet* Magazine;
 	int upgradeCost;
 	int Damage;
+	int AmmoInClip;
 private:
 	int MaxAmmo;
-	int AmmoInClip;
 	const int Price;
 	int bulletCount;
 	float FireSpeed;		//cooldown for second bullet
