@@ -68,7 +68,7 @@ bool getIntersection(const Vector3 &center, const Vector3 &centerRange, const Ve
 
 void Assignment3::Init()
 {
-	player.WeaponState = 1;
+	player.WeaponState = 2;
 	//srand
 	srand(time(NULL));
 	for (int i = 0; i < 3; ++i)
@@ -295,7 +295,6 @@ static float skyBoxRotate = 0.f; // rotation of skybox
 
 static std::stringstream framerate;
 
-static Vector3 frontPush; // direction of push infront of flag
 
 void Assignment3::Update(double dt)
 {
@@ -643,7 +642,7 @@ void Assignment3::RenderModelOnScreen(Mesh *mesh, bool enableLight, float size, 
 	viewStack.LoadIdentity(); //No need camera for ortho mode
 	modelStack.PushMatrix();
 	modelStack.LoadIdentity(); //Reset modelStack
-	modelStack.Translate(x, y, 10);
+	modelStack.Translate(x, y, 6);
 	modelStack.Scale(size, size, size);
 	modelStack.Rotate(rotation.x, 1, 0, 0);
 	modelStack.Rotate(rotation.y, 0, 1, 0);

@@ -60,6 +60,12 @@ void Enemy::EnemyMove(double dt)
 	if (GetDistance() > range + KiteTimer)
 	{
 		EnemyPos += Vector3(view.x,0,view.z)*MoveSpeed*dt;
+		if (Shooting == true)
+		{
+			if (armRotate > 0)
+				armRotate -= 90 * dt;
+			bulletPos += (bulletTarget - EnemyPos)*10*dt;
+		}
 	}
 	else if (KiteTimer < 7)
 	{

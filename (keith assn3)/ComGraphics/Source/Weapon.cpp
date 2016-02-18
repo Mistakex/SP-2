@@ -1,19 +1,21 @@
 #include "Weapon.h"
 
-Weapon::Weapon(const int &dmg,const int &AmmoInMag,const int &MaxAmmoForWeap, const int &PriceOfWeap,const bool &AllowZoomForWeap) : Price(PriceOfWeap)
+Weapon::Weapon(const int &dmg, const int &AmmoInMag, const int &MaxAmmoForWeap, const int &PriceOfWeap, const bool &AllowZoomForWeap) : Price(PriceOfWeap)
 {
 	Damage = dmg;
 	MaxAmmo = MaxAmmoForWeap;
 	AllowZoom = AllowZoomForWeap;
 	AmmoInClip = AmmoInMag;
 	upgradeCost = Price;
+	Magazine = new Bullet[AmmoInMag];
 }
 
 Weapon::~Weapon()
 {
+	delete[] Magazine;
 }
 
-void Weapon::FireAllow(double dt)
+void Weapon::Fire(double dt)
 {
 	if (AllowFire == false)
 	{
