@@ -113,7 +113,6 @@ private:
 	Player player = Player(100);
 
 	bool isPistol = false;
-	int gathered = 0;
 
 	unsigned m_vertexArrayID;
 	Mesh *meshList[NUM_GEOMETRY];

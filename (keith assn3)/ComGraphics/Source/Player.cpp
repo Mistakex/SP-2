@@ -2,7 +2,7 @@
 
 Player::Player(const int &hp) : HP(hp)
 {
-	Resources = 100;
+	Resources = 0;
 }
 
 Player::~Player()

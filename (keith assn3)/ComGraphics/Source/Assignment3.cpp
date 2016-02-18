@@ -359,7 +359,7 @@ void Assignment3::Update(double dt)
 				{
 					if (player.isMining == false)
 						player.isMining = true;
-					gathered += 1;
+					player.ObtainResources(1);
 					(*i).ReduceSize();
 					if ((*i).Size <= 0)
 					{
@@ -376,12 +376,20 @@ void Assignment3::Update(double dt)
 
 		}
 	}
+	else if (Application::IsKeyPressed(VK_RBUTTON))
+	{
+		if (player.WeaponState == 2)
+		{
+			cout << "zooming" << endl;
+			Vector3(camera.target.z) * 2;
+		}
+	}
 
 	//framerate
 	framerate << "Framerate:" << 1 / dt;
 
 	//resources
-	resources << "Resources: " << gathered;
+	resources << "Resources: " << player.getResources();
 
 	//rotation of skybox
 	if (skyBoxRotate < 360.f)
