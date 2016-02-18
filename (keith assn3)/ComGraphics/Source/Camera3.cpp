@@ -83,70 +83,91 @@ void Camera3::Update(double dt)
 {
 	static const float WALKSPEED = 0.2f; // walkspeed
 	static const float CAMERA_SPEED = 50.f;
-	isFlying = false;
 
 	//flying / jetpack code
 	{
-		if (GetAsyncKeyState(' ') && delayflight.TimeCountDown(dt) <= 0)
+		if (Application::IsKeyPressed('O') && delayPress.TimeCountDown(dt) <= 0)
 		{
-			isFlying = true;
+			jetpackMode = true;
+			delayPress.resetTime();
 		}
+		if (jetpackMode == true)
+		{
+			if (GetAsyncKeyState(' '))
+			{
+				isFlying = true;
+			}
 
-		if (isFlying == true && GetAsyncKeyState(' '))
-		{
-			position += Vector3(0.f, 5.5 * dt, 0.f);
-			JUMPING_UP = true;
-			if (position.y < 0.f)
+			if (isFlying == true && GetAsyncKeyState(' '))
 			{
-				JUMPING_UP = false;
+				position += Vector3(0.f, 5.5 * dt, 0.f);
+				JUMPING_UP = true;
+				if (position.y < 0.f)
+				{
+					JUMPING_UP = false;
+				}
+				if (position.y >= 50.f)
+				{
+					position -= Vector3(0.f, 6 * dt, 0.f);
+				}
 			}
-			if (position.y >= 50.f)
+
+			else if (position.y > 0.f && !GetAsyncKeyState(' '))
 			{
-				position -= Vector3(0.f, 5.5 * dt, 0.f);
-			}
-		}
-		else if (position.y > 6.f && !GetAsyncKeyState(' '))
-		{
-			position -= Vector3(0.f, 6 * dt, 0.f);
-			JUMPING_UP = true;
-			if (position.y < 6.f)
-			{
-				JUMPING_UP = false;
+				position -= Vector3(0.f, 6 * dt, 0.f);
+				JUMPING_UP = true;
+				if (position.y < 0.f)
+				{
+					JUMPING_UP = false;
+				}
 			}
 		}
 	}
-
 
 	//jumping code
-	if (JUMPING == true) 
+	if (Application::IsKeyPressed('P') && delayPress.TimeCountDown(dt) <= 0)
 	{
-		if (JUMPING_UP == true && JUMP_SPEED > 0.f)
-		{
-			position += Vector3(0.f, JUMP_SPEED * dt, 0.f);
-			JUMP_SPEED -= 10 * dt;
-			if (JUMP_SPEED <= 0.f)
-			{
-				JUMPING_UP = false;
-			}
-		}
-		else if (JUMPING_UP == false && JUMP_SPEED < 10.f)
-		{
-			position -= Vector3(0.f, JUMP_SPEED * dt, 0.f);
-			JUMP_SPEED += 10 * dt;
-			if (JUMP_SPEED >= 10.f)
-			{
-				JUMPING_UP = true;
-				JUMPING = false;
-			}
-		}
-		if (position.y < 0.f)
-		{
-			position.y = 0.f;
-		}
+		jetpackMode = false;
 	}
-	else if (JUMPING == false)
+	if (jetpackMode == false)
 	{
-		position.y = 0.f;
+		if (JUMPING == false)
+		{
+			if (position.y > 0.f)
+			{
+				position.y -= 6 * dt;
+			}
+			else
+				position.y = 0.f;
+		}
+
+		else if (JUMPING == true)
+		{
+			if (JUMPING_UP == true && JUMP_SPEED > 0.f)
+			{
+				position += Vector3(0.f, JUMP_SPEED * dt, 0.f);
+				JUMP_SPEED -= 10 * dt;
+				if (JUMP_SPEED <= 0.f)
+				{
+					JUMPING_UP = false;
+				}
+			}
+			else if (JUMPING_UP == false && JUMP_SPEED < 10.f)
+			{
+				position -= Vector3(0.f, JUMP_SPEED * dt, 0.f);
+				JUMP_SPEED += 10 * dt;
+				if (JUMP_SPEED >= 10.f)  //this part causes the problem when i drop from air
+				{
+					JUMPING_UP = true;
+					JUMPING = false;
+				}
+			}
+
+			if (position.y < 0.f)
+			{
+				position.y = 0.f;
+			}
+		}
 	}
 	//movement keys are now geood
 	if (Application::IsKeyPressed('A') || Application::IsKeyPressed('D') || Application::IsKeyPressed('W') || Application::IsKeyPressed('S'))
