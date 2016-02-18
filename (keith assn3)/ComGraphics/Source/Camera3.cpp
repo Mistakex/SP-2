@@ -57,8 +57,6 @@ void Camera3::CameraRotation(float CAMERASPEED)
 		sin(Math::DegreeToRadian(rotationX)) + this->position.y,
 		-(cos(Math::DegreeToRadian(rotationX)) * sin(Math::DegreeToRadian(rotationY))) + this->position.z
 		);
-
-
 }
 
 static bool JUMPING = false; // is the character jumping?

@@ -3,6 +3,7 @@
 
 #include "CountDown.h"
 #include "Camera.h"
+#include "Application.h"
 
 class Camera3 : public Camera
 {

@@ -18,6 +18,8 @@
 #include <stdlib.h>
 #include <sstream>
 
+extern GLFWwindow* m_window;
+
 using std::cout;
 using std::endl;
 
@@ -247,8 +249,8 @@ void Assignment3::Init()
 	meshList[GEO_UNCAPTURED] = MeshBuilder::GenerateTorus("UncapturedZone", Color(1, 0, 0), 18, 18, 1, 0.05);
 	meshList[GEO_CAPTURED] = MeshBuilder::GenerateTorus("CapturedZone", Color(0, 0, 1), 18, 18, 1, 0.05);
 
-	meshList[GEO_FULLHP] = MeshBuilder::GenerateCircle("FullHP", Color(0, 1, 0), 36);
-	meshList[GEO_HALFHP] = MeshBuilder::GenerateCircle("HalfHP", Color(1, 0, 0), 36);
+	meshList[GEO_ENEMYFLAGHP] = MeshBuilder::GenerateCircle("FullHP", Color(1, 0, 0), 36);
+	meshList[GEO_ALLYFLAGHP] = MeshBuilder::GenerateCircle("HalfHP", Color(0, 0, 1), 36);
 
 	meshList[GEO_ALLYFLAG] = MeshBuilder::GenerateOBJ("enemyFlag", "OBJ//flag.obj");
 	meshList[GEO_ALLYFLAG]->textureID = LoadTGA("Image//OurFlag.tga");
@@ -258,6 +260,9 @@ void Assignment3::Init()
 
 	meshList[GEO_GUN] = MeshBuilder::GenerateOBJ("gun", "OBJ//gun.obj");
 	meshList[GEO_GUN]->textureID = LoadTGA("Image//gunUV.tga");
+
+	meshList[GEO_CROSSHAIR] = MeshBuilder::GenerateText("crosshair", 16, 16);
+	meshList[GEO_CROSSHAIR]->textureID = LoadTGA("Image//calibri.tga");
 
 	Mtx44 projection;
 	projection.SetToPerspective(70.0f, 4.0f / 3.0f, 0.1f, 5000.0f);
@@ -352,8 +357,6 @@ void Assignment3::Update(double dt)
 
 	//framerate
 	framerate << "Framerate:" << 1 / dt;
-
-	//aliens only dance when flag has dropped
 
 	//rotation of skybox
 	if (skyBoxRotate < 360.f)
@@ -666,6 +669,7 @@ void Assignment3::Render()
 		Position lightPosition_cameraspace = viewStack.Top() * light[0].position;
 		glUniform3fv(m_parameters[U_LIGHT1_POSITION], 1, &lightPosition_cameraspace.x);
 	}
+
 	//skybox
 	RenderSkybox();
 
@@ -708,7 +712,7 @@ void Assignment3::Render()
 		if (f.getMagnitude(camera.position) <= 7.5f)
 		{
 			modelStack.PushMatrix();
-			RenderUIOnScreen(meshList[GEO_FULLHP], false, 6, 1.5, 1.5);
+			RenderUIOnScreen(meshList[GEO_ENEMYFLAGHP], false, 5, 1.5, 1.5);
 			modelStack.PopMatrix();
 		}
 	}
@@ -730,7 +734,7 @@ void Assignment3::Render()
 		if (f.getMagnitude(camera.position) <= 7.5f)
 		{
 			modelStack.PushMatrix();
-			RenderUIOnScreen(meshList[GEO_HALFHP], false, 4, 1.5, 1.5);
+			RenderUIOnScreen(meshList[GEO_ALLYFLAGHP], false, 5, 1.5, 1.5);
 			modelStack.PopMatrix();
 		}
 	}
@@ -807,6 +811,11 @@ void Assignment3::Render()
 		RenderMesh(meshList[GEO_ROCK], true);
 		modelStack.PopMatrix();
 	}
+
+	// crosshair
+	modelStack.PushMatrix();
+	RenderTextOnScreen(meshList[GEO_CROSSHAIR], "+", Color(0, 1, 0), 3, 13, 10.1);
+	modelStack.PopMatrix();
 	
 }
 

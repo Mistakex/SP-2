@@ -27,8 +27,8 @@ class Assignment3 : public Scene
 		GEO_ALLYFLAG,
 		GEO_UNCAPTURED,
 		GEO_CAPTURED,
-		GEO_FULLHP,
-		GEO_HALFHP,
+		GEO_ALLYFLAGHP,
+		GEO_ENEMYFLAGHP,
 		GEO_CRATER,
 		GEO_LIGHTBALL,
 		GEO_TEXT,
@@ -38,6 +38,7 @@ class Assignment3 : public Scene
 		GEO_ROCK,
 		GEO_PICKAXE,
 		GEO_GUN,
+		GEO_CROSSHAIR,
 		NUM_GEOMETRY,
 	};
 	enum UNIFORM_TYPE
@@ -87,6 +88,7 @@ public:
 	virtual void Update(double dt);
 	virtual void Render();
 	virtual void Exit();
+
 private:
 	void RenderText(Mesh* mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
