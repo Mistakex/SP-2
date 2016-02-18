@@ -50,8 +50,7 @@ bool getIntersection(const Vector3 &center, const Vector3 &centerRange, const Ve
 
 	if (positiveCheck.x > tarNegativeCheck.x && positiveCheck.x < tarPositiveCheck.x
 		&&positiveCheck.y > tarNegativeCheck.y && positiveCheck.y < tarPositiveCheck.y
-		&&positiveCheck.z > tarNegativeCheck.z && positiveCheck.z < tarPositiveCheck.z
-)
+		&&positiveCheck.z > tarNegativeCheck.z && positiveCheck.z < tarPositiveCheck.z)
 	{
 		return true;
 	}
