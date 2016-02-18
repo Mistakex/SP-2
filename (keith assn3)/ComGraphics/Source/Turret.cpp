@@ -11,13 +11,13 @@ Turret::~Turret()
 }
 bool Turret::TargetDead(Enemy enemy)
 {
-
+	return 0;
 }
 void Turret::nextTarget(Enemy enemy)
 {
 
 }
-void Turret::ReduceHp()
+void Turret::ReduceHp(int dmg)
 {
-
+	Hp -= dmg;
 }
