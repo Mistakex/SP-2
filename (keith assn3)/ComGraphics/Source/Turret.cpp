@@ -9,3 +9,15 @@ Turret::Turret(const int&hp, const int&dmg, const Vector3 &pos) :damage(dmg),pos
 Turret::~Turret()
 {
 }
+bool Turret::TargetDead(Enemy enemy)
+{
+
+}
+void Turret::nextTarget(Enemy enemy)
+{
+
+}
+void Turret::ReduceHp()
+{
+
+}

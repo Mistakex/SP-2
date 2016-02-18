@@ -10,7 +10,7 @@ public:
 	~Turret();
 	bool TargetDead(Enemy enemy);
 	void nextTarget(Enemy enemy);
-	void ReduceHp();
+	void ReduceHp(int dmg);
 
 private:
 	int Hp;
