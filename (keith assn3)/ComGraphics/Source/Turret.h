@@ -8,8 +8,8 @@ class Turret
 public:
 	Turret(const int&hp, const int&dmg, const Vector3 &pos);
 	~Turret();
-	bool TargetDead(Enemy enemy);
-	void nextTarget(Enemy enemy);
+
+	void nextTarget(Enemy enemy,Enemy nextEnemy);//*************Might Get Subscript error if not careful.
 	void ReduceHp(int dmg);
 
 private:

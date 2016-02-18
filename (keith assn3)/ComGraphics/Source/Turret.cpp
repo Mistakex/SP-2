@@ -9,13 +9,15 @@ Turret::Turret(const int&hp, const int&dmg, const Vector3 &pos) :damage(dmg),pos
 Turret::~Turret()
 {
 }
-bool Turret::TargetDead(Enemy enemy)
+void Turret::nextTarget(Enemy enemy,Enemy nextEnemy)
 {
-	return 0;
-}
-void Turret::nextTarget(Enemy enemy)
-{
-
+	if (enemy.isDead() == true)
+	{
+		Target = nextEnemy.EnemyPos;
+		Vector3 view = Target - nextEnemy.EnemyPos;
+		if (Target.z > nextEnemy.EnemyPos.z){Math::RadianToDegree(atan(view.x / view.z)) - 180;}
+		else{Math::RadianToDegree(atan(view.x / view.z));}
+	}
 }
 void Turret::ReduceHp(int dmg)
 {
