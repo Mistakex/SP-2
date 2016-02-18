@@ -15,6 +15,7 @@
 #include "Rock.h"
 #include "Flag.h"
 #include "Astronaut.h"
+#include "Weapon.h"
 
 #include <stdlib.h>
 #include <sstream>
@@ -27,6 +28,7 @@ using std::endl;
 vector<Enemy> Aliens;
 vector<Rock> Rocks;
 vector<Turret> Turrets;
+Weapon pistol(20, 30, 100, 5, false);
 
 Assignment3::Assignment3()
 {
@@ -70,6 +72,7 @@ bool getIntersection(const Vector3 &center, const Vector3 &centerRange, const Ve
 void Assignment3::Init()
 {
 	player.WeaponState = 1;
+	pistol.init(&camera);
 	//srand
 	srand(time(NULL));
 	for (int i = 0; i < 3; ++i)
@@ -296,6 +299,7 @@ static std::stringstream resources;
 void Assignment3::Update(double dt)
 {
 	camera.Update(dt);
+	pistol.update(dt);
 
 	if (Application::IsKeyPressed(VK_MBUTTON) && isPistol == false && debounce.TimeCountDown(dt) < 0)
 	{
@@ -353,6 +357,7 @@ void Assignment3::Update(double dt)
 	countdownTurretSpawn.TimeCountDown(dt);
 	if (Application::IsKeyPressed(VK_LBUTTON)) //check for keypress and weapon holding
 	{
+		
 		if (player.WeaponState == 1 && (Rocks.empty() == 0) && ( countdownMining.GetTimeNow()<= 0))
 		{
 			vector<Rock>::iterator i = Rocks.begin();
@@ -375,9 +380,9 @@ void Assignment3::Update(double dt)
 				else{ i++; }
 			}
 		}
-		else if (player.WeaponState == 2)
+		if (player.WeaponState == 2)
 		{
-
+			pistol.Fire();
 		}
 		else if (player.WeaponState == 6 && countdownTurretSpawn.GetTimeNow() <= 0)
 		{
@@ -398,7 +403,7 @@ void Assignment3::Update(double dt)
 			}
 		}
 	}
-	else if (Application::IsKeyPressed(VK_RBUTTON))
+	if (Application::IsKeyPressed(VK_RBUTTON))
 	{
 		if (player.WeaponState == 2)
 		{
@@ -862,12 +867,6 @@ void Assignment3::Render()
 		modelStack.PopMatrix();
 	}
 
-	// FRAMERATE
-	modelStack.PushMatrix();
-	RenderTextOnScreen(meshList[GEO_TEXT], framerate.str(), Color(0, 1, 0), 2, 0, 0);
-	framerate.str("");
-	modelStack.PopMatrix();
-
 	//ALIEN
 	for (int i = 0; i < Aliens.size(); ++i)
 	{
@@ -894,6 +893,15 @@ void Assignment3::Render()
 		modelStack.Translate(Rocks[i].Position.x, Rocks[i].Position.y, Rocks[i].Position.z);
 		modelStack.Scale(Rocks[i].Size, Rocks[i].Size, Rocks[i].Size);
 		RenderMesh(meshList[GEO_ROCK], true);
+		modelStack.PopMatrix();
+	}
+
+	for (int i = 0; i < sizeof(pistol.Magazine); ++i)
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(pistol.Magazine->getPosition().x, pistol.Magazine->getPosition().y, pistol.Magazine->getPosition().z);
+		modelStack.Scale(0.1, 0.1, 0.1);
+		RenderMesh(meshList[GEO_BULLET], true);
 		modelStack.PopMatrix();
 	}
 

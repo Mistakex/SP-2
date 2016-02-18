@@ -7,6 +7,7 @@ Weapon::Weapon(const int &dmg, const int &AmmoInMag, const int &MaxAmmoForWeap, 
 	AllowZoom = AllowZoomForWeap;
 	AmmoInClip = AmmoInMag;
 	upgradeCost = Price;
+	bulletCount = 0;
 	Magazine = new Bullet[AmmoInMag];
 }
 
@@ -15,27 +16,22 @@ Weapon::~Weapon()
 	delete[] Magazine;
 }
 
-void Weapon::Fire(double dt)
+void Weapon::init(Camera3 *camera)
 {
-	if (AllowFire == false)
-	{
-		if (FireDelay < 0)
-		{
-			FireDelay = FireSpeed;
-			AllowFire = true;
-		}
+	this->camera = camera;
+}
 
+void Weapon::Fire()
+{
+	if (bulletCount < AmmoInClip)
+	{
+		Magazine[bulletCount].updatePosition(camera->target);
+		Magazine[bulletCount].setView(camera->view);
+		bulletCount++;
 	}
 	else
 	{
-		if (FireDelay>0)
-		{
-			FireDelay -= dt;
-		}
-		else
-		{
-			AllowFire = false;
-		}
+		bulletCount = 0;
 	}
 }
 
@@ -68,4 +64,13 @@ void Weapon::setUpgradeCost(int newUC)
 int Weapon::getUpgradeCost()
 {
 	return upgradeCost;
+}
+
+void Weapon::update(double dt)
+{
+	for (int i = 0; i < sizeof(Magazine); ++i)
+	{
+		if (Magazine[i].getPosition() != Vector3(0,-10,0))
+			Magazine[i].moveBullet(dt);
+	}
 }
