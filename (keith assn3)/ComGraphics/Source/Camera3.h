@@ -23,10 +23,10 @@ public:
 	virtual void Reset();
 	void CameraRotation(float CAMERASPEED);
 	bool checkCollision(const Vector3 &center, const Vector3 &range, float moveX, float moveY);
-	Countdown delayflight = Countdown(2.f);
-	Countdown delayPress = Countdown(0.5f);
+	Countdown debounce = Countdown(0.5f);
 	bool isFlying = false;
 	bool jetpackMode = false;
+	bool isOn = false;
 };
 
 #endif
