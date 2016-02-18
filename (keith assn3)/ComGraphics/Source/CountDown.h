@@ -8,6 +8,7 @@ public:
 	~Countdown();
 	float TimeCountDown(double dt);
 	void resetTime();
+	float GetTimeNow();
 private:
 	const float Time;
 	float countdown;
@@ -15,4 +16,4 @@ private:
 
 
 
-#endif // !TIMER_H
+#endif // !COUNTDOWN_H

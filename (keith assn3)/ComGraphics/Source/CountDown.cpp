@@ -17,6 +17,10 @@ void Countdown::resetTime()
 {
 	countdown = Time;
 }
+float Countdown::GetTimeNow()
+{
+	return countdown;
+}
 Countdown::~Countdown()
 {
 }

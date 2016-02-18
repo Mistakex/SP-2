@@ -8,6 +8,7 @@
 #include "Light.h"
 #include"CountDown.h"
 #include "Player.h"
+#include "Turret.h"
 
 class Assignment3 : public Scene
 {
@@ -110,8 +111,12 @@ private:
 	Countdown countdownMining = Countdown(0.5f);
 	Countdown countdownAlienSpawn = Countdown(10.0f);
 	Countdown debounce = Countdown(0.5f);
+	Countdown countdownTurretSpawn = Countdown(15.0f);
 	Player player = Player(100);
-
+	
+	//Turret Position
+	Vector3 TurretPos;
+	//Gun
 	bool isPistol = false;
 
 	unsigned m_vertexArrayID;

@@ -26,6 +26,7 @@ using std::endl;
 
 vector<Enemy> Aliens;
 vector<Rock> Rocks;
+vector<Turret> Turrets;
 
 Assignment3::Assignment3()
 {
@@ -347,9 +348,12 @@ void Assignment3::Update(double dt)
 		}
 	//Rock mining
 	player.WhileMining(dt);
+	//Timers
+	countdownMining.TimeCountDown(dt);
+	countdownTurretSpawn.TimeCountDown(dt);
 	if (Application::IsKeyPressed(VK_LBUTTON)) //check for keypress and weapon holding
 	{
-		if (player.WeaponState == 1 && (Rocks.empty() == 0) && (countdownMining.TimeCountDown(dt) <= 0))
+		if (player.WeaponState == 1 && (Rocks.empty() == 0) && ( countdownMining.GetTimeNow()<= 0))
 		{
 			vector<Rock>::iterator i = Rocks.begin();
 			while (i != Rocks.end())
@@ -374,6 +378,24 @@ void Assignment3::Update(double dt)
 		else if (player.WeaponState == 2)
 		{
 
+		}
+		else if (player.WeaponState == 6 && countdownTurretSpawn.GetTimeNow() <= 0)
+		{
+			/////////////////////Add requirements for resources///////////////
+			float a = 1; //used to mutiply camera view to get intersection with 0
+			if (camera.target.y <= 0)
+			{
+				while (TurretPos.y >= -1)
+				{
+					TurretPos = camera.view*a;
+					a += 0.1;
+				}
+				Turret newTurret(100, 10, Vector3(TurretPos.x + camera.position.x, 0, TurretPos.z + camera.position.z));
+				Turrets.push_back(newTurret);
+				countdownTurretSpawn.resetTime();
+				TurretPos = (0, 0, 0);//reset the value of the variable
+				std::cout <<"da!"  << std::endl;
+			}
 		}
 	}
 	else if (Application::IsKeyPressed(VK_RBUTTON))
@@ -817,7 +839,15 @@ void Assignment3::Render()
 			}
 		}
 	}
-
+	//TURRETS
+	for (int i = 0; i < Turrets.size(); i++)
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(Turrets[i].GetPosition().x, Turrets[i].GetPosition().y, Turrets[i].GetPosition().z);
+		modelStack.Scale(0.3f, 0.3f, 0.3f);
+		RenderMesh(meshList[GEO_LIGHTBALL], true);
+		modelStack.PopMatrix();
+	}
 	//ASTRONAUT
 	modelStack.PushMatrix();
 	modelStack.Translate(a.GetAstronautPos().x, a.GetAstronautPos().y, a.GetAstronautPos().z);

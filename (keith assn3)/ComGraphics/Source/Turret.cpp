@@ -1,7 +1,7 @@
 #include "Turret.h"
 
 
-Turret::Turret(const int&hp, const int&dmg, const Vector3 &pos) :damage(dmg),position(pos)
+Turret::Turret(const int&hp, const int&dmg, const Vector3 &pos) :damage(dmg), position(pos)
 {
 	Hp = hp;
 	fireDelay = 0;
@@ -11,11 +11,11 @@ Turret::Turret(const int&hp, const int&dmg, const Vector3 &pos) :damage(dmg),pos
 Turret::~Turret()
 {
 }
-void Turret::nextTarget(Enemy enemy)
+void Turret::LookAtEnemy(Enemy enemy)
 {
 	Target = enemy.EnemyPos;
 	Vector3 view = Target - enemy.EnemyPos;
-	if (Target.z > enemy.EnemyPos.z){turretRotation = Math::RadianToDegree(atan(view.x / view.z)) - 180;}
+	if (Target.z > enemy.EnemyPos.z){ turretRotation = Math::RadianToDegree(atan(view.x / view.z)) - 180; }
 	else{ turretRotation = Math::RadianToDegree(atan(view.x / view.z)); }
 }
 void Turret::ShootAtEnemy(double dt)
@@ -54,11 +54,18 @@ Vector3 Turret::TargetEnemy(Vector3 alien)
 	else if (shooting == false)
 	{
 		DoneTargeting == false;
+		return alien;
 	}
-	return alien;
-
 }
 void Turret::ReduceHp(int dmg)
 {
 	Hp -= dmg;
+}
+int Turret::GetDamage()
+{
+	return damage;
+}
+Vector3 Turret::GetPosition()
+{
+	return position;
 }

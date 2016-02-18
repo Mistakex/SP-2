@@ -9,10 +9,12 @@ public:
 	Turret(const int&hp, const int&dmg, const Vector3 &pos);
 	~Turret();
 
-	void nextTarget(Enemy enemy);//*************Might Get Subscript error if not careful.
+	void LookAtEnemy(Enemy enemy);//Funtion to get turretRotation
 	void ReduceHp(int dmg);
 	void ShootAtEnemy(double dt);
-	float turretRotation;
+	int GetDamage();
+	Vector3 GetPosition();
+	float turretRotation;		//rotates to the enemy position
 	Vector3 bulletPos;
 	Vector3 TargetEnemy(Vector3);
 private:
