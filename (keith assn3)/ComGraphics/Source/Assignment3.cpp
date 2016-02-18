@@ -31,6 +31,7 @@ Assignment3::Assignment3()
 Assignment3::~Assignment3()
 {
 }
+
 float Assignment3::getMagnitude(const Vector3 object, const Vector3 target)
 {
 	Vector3 a;
@@ -39,6 +40,30 @@ float Assignment3::getMagnitude(const Vector3 object, const Vector3 target)
 	a.z = object.z - target.z;
 	return sqrt(pow(a.x, 2) + pow(a.y, 2) + pow(a.z, 2));
 }
+
+bool getIntersection(const Vector3 &center, const Vector3 &centerRange, const Vector3 &target, const Vector3 &targetRange)
+{
+	Vector3 positiveCheck = center + centerRange;
+	Vector3 negativeCheck = center - centerRange;
+	Vector3 tarPositiveCheck = target + targetRange;
+	Vector3 tarNegativeCheck = target - targetRange;
+
+	if (positiveCheck.x > tarNegativeCheck.x && positiveCheck.x < tarPositiveCheck.x
+		&&positiveCheck.y > tarNegativeCheck.y && positiveCheck.y < tarPositiveCheck.y
+		&&positiveCheck.z > tarNegativeCheck.z && positiveCheck.z < tarPositiveCheck.z
+)
+	{
+		return true;
+	}
+	else if (negativeCheck.x > tarNegativeCheck.x && negativeCheck.x < tarPositiveCheck.x
+		&& negativeCheck.y > tarNegativeCheck.y && negativeCheck.y < tarPositiveCheck.y
+		&& negativeCheck.z > tarNegativeCheck.z && negativeCheck.z < tarPositiveCheck.z)
+	{
+		return true;
+	}
+	return false;
+}
+
 void Assignment3::Init()
 {
 	player.WeaponState = 4;
@@ -418,34 +443,6 @@ void Assignment3::RenderMesh(Mesh*mesh, bool enableLight) // rendering of meshes
 	}
 }
 
-
-
-//*****************UPDATE ADD NEW OVERLOAD FOR POSITION OF PLAYER AND BULLET*****************//
-void Assignment3::checkCollision(const Vector3 &center, float x1, float z1, float y1) // used to check collision for objects
-{
-	if (camera.position.x > center.x - x1 && camera.position.x < center.x + x1
-		&& camera.position.z > center.z - z1 && camera.position.z < center.z + z1
-		&& camera.position.y > center.y - y1)
-	{
-		if (camera.position.x < center.x + x1 && camera.position.x > center.x + (x1 - 0.3f))
-		{
-			camera.position.x = center.x + x1;
-		}
-		if (camera.position.x > center.x - x1 && camera.position.x < center.x - (x1 - 0.3f))
-		{
-			camera.position.x = center.x - x1;
-		}
-		if (camera.position.z < center.z + z1 && camera.position.z > center.z + (z1 - 0.3f))
-		{
-			camera.position.z = center.z + z1;
-		}
-		if (camera.position.z > center.z - z1 && camera.position.z < center.z - (z1 - 0.3f))
-		{
-			camera.position.z = center.z - z1;
-		}
-	}
-}
-//******************************************************************************************************//
 void Assignment3::RenderSkybox() // rendering of skybox
 {
 	modelStack.PushMatrix();
