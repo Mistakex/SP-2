@@ -4,7 +4,7 @@
 class Weapon
 {
 public:
-	Weapon(int dmg, int AmmoInClip, int MaxAmmoForWeap, const int& price, bool AllowZoomForWeap);
+	Weapon(const int &dmg,const int &AmmoInClip,const int &MaxAmmoForWeap, const int& price,const bool &AllowZoomForWeap);
 	~Weapon();
 	void FireAllow(double dt);						//Goes into Update
 	bool GetAllowFire();							//Goes into Update
@@ -13,7 +13,7 @@ public:
 	int getUpgradeCost();
 	void setUpgradeCost(int newUC);
 
-	int upgradeCost = Price;
+	int upgradeCost;
 	int Damage;
 private:
 	int MaxAmmo;

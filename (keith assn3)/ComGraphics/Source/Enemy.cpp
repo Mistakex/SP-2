@@ -51,6 +51,7 @@ bool Enemy::GetShooting()
 
 void Enemy::EnemyMove(double dt)
 {
+	fireDelay += dt;
 	Vector3 view = Vector3(0, 0, 0);
 	if (target != EnemyPos)
 		view = (target - EnemyPos).Normalized();
@@ -90,7 +91,6 @@ void Enemy::EnemyTakeDmg(int Dmg)
 
 void Enemy::EnemyShootAt(const double &dt,const float &bulletSpeed)
 {
-	fireDelay += dt;
 	if (fireDelay < 3)
 	{
 		if (Shooting == true)
@@ -104,10 +104,13 @@ void Enemy::EnemyShootAt(const double &dt,const float &bulletSpeed)
 			bulletTarget = target + Vector3((rand() % 2)/2.f, (rand() % 2)/2.f, (rand() % 2)/2.f);
 		}
 	}
+	else if (fireDelay >= 5)
+	{
+		fireDelay = 0;
+	}
 	else
 	{
 		Shooting = false;
-		fireDelay = 0;
 	}
 }
 

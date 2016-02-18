@@ -328,8 +328,8 @@ void Assignment3::Update(double dt)
 			countdownRock.resetTime();
 			Rock newRock(Vector3(randomx, -1, randomz), rand() % 4 + 1);
 			Rocks.push_back(newRock);
-		}
 	}
+		}
 	//Rock mining
 	player.WhileMining(dt);
 	if ((Application::IsKeyPressed(VK_LBUTTON)) && (player.WeaponState == 4) && (Rocks.empty() == 0)&& (countdownMining.TimeCountDown(dt)<= 0)) //check for keypress and weapon holding
@@ -795,7 +795,6 @@ void Assignment3::Render()
 		{
 			modelStack.PushMatrix();
 			modelStack.Translate(Aliens[i].bulletPos.x, Aliens[i].bulletPos.y, Aliens[i].bulletPos.z);
-
 			modelStack.Scale(0.1, 0.1, 0.1);
 			RenderMesh(meshList[GEO_BULLET], true);
 			modelStack.PopMatrix();

@@ -1,11 +1,12 @@
 #include "Weapon.h"
 
-Weapon::Weapon(int dmg, int AmmoInMag, int MaxAmmoForWeap, const int &PriceOfWeap, bool AllowZoomForWeap) : Price(PriceOfWeap)
+Weapon::Weapon(const int &dmg,const int &AmmoInMag,const int &MaxAmmoForWeap, const int &PriceOfWeap,const bool &AllowZoomForWeap) : Price(PriceOfWeap)
 {
 	Damage = dmg;
 	MaxAmmo = MaxAmmoForWeap;
 	AllowZoom = AllowZoomForWeap;
 	AmmoInClip = AmmoInMag;
+	upgradeCost = Price;
 }
 
 Weapon::~Weapon()
