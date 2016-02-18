@@ -27,8 +27,6 @@ class Assignment3 : public Scene
 		GEO_ALLYFLAG,
 		GEO_UNCAPTURED,
 		GEO_CAPTURED,
-		GEO_ALLYFLAGHP,
-		GEO_ENEMYFLAGHP,
 		GEO_CRATER,
 		GEO_LIGHTBALL,
 		GEO_TEXT,
@@ -42,6 +40,7 @@ class Assignment3 : public Scene
 		GEO_HITORNOT,
 		GEO_ASTRONAUT,
 		GEO_PLAYERHP,
+		GEO_PLUSRESOURCES,
 		NUM_GEOMETRY,
 	};
 	enum UNIFORM_TYPE
@@ -110,7 +109,11 @@ private:
 	Countdown countdownRock = Countdown(10.0f);
 	Countdown countdownMining = Countdown(0.5f);
 	Countdown countdownAlienSpawn = Countdown(10.0f);
+	Countdown debounce = Countdown(0.5f);
 	Player player = Player(100);
+
+	bool isPistol = false;
+	int gathered = 0;
 
 	unsigned m_vertexArrayID;
 	Mesh *meshList[NUM_GEOMETRY];

@@ -68,7 +68,7 @@ bool getIntersection(const Vector3 &center, const Vector3 &centerRange, const Ve
 
 void Assignment3::Init()
 {
-	player.WeaponState = 2;
+	player.WeaponState = 1;
 	//srand
 	srand(time(NULL));
 	for (int i = 0; i < 3; ++i)
@@ -250,9 +250,6 @@ void Assignment3::Init()
 	meshList[GEO_UNCAPTURED] = MeshBuilder::GenerateTorus("UncapturedZone", Color(1, 0, 0), 18, 18, 1, 0.05);
 	meshList[GEO_CAPTURED] = MeshBuilder::GenerateTorus("CapturedZone", Color(0, 0, 1), 18, 18, 1, 0.05);
 
-	meshList[GEO_ENEMYFLAGHP] = MeshBuilder::GenerateCircle("FullHP", Color(1, 0, 0), 36);
-	meshList[GEO_ALLYFLAGHP] = MeshBuilder::GenerateCircle("HalfHP", Color(0, 0, 1), 36);
-
 	meshList[GEO_ALLYFLAG] = MeshBuilder::GenerateOBJ("enemyFlag", "OBJ//flag.obj");
 	meshList[GEO_ALLYFLAG]->textureID = LoadTGA("Image//OurFlag.tga");
 
@@ -273,6 +270,9 @@ void Assignment3::Init()
 
 	meshList[GEO_PLAYERHP] = MeshBuilder::GenerateQuad("PlayerHP", Color(1, 0, 0));
 
+	meshList[GEO_PLUSRESOURCES] = MeshBuilder::GenerateText("+ 1 Resources", 16, 16);
+	meshList[GEO_PLUSRESOURCES]->textureID = LoadTGA("Image//calibri.tga");
+
 	Mtx44 projection;
 	projection.SetToPerspective(70.0f, 4.0f / 3.0f, 0.1f, 5000.0f);
 	projectionStack.LoadMatrix(projection);
@@ -285,20 +285,29 @@ static float SCALE_LIMIT = 5.f;
 static float LSPEED = 10.f; // LIGHT SPEED
 
 Flag f(Vector3(0, 0.75f, 0));
-//********************************************************************//
 Astronaut a(Vector3(5, 0, 0));
-
-
-//******************************************************************//
 
 static float skyBoxRotate = 0.f; // rotation of skybox
 
 static std::stringstream framerate;
-
+static std::stringstream resources;
 
 void Assignment3::Update(double dt)
 {
 	camera.Update(dt);
+
+	if (Application::IsKeyPressed(VK_MBUTTON) && isPistol == false && debounce.TimeCountDown(dt) < 0)
+	{
+		debounce.resetTime();
+		player.WeaponState = 2;
+		isPistol = true;
+	}
+	if (Application::IsKeyPressed(VK_MBUTTON) && isPistol == true && debounce.TimeCountDown(dt) < 0)
+	{
+		debounce.resetTime();
+		player.WeaponState = 1;
+		isPistol = false;
+	}
 
 	// updating 2nd light
 	light[1].position.Set(camera.position.x + camera.target.x/15,
@@ -350,6 +359,7 @@ void Assignment3::Update(double dt)
 				{
 					if (player.isMining == false)
 						player.isMining = true;
+					gathered += 1;
 					(*i).ReduceSize();
 					if ((*i).Size <= 0)
 					{
@@ -369,6 +379,9 @@ void Assignment3::Update(double dt)
 
 	//framerate
 	framerate << "Framerate:" << 1 / dt;
+
+	//resources
+	resources << "Resources: " << gathered;
 
 	//rotation of skybox
 	if (skyBoxRotate < 360.f)
@@ -747,13 +760,6 @@ void Assignment3::Render()
 		modelStack.Translate(0, f.FLAGPOLE.y - 1, f.FLAGPOLE.z);
 		RenderMesh(meshList[GEO_UNCAPTURED], true);
 		modelStack.PopMatrix();
-
-		if (f.getMagnitude(camera.position) <= 7.5f)
-		{
-			modelStack.PushMatrix();
-			RenderUIOnScreen(meshList[GEO_ENEMYFLAGHP], false, 5, 1.5, 1.5);
-			modelStack.PopMatrix();
-		}
 	}
 	else
 	{
@@ -769,21 +775,8 @@ void Assignment3::Render()
 		modelStack.Translate(0, f.FLAGPOLE.y - 1, f.FLAGPOLE.z);
 		RenderMesh(meshList[GEO_CAPTURED], true);
 		modelStack.PopMatrix();
-
-		if (f.getMagnitude(camera.position) <= 7.5f)
-		{
-			modelStack.PushMatrix();
-			RenderUIOnScreen(meshList[GEO_ALLYFLAGHP], false, 5, 1.5, 1.5);
-			modelStack.PopMatrix();
-		}
 	}
 	modelStack.PopMatrix();
-
-	// weapons
-	if (player.WeaponState == 1)
-		RenderModelOnScreen(meshList[GEO_PICKAXE], true, 10.f, 70.f, 0.f, Vector3(0,-45.f,player.getMiningAction()));
-	else if (player.WeaponState == 2)
-		RenderModelOnScreen(meshList[GEO_GUN], true, 25.f, 60.f, 5.f, Vector3(10.f, 15.f, 0.f));
 
 	//CRATERS;
 	for (int i = 0; i < 3; ++i)
@@ -832,8 +825,8 @@ void Assignment3::Render()
 	}
 
 	// FRAMERATE
-
 	modelStack.PushMatrix();
+	RenderTextOnScreen(meshList[GEO_TEXT], framerate.str(), Color(0, 1, 0), 2, 0, 0);
 	framerate.str("");
 	modelStack.PopMatrix();
 
@@ -866,6 +859,20 @@ void Assignment3::Render()
 		modelStack.PopMatrix();
 	}
 
+	// Weapons
+	if (player.WeaponState == 1)
+		RenderModelOnScreen(meshList[GEO_PICKAXE], true, 10.f, 70.f, 0.f, Vector3(0, -45.f, player.getMiningAction()));
+	else if (player.WeaponState == 2)
+		RenderModelOnScreen(meshList[GEO_GUN], true, 25.f, 60.f, 5.f, Vector3(10.f, 15.f, 0.f));
+
+	// Message appears when u mine rocks
+	if (player.isMining)
+	{
+		modelStack.PushMatrix();
+		RenderTextOnScreen(meshList[GEO_PLUSRESOURCES], "+1 Resources", Color(0, 1, 0), 3, 9, 14);
+		modelStack.PopMatrix();
+	}
+
 	// Indicator for Mining
 	if (player.isMining)
 	{
@@ -879,6 +886,17 @@ void Assignment3::Render()
 	RenderTextOnScreen(meshList[GEO_CROSSHAIR], "+", Color(0, 1, 0), 3, 13, 10.1);
 	modelStack.PopMatrix();
 	
+	// FRAMERATE
+	modelStack.PushMatrix();
+	RenderTextOnScreen(meshList[GEO_TEXT], framerate.str(), Color(0, 1, 0), 2, 0, 0);
+	framerate.str("");
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	RenderTextOnScreen(meshList[GEO_TEXT], resources.str(), Color(0, 1, 0), 2, 0, 2);
+	resources.str("");
+	modelStack.PopMatrix();
+
 }
 
 void Assignment3::RenderAlien(float armRotate)
