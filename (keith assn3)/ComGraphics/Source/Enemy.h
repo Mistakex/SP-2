@@ -33,6 +33,7 @@ public:
 	Vector3 target;
 	Vector3 bulletPos;
 	Vector3 bulletTarget;
+	float armRotate;
 
 private:
 	int Hp;

@@ -57,15 +57,11 @@ void Player::RecoverHp(int recovered)
 	HP += recovered;
 }
 
-void Player::changeWeapon(char weapon)
+void Player::changeWeapon(int weapon)
 {
 	WeaponState = weapon;
 }
 
-char Player::getWeaponState()
-{
-	return WeaponState;
-}
 int Player::getResources()
 {
 	return Resources;

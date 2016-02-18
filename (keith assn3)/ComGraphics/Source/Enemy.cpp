@@ -12,6 +12,7 @@ Enemy::Enemy(Vector3 pos,Vector3 tar, int hp, int attack, int movespeed, int ran
 	bulletPos = Vector3(0, 0, 0);
 	bulletTarget = Vector3(0, 0, 0);
 	fireDelay = 0;
+	armRotate = 0;
 }
 
 Enemy::~Enemy()
@@ -95,6 +96,8 @@ void Enemy::EnemyShootAt(const double &dt,const float &bulletSpeed)
 	{
 		if (Shooting == true)
 		{
+			if (armRotate > 0)
+				armRotate -= 90 * dt;
 			bulletPos += (bulletTarget - EnemyPos)*bulletSpeed*dt;
 		}
 		else
@@ -110,6 +113,10 @@ void Enemy::EnemyShootAt(const double &dt,const float &bulletSpeed)
 	}
 	else
 	{
+		if (armRotate < 90)
+		{
+			armRotate += 90 * dt;
+		}
 		Shooting = false;
 	}
 }

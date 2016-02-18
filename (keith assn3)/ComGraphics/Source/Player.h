@@ -15,8 +15,7 @@ public:
 	float getMiningAction();
 	void TakeDmg(int dmg);
 	void RecoverHp(int recovered);
-	void changeWeapon(char weapon);
-	char getWeaponState();
+	void changeWeapon(int weapon);
 	int getResources();
 	float getAngle(const Vector3 &view, const Vector3 &target);
 
@@ -25,7 +24,7 @@ public:
 	int TotalBullets;		//Reloading
 	bool sprint;			//running or not
 	bool isMining;
-	char WeaponState;		//which weapon u using
+	int WeaponState;		//which weapon u using
 	
 private:
 	int HP;

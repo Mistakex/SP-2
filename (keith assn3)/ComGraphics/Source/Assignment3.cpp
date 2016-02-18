@@ -67,7 +67,7 @@ bool getIntersection(const Vector3 &center, const Vector3 &centerRange, const Ve
 
 void Assignment3::Init()
 {
-	player.WeaponState = 4;
+	player.WeaponState = 1;
 	//srand
 	srand(time(NULL));
 	for (int i = 0; i < 3; ++i)
@@ -332,25 +332,32 @@ void Assignment3::Update(double dt)
 		}
 	//Rock mining
 	player.WhileMining(dt);
-	if ((Application::IsKeyPressed(VK_LBUTTON)) && (player.WeaponState == 4) && (Rocks.empty() == 0)&& (countdownMining.TimeCountDown(dt)<= 0)) //check for keypress and weapon holding
+	if (Application::IsKeyPressed(VK_LBUTTON)) //check for keypress and weapon holding
 	{
-		vector<Rock>::iterator i = Rocks.begin();
-		while ( i != Rocks.end())
+		if (player.WeaponState == 1 && (Rocks.empty() == 0) && (countdownMining.TimeCountDown(dt) <= 0))
 		{
-			if ((getMagnitude(Vector3((*i).Position.x, -1, (*i).Position.z), Vector3(camera.position.x, camera.position.y - 1, camera.position.z)) - (*i).Size * 2.f) < 0
-				&& player.getAngle(camera.view, Vector3((*i).Position.x, -1, (*i).Position.z) - camera.position) < 45.f)
+			vector<Rock>::iterator i = Rocks.begin();
+			while (i != Rocks.end())
 			{
-				if (player.isMining == false)
-					player.isMining = true;
-				(*i).ReduceSize();
-				if ((*i).Size <= 0)
+				if ((getMagnitude(Vector3((*i).Position.x, -1, (*i).Position.z), Vector3(camera.position.x, camera.position.y - 1, camera.position.z)) - (*i).Size * 2.f) < 0
+					&& player.getAngle(camera.view, Vector3((*i).Position.x, -1, (*i).Position.z) - camera.position) < 45.f)
 				{
-					Rocks.erase(i);
+					if (player.isMining == false)
+						player.isMining = true;
+					(*i).ReduceSize();
+					if ((*i).Size <= 0)
+					{
+						Rocks.erase(i);
+					}
+					countdownMining.resetTime();
+					break;
 				}
-				countdownMining.resetTime();
-				break;
+				else{ i++; }
 			}
-			else{ i++; }
+		}
+		else if (player.WeaponState == 2)
+		{
+
 		}
 	}
 
@@ -740,9 +747,11 @@ void Assignment3::Render()
 	}
 	modelStack.PopMatrix();
 
-	// pickaxe
-	RenderModelOnScreen(meshList[GEO_PICKAXE], true, 10.f, 70.f, 0.f, Vector3(0,-45.f,player.getMiningAction()));
-	RenderModelOnScreen(meshList[GEO_GUN], true, 20.f, 60.f, 5.f, Vector3(10.f, 15.f, 0.f));
+	// weapons
+	if (player.WeaponState == 1)
+		RenderModelOnScreen(meshList[GEO_PICKAXE], true, 10.f, 70.f, 0.f, Vector3(0,-45.f,player.getMiningAction()));
+	else if (player.WeaponState == 2)
+		RenderModelOnScreen(meshList[GEO_GUN], true, 25.f, 60.f, 5.f, Vector3(10.f, 15.f, 0.f));
 
 	//CRATERS;
 	for (int i = 0; i < 3; ++i)
@@ -788,7 +797,7 @@ void Assignment3::Render()
 		modelStack.PushMatrix();
 		modelStack.Translate(Aliens[i].EnemyPos.x, Aliens[i].EnemyPos.y, Aliens[i].EnemyPos.z);
 		modelStack.Rotate(Aliens[i].findDirection(), 0, 1, 0);
-		RenderAlien();
+		RenderAlien(Aliens[i].armRotate);
 		modelStack.PopMatrix();
 
 		if (Aliens[i].GetShooting() == true)
