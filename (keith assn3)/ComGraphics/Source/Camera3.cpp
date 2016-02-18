@@ -216,7 +216,7 @@ void Camera3::Update(double dt)
 	}
 
 	// boundaries
-	float bounds = 42.f;
+	float bounds = 100.f;
 
 	if (position.x < -bounds)
 	{

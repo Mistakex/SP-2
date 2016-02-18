@@ -70,3 +70,14 @@ int Player::getResources()
 {
 	return Resources;
 }
+
+float Player::getAngle(const Vector3 &view, const Vector3 &target)
+{
+	float magnitudeA = sqrt(pow(view.x, 2) + pow(view.y, 2) + pow(view.z, 2));
+	float magnitudeB = sqrt(pow(target.x, 2) + pow(target.y, 2) + pow(target.z, 2));
+	float dotProduct = view.x * target.x + view.y * target.y + view.z * target.z;
+
+	float angle = acos(dotProduct / (magnitudeA * magnitudeB));
+
+	return Math::RadianToDegree(angle);
+}

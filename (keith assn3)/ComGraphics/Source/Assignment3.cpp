@@ -305,7 +305,6 @@ void Assignment3::Update(double dt)
 	//Alien Spawn
 	if ((countdownAlienSpawn.TimeCountDown(dt) <= 0) && (Aliens.size()) < 10 &&(f.flagIsBlue == true))
 	{
-		std::cout << "yes" << std::endl;
 		countdownAlienSpawn.resetTime();
 		int spwanAlienz = (rand() % 100 - 50);
 		Enemy newAlien(Vector3(50, 0,spwanAlienz ), Vector3(camera.position.x, -1, camera.position.z), 100, 5, 10, 10);
@@ -338,7 +337,8 @@ void Assignment3::Update(double dt)
 		vector<Rock>::iterator i = Rocks.begin();
 		while ( i != Rocks.end())
 		{
-			if ((getMagnitude(Vector3((*i).Position.x, -1, (*i).Position.z), Vector3(camera.position.x, camera.position.y - 1, camera.position.z)) - (*i).Size * 2.2) < 0)
+			if ((getMagnitude(Vector3((*i).Position.x, -1, (*i).Position.z), Vector3(camera.position.x, camera.position.y - 1, camera.position.z)) - (*i).Size * 2.f) < 0
+				&& player.getAngle(camera.view, Vector3((*i).Position.x, -1, (*i).Position.z) - camera.position) < 45.f)
 			{
 				if (player.isMining == false)
 					player.isMining = true;

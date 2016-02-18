@@ -1,6 +1,8 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
+#include "Vector3.h"
+
 class Player
 {
 public:
@@ -16,6 +18,7 @@ public:
 	void changeWeapon(char weapon);
 	char getWeaponState();
 	int getResources();
+	float getAngle(const Vector3 &view, const Vector3 &target);
 
 
 	int BulletsInMagzine;
