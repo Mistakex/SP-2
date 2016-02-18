@@ -18,7 +18,7 @@ void Turret::nextTarget(Enemy enemy)
 	if (Target.z > enemy.EnemyPos.z){turretRotation = Math::RadianToDegree(atan(view.x / view.z)) - 180;}
 	else{ turretRotation = Math::RadianToDegree(atan(view.x / view.z)); }
 }
-float Turret::ShootAtEnemy(double dt)
+void Turret::ShootAtEnemy(double dt)
 {
 	fireDelay += dt;
 	if (fireDelay < 3)
@@ -48,12 +48,15 @@ Vector3 Turret::TargetEnemy(Vector3 alien)
 		{
 			Alien = alien;
 			DoneTargeting = true;
+			return Alien;
 		}
 	}
-	if (shooting == false)
+	else if (shooting == false)
 	{
 		DoneTargeting == false;
 	}
+	return alien;
+
 }
 void Turret::ReduceHp(int dmg)
 {

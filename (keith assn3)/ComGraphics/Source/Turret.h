@@ -11,7 +11,7 @@ public:
 
 	void nextTarget(Enemy enemy);//*************Might Get Subscript error if not careful.
 	void ReduceHp(int dmg);
-	float ShootAtEnemy(double dt);
+	void ShootAtEnemy(double dt);
 	float turretRotation;
 	Vector3 bulletPos;
 	Vector3 TargetEnemy(Vector3);
