@@ -14,6 +14,7 @@
 #include "CountDown.h"
 #include "Rock.h"
 #include "Flag.h"
+#include "Astronaut.h"
 
 #include <stdlib.h>
 #include <sstream>
@@ -267,6 +268,11 @@ void Assignment3::Init()
 	meshList[GEO_HITORNOT] = MeshBuilder::GenerateQuad("hitornot", Color(1, 1, 1));
 	meshList[GEO_HITORNOT]->textureID = LoadTGA("Image//hitOrNot.tga");
 
+	meshList[GEO_ASTRONAUT] = MeshBuilder::GenerateOBJ("Astronaut", "OBJ//astronaut.obj");
+	meshList[GEO_ASTRONAUT]->textureID = LoadTGA("Image//astronautUV.tga");
+
+	meshList[GEO_PLAYERHP] = MeshBuilder::GenerateQuad("PlayerHP", Color(1, 0, 0));
+
 	Mtx44 projection;
 	projection.SetToPerspective(70.0f, 4.0f / 3.0f, 0.1f, 5000.0f);
 	projectionStack.LoadMatrix(projection);
@@ -279,6 +285,11 @@ static float SCALE_LIMIT = 5.f;
 static float LSPEED = 10.f; // LIGHT SPEED
 
 Flag f(Vector3(0, 0.75f, 0));
+//********************************************************************//
+Astronaut a(Vector3(5, 0, 0));
+
+
+//******************************************************************//
 
 static float skyBoxRotate = 0.f; // rotation of skybox
 
@@ -357,7 +368,6 @@ void Assignment3::Update(double dt)
 		}
 	}
 
-
 	//framerate
 	framerate << "Framerate:" << 1 / dt;
 
@@ -385,6 +395,33 @@ void Assignment3::Update(double dt)
 		}
 	}
 
+	//Astronaut
+	if ((getMagnitude(a.GetAstronautPos(), camera.position)) < 3)
+	{
+		a.playerIsNear = true;
+	}
+	else
+	{
+		a.playerIsNear = false;
+	}
+
+	//small test to see if - resources work. Dont need to add debounce, going to be replaced with ui functions
+	if (((getMagnitude(a.GetAstronautPos(), camera.position)) < 3) && Application::IsKeyPressed('E'))
+	{
+		if (player.getResources() > 0)
+		{
+			player.ObtainResources(-1);
+			cout << player.getResources() << endl;
+		}
+		else
+			cout << "not enuff" << endl;
+	}
+
+	if (Application::IsKeyPressed('T'))
+	{
+		player.TakeDmg(1);
+		cout << player.GetHp() << endl;
+	}
 
 	// backface culling
 	if (Application::IsKeyPressed('1')) //enable back face culling
@@ -779,6 +816,20 @@ void Assignment3::Render()
 				modelStack.PopMatrix();
 			}
 		}
+	}
+
+	//ASTRONAUT
+	modelStack.PushMatrix();
+	modelStack.Translate(a.GetAstronautPos().x, a.GetAstronautPos().y, a.GetAstronautPos().z);
+	modelStack.Scale(0.3f, 0.3f, 0.3f);
+	RenderMesh(meshList[GEO_ASTRONAUT], true);
+	modelStack.PopMatrix();
+
+	if (a.playerIsNear)
+	{
+		modelStack.PushMatrix();
+		RenderTextOnScreen(meshList[GEO_TEXT], "yes", Color(1, 0.5f, 0), 4, 1.5, 1.5);
+		modelStack.PopMatrix();
 	}
 
 	// FRAMERATE

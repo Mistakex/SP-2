@@ -2,7 +2,7 @@
 
 Player::Player(const int &hp) : HP(hp)
 {
-	Resources = 0;
+	Resources = 100;
 }
 
 Player::~Player()
@@ -76,4 +76,14 @@ float Player::getAngle(const Vector3 &view, const Vector3 &target)
 	float angle = acos(dotProduct / (magnitudeA * magnitudeB));
 
 	return Math::RadianToDegree(angle);
+}
+
+bool Player::isDead()
+{
+	if (HP > 0)
+	{
+		return false;
+	}
+	else
+		return true;
 }

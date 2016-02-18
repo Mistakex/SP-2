@@ -40,6 +40,8 @@ class Assignment3 : public Scene
 		GEO_GUN,
 		GEO_CROSSHAIR,
 		GEO_HITORNOT,
+		GEO_ASTRONAUT,
+		GEO_PLAYERHP,
 		NUM_GEOMETRY,
 	};
 	enum UNIFORM_TYPE

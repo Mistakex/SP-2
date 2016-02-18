@@ -14,6 +14,8 @@ public:
 	Weapon UpgradeWeapon(Weapon weap, Player p);							//int Damage is from Weapon class		
 	int GetWeaponPrice(int Price);							//Get the Price from Weapon class
 	void BulletRefill(int BulletsInMagzine, int TotalBullets);//Get the 2 Values from Weapon class
+	bool playerIsNear = false;
+
 private:
 	short BulletPrice;
 	Vector3 Position;

@@ -17,6 +17,7 @@ public:
 	void RecoverHp(int recovered);
 	void changeWeapon(int weapon);
 	int getResources();
+	bool isDead();
 	float getAngle(const Vector3 &view, const Vector3 &target);
 
 
