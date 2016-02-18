@@ -26,7 +26,7 @@ public:
 	Countdown debounce = Countdown(0.5f);
 	bool isFlying = false;
 	bool jetpackMode = false;
-	bool isOn = false;
+	bool isFlyingOn = false;
 };
 
 #endif

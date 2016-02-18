@@ -264,6 +264,9 @@ void Assignment3::Init()
 	meshList[GEO_CROSSHAIR] = MeshBuilder::GenerateText("crosshair", 16, 16);
 	meshList[GEO_CROSSHAIR]->textureID = LoadTGA("Image//calibri.tga");
 
+	meshList[GEO_HITORNOT] = MeshBuilder::GenerateQuad("hitornot", Color(1, 1, 1));
+	meshList[GEO_HITORNOT]->textureID = LoadTGA("Image//hitOrNot.tga");
+
 	Mtx44 projection;
 	projection.SetToPerspective(70.0f, 4.0f / 3.0f, 0.1f, 5000.0f);
 	projectionStack.LoadMatrix(projection);
@@ -275,14 +278,7 @@ static float SCALE_LIMIT = 5.f;
 
 static float LSPEED = 10.f; // LIGHT SPEED
 
-
-//****************CREATE FOR FLAG CLASS********************************//
 Flag f(Vector3(0, 0.75f, 0));
-//********************************************************************//
-
-
-
-//******************************************************************//
 
 static float skyBoxRotate = 0.f; // rotation of skybox
 
@@ -817,6 +813,14 @@ void Assignment3::Render()
 		modelStack.Translate(Rocks[i].Position.x, Rocks[i].Position.y, Rocks[i].Position.z);
 		modelStack.Scale(Rocks[i].Size, Rocks[i].Size, Rocks[i].Size);
 		RenderMesh(meshList[GEO_ROCK], true);
+		modelStack.PopMatrix();
+	}
+
+	// Indicator for Mining
+	if (player.isMining)
+	{
+		modelStack.PushMatrix();
+		RenderModelOnScreen(meshList[GEO_HITORNOT], false, 3, 39.6, 31.65, Vector3(90, 0, 0));
 		modelStack.PopMatrix();
 	}
 

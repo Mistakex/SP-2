@@ -84,24 +84,24 @@ void Camera3::Update(double dt)
 	static bool Enabled = false;
 	
 	debounce.TimeCountDown(dt);
-	if (Application::IsKeyPressed('O') && isOn == false && debounce.TimeCountDown(dt) < 0)
+	if (Application::IsKeyPressed('O') && isFlyingOn == false && debounce.TimeCountDown(dt) < 0)
 	{
 		debounce.resetTime();
-		isOn = true;
+		isFlyingOn = true;
 	}
-	if (Application::IsKeyPressed('O') && isOn == true && debounce.TimeCountDown(dt) < 0)
+	if (Application::IsKeyPressed('O') && isFlyingOn == true && debounce.TimeCountDown(dt) < 0)
 	{
 		debounce.resetTime();
-		isOn = false;
+		isFlyingOn = false;
 	}
 
-	if (isOn == false)
+	if (isFlyingOn == false)
 	{
 		if (JUMPING == false)
 		{
 			if (position.y > 0.f)
 			{
-				position.y -= 6 * dt;
+				position.y -= 7 * dt;
 			}
 			else
 			{
@@ -136,7 +136,7 @@ void Camera3::Update(double dt)
 		}
 	}
 
-	if (isOn == true)
+	if (isFlyingOn == true)
 	{
 		if (GetAsyncKeyState(' '))
 		{
@@ -153,13 +153,13 @@ void Camera3::Update(double dt)
 			}
 			if (position.y >= 50.f)
 			{
-				position -= Vector3(0.f, 6 * dt, 0.f);
+				position -= Vector3(0.f, 7 * dt, 0.f);
 			}
 		}
 
 		if (position.y > 0.f && !GetAsyncKeyState(' '))
 		{
-			position -= Vector3(0.f, 6 * dt, 0.f);
+			position -= Vector3(0.f, 7 * dt, 0.f);
 			JUMPING_UP = true;
 			if (position.y < 0.f)
 			{

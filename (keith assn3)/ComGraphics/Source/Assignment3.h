@@ -39,6 +39,7 @@ class Assignment3 : public Scene
 		GEO_PICKAXE,
 		GEO_GUN,
 		GEO_CROSSHAIR,
+		GEO_HITORNOT,
 		NUM_GEOMETRY,
 	};
 	enum UNIFORM_TYPE
