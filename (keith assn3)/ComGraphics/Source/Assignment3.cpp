@@ -716,7 +716,7 @@ void Assignment3::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, 
 	glEnable(GL_DEPTH_TEST);
 }
 
-void Assignment3::RenderUIOnScreen(Mesh *mesh, bool enableLight, float size, float x, float y) // used to render helmet on screen
+void Assignment3::RenderUIOnScreen(Mesh *mesh, bool enableLight, Vector3 scale, float x, float y) // used to render helmet on screen
 {
 
 	Mtx44 ortho;
@@ -728,9 +728,9 @@ void Assignment3::RenderUIOnScreen(Mesh *mesh, bool enableLight, float size, flo
 	viewStack.LoadIdentity(); //No need camera for ortho mode
 	modelStack.PushMatrix();
 	modelStack.LoadIdentity(); //Reset modelStack
-	modelStack.Scale(size, size, size);
 	modelStack.Translate(x, y, 0);
-	modelStack.Rotate(90, 0, 0, 1);
+	modelStack.Scale(scale.x, scale.y, scale.z);
+	//modelStack.Rotate(90, 0, 0, 1);
 	modelStack.Rotate(90, 1, 0, 0);
 	RenderMesh(mesh, enableLight);
 
@@ -1014,7 +1014,7 @@ void Assignment3::Render()
 	//UI Screen
 	modelStack.PushMatrix();
 	glBlendFunc(1.5, 1);
-	RenderModelOnScreen(meshList[GEO_UI], false, 20, 40, 30, Vector3(90, 0, 0));
+	RenderUIOnScreen(meshList[GEO_UI], false, Vector3(82, 10, 50), 40, 5);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	modelStack.PopMatrix();
 	
