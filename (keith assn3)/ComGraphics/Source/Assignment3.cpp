@@ -889,7 +889,7 @@ void Assignment3::Render()
 	for (int i = 0; i < Turrets.size(); i++)
 	{
 		modelStack.PushMatrix();
-		modelStack.Translate(Turrets[i].GetPosition().x, Turrets[i].GetPosition().y, Turrets[i].GetPosition().z);
+		modelStack.Translate(Turrets[i].GetPosition().x, Turrets[i].GetPosition().y-1, Turrets[i].GetPosition().z);
 		modelStack.Scale(0.3f, 0.3f, 0.3f);
 		RenderMesh(meshList[GEO_TURRETBASE], true);
 		modelStack.PopMatrix();
