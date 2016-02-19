@@ -72,6 +72,7 @@ bool getIntersection(const Vector3 &center, const Vector3 &centerRange, const Ve
 
 void Assignment3::Init()
 {
+	CameraMouseUpdate = true;
 	player.WeaponState = 1;
 	pistol.init(&camera);
 	//srand
@@ -307,7 +308,21 @@ static std::stringstream resources;
 
 void Assignment3::Update(double dt)
 {
-	camera.Update(dt);
+
+	//countdown for camera lock
+	countdownCameraLock.TimeCountDown(dt);
+	//mouse rotation of camera
+	if (Application::IsKeyPressed(VK_LMENU) && countdownCameraLock.GetTimeNow() <= 0)
+	{
+		if (CameraMouseUpdate == false){ CameraMouseUpdate = true; }
+		else{ CameraMouseUpdate = false; }
+		countdownCameraLock.resetTime();
+	}
+	if (CameraMouseUpdate == true)
+	{
+		camera.Update(dt);
+	}
+	
 	pistol.update(dt);
 	debounce.TimeCountDown(dt);
 	if (Application::IsKeyPressed(0x31) && debounce.GetTimeNow() < 0)
@@ -395,9 +410,11 @@ void Assignment3::Update(double dt)
 					&& player.getAngle(camera.view, Vector3((*i).Position.x, -1, (*i).Position.z) - camera.position) < 45.f)
 				{
 					if (player.isMining == false)
+					{
 						player.isMining = true;
-					player.ObtainResources(1);
-					(*i).ReduceSize();
+						player.ObtainResources(1);
+						(*i).ReduceSize();
+					}
 					if ((*i).Size <= 0)
 					{
 						Rocks.erase(i);
