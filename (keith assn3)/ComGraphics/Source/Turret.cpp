@@ -16,7 +16,7 @@ void Turret::LookAtEnemy(Enemy enemy)
 {
 	Target = enemy.EnemyPos;
 	Vector3 view = Target - position;
-	if (Target.z > enemy.EnemyPos.z){ turretRotation = Math::RadianToDegree(atan(view.x / view.z))-180.0f; }
+	if (Target.z > position.z){ turretRotation = Math::RadianToDegree(atan(view.x / view.z))-180.0f; }
 	else{ turretRotation = Math::RadianToDegree(atan(view.x / view.z)); }
 }
 void Turret::ShootAtEnemy(double dt)
