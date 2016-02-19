@@ -13,10 +13,12 @@ public:
 	void ReduceHp(int dmg);
 	void ShootAtEnemy(double dt);
 	int GetDamage();
+	bool GetShooting();
+	void TargetEnemy(Vector3);
+
 	Vector3 GetPosition();
 	float turretRotation;		//rotates to the enemy position
 	Vector3 bulletPos;
-	Vector3 TargetEnemy(Vector3);
 private:
 	int Hp;
 	const int damage;

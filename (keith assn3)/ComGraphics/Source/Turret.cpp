@@ -6,6 +6,7 @@ Turret::Turret(const int&hp, const int&dmg, const Vector3 &pos) :damage(dmg), po
 	Hp = hp;
 	fireDelay = 0;
 	shooting = 0;
+	BulletSpeed = 5.0f;
 }
 
 Turret::~Turret()
@@ -40,7 +41,7 @@ void Turret::ShootAtEnemy(double dt)
 		fireDelay = 0;
 	}
 }
-Vector3 Turret::TargetEnemy(Vector3 alien)
+void Turret::TargetEnemy(Vector3 alien)
 {
 	if (shooting == true)
 	{
@@ -48,13 +49,11 @@ Vector3 Turret::TargetEnemy(Vector3 alien)
 		{
 			Alien = alien;
 			DoneTargeting = true;
-			return Alien;
 		}
 	}
 	else if (shooting == false)
 	{
 		DoneTargeting == false;
-		return alien;
 	}
 }
 void Turret::ReduceHp(int dmg)
@@ -68,4 +67,8 @@ int Turret::GetDamage()
 Vector3 Turret::GetPosition()
 {
 	return position;
+}
+bool Turret::GetShooting()
+{
+	return shooting;
 }

@@ -113,7 +113,7 @@ private:
 	Countdown countdownAlienSpawn = Countdown(10.0f);
 	Countdown debounce = Countdown(0.05f);
 	Countdown rightClick = Countdown(0.2f);
-	Countdown countdownTurretSpawn = Countdown(15.0f);
+	Countdown countdownTurretSpawn = Countdown(1.0f);
 	Player player = Player(100);
 	
 	//Turret Position

@@ -357,8 +357,18 @@ void Assignment3::Update(double dt)
 			countdownRock.resetTime();
 			Rock newRock(Vector3(randomx, -1, randomz), rand() % 4 + 1);
 			Rocks.push_back(newRock);
-	}
 		}
+	}
+	//Turrets Aim and Shoot
+	for (int i = 0; i < Turrets.size(); i++)
+	{
+		if (Aliens.empty() == false)
+		{
+			Turrets[i].LookAtEnemy(Aliens[0]);
+			Turrets[i].TargetEnemy(Aliens[0].EnemyPos);
+			Turrets[i].ShootAtEnemy(dt);
+		}
+	}
 	//Rock mining
 	player.WhileMining(dt);
 	//Timers
@@ -878,6 +888,16 @@ void Assignment3::Render()
 		modelStack.Scale(0.3f, 0.3f, 0.3f);
 		RenderMesh(meshList[GEO_LIGHTBALL], true);
 		modelStack.PopMatrix();
+
+		if (Turrets[i].GetShooting() == true)
+		{
+			std::cout << Turrets[i].bulletPos << std::endl;
+			modelStack.PushMatrix();
+			modelStack.Translate(Turrets[i].bulletPos.x, Turrets[i].bulletPos.y, Turrets[i].bulletPos.z);
+			modelStack.Scale(0.1, 0.1, 0.1);
+			RenderMesh(meshList[GEO_BULLET], true);
+			modelStack.PopMatrix();
+		}
 	}
 	//ASTRONAUT
 	modelStack.PushMatrix();
