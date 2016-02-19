@@ -149,6 +149,7 @@ void Camera3::Update(double dt)
 			JUMPING_UP = true;
 			if (position.y < 0.f)
 			{
+				position.y = 0.f;
 				JUMPING_UP = false;
 			}
 			if (position.y >= 50.f)
@@ -163,6 +164,7 @@ void Camera3::Update(double dt)
 			JUMPING_UP = true;
 			if (position.y < 0.f)
 			{
+				position.y = 0.f;
 				JUMPING_UP = false;
 			}
 		}
