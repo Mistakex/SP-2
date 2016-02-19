@@ -112,6 +112,7 @@ private:
 	Countdown countdownPistol = Countdown(0.1f);
 	Countdown countdownAlienSpawn = Countdown(10.0f);
 	Countdown debounce = Countdown(0.5f);
+	Countdown rightClick = Countdown(0.2f);
 	Countdown countdownTurretSpawn = Countdown(15.0f);
 	Player player = Player(100);
 	
@@ -119,6 +120,7 @@ private:
 	Vector3 TurretPos;
 	//Gun
 	bool isPistol = false;
+	bool isZoom = false;
 
 	unsigned m_vertexArrayID;
 	Mesh *meshList[NUM_GEOMETRY];
