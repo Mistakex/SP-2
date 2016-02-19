@@ -38,11 +38,6 @@ void Weapon::Fire()
 	}
 }
 
-bool Weapon::GetAllowFire()
-{
-	return AllowFire;
-}
-
 bool Weapon::GetAllowZoom()
 {
 	return AllowZoom;

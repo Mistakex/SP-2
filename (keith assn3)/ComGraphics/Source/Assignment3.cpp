@@ -931,7 +931,7 @@ void Assignment3::Render()
 
 	// crosshair
 	modelStack.PushMatrix();
-	RenderTextOnScreen(meshList[GEO_CROSSHAIR], "+", Color(0, 1, 0), 3, 13, 10.1);
+	RenderTextOnScreen(meshList[GEO_CROSSHAIR], "+", Color(0, 1, 0), 3, 13.1, 9.5);
 	modelStack.PopMatrix();
 	
 	// FRAMERATE

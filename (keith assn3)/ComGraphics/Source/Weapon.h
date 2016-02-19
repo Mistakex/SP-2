@@ -11,7 +11,6 @@ public:
 	~Weapon();
 	void init(Camera3 *target);
 	void Fire();						//Goes into Update
-	bool GetAllowFire();							//Goes into Update
 	bool GetAllowZoom();
 	bool GetZoom();
 	int getUpgradeCost();
@@ -25,9 +24,7 @@ private:
 	int MaxAmmo;
 	const int Price;
 	int bulletCount;
-	float FireSpeed;		//cooldown for second bullet
 	float FireDelay;
-	bool AllowFire;
 	bool AllowZoom;
 	bool Zoom;
 	Camera3 *camera;

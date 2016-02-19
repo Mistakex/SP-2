@@ -64,7 +64,7 @@ void Enemy::EnemyMove(double dt)
 		{
 			if (armRotate > 0)
 				armRotate -= 90 * dt;
-			bulletPos += (bulletTarget - EnemyPos)*10*dt;
+			bulletPos += bulletView*10*dt;
 		}
 	}
 	else if (KiteTimer < 7)
@@ -104,13 +104,14 @@ void Enemy::EnemyShootAt(const double &dt,const float &bulletSpeed)
 		{
 			if (armRotate > 0)
 				armRotate -= 90 * dt;
-			bulletPos += (bulletTarget - EnemyPos)*bulletSpeed*dt;
+			bulletPos += bulletView*bulletSpeed*dt;
 		}
 		else
 		{
 			Shooting = true;
 			bulletPos = EnemyPos;
 			bulletTarget = target + Vector3((rand() % 2)/2.f, (rand() % 2)/2.f, (rand() % 2)/2.f);
+			bulletView = bulletTarget - EnemyPos;
 		}
 	}
 	else if (fireDelay >= 5)

@@ -46,6 +46,7 @@ private:
 	bool moveRight;
 	bool Shooting;
 	float fireDelay;
+	Vector3 bulletView;
 	vector<Vector3> renderedBulletsDirection;
 	vector<Vector3> renderedBulletsPosition;
 
