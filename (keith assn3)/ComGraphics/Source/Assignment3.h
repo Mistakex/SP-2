@@ -119,6 +119,7 @@ private:
 	Countdown debounce = Countdown(0.05f);
 	Countdown rightClick = Countdown(0.2f);
 	Countdown countdownTurretSpawn = Countdown(1.0f);
+	Countdown countdownCameraLock = Countdown(0.5f);
 	Player player = Player(100);
 	
 	//Turret Position
@@ -134,7 +135,7 @@ private:
 	unsigned m_programID;
 	unsigned m_parameters[U_TOTAL];
 
-
+	bool CameraMouseUpdate;
 	Camera3 camera;
 
 	MS modelStack, viewStack, projectionStack;
