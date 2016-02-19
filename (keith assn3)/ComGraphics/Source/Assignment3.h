@@ -111,7 +111,7 @@ private:
 	Countdown countdownMining = Countdown(0.5f);
 	Countdown countdownPistol = Countdown(0.1f);
 	Countdown countdownAlienSpawn = Countdown(10.0f);
-	Countdown debounce = Countdown(0.5f);
+	Countdown debounce = Countdown(0.05f);
 	Countdown rightClick = Countdown(0.2f);
 	Countdown countdownTurretSpawn = Countdown(15.0f);
 	Player player = Player(100);

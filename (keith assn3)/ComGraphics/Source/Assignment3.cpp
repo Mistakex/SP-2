@@ -301,20 +301,20 @@ void Assignment3::Update(double dt)
 {
 	camera.Update(dt);
 	pistol.update(dt);
-
-	if (Application::IsKeyPressed(0x31) && debounce.TimeCountDown(dt) < 0)
+	debounce.TimeCountDown(dt);
+	if (Application::IsKeyPressed(0x31) && debounce.GetTimeNow() < 0)
 	{
 		debounce.resetTime();
 		player.WeaponState = 2;
 		//isPistol = true;
 	}
-	if (Application::IsKeyPressed(0x32) && debounce.TimeCountDown(dt) < 0)
+	if (Application::IsKeyPressed(0x32) && debounce.GetTimeNow() < 0)
 	{
 		debounce.resetTime();
 		player.WeaponState = 1;
 		//isPistol = false;
 	}
-	if (Application::IsKeyPressed(0x33) && debounce.TimeCountDown(dt) < 0)
+	if (Application::IsKeyPressed(0x33) && debounce.GetTimeNow() < 0)
 	{
 		debounce.resetTime();
 		player.WeaponState = 6;
@@ -497,14 +497,14 @@ void Assignment3::Update(double dt)
 	}
 
 	// backface culling
-	if (Application::IsKeyPressed('1')) //enable back face culling
-		glEnable(GL_CULL_FACE);
-	if (Application::IsKeyPressed('2')) //disable back face culling
-		glDisable(GL_CULL_FACE);
-	if (Application::IsKeyPressed('3'))
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); //default fill mode
-	if (Application::IsKeyPressed('4'))
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //wireframe mode
+	//if (Application::IsKeyPressed('1')) //enable back face culling
+	//	glEnable(GL_CULL_FACE);
+	//if (Application::IsKeyPressed('2')) //disable back face culling
+	//	glDisable(GL_CULL_FACE);
+	//if (Application::IsKeyPressed('3'))
+	//	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); //default fill mode
+	//if (Application::IsKeyPressed('4'))
+	//	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //wireframe mode
 
 	//reset everything
 	if (Application::IsKeyPressed('R'))
