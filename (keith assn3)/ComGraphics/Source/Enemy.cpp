@@ -4,7 +4,7 @@
 
 Enemy::Enemy(Vector3 pos,Vector3 tar, int hp, int attack, int movespeed, int range) : Hp(hp), AttackDamage(attack), MoveSpeed(movespeed)
 {
-	EnemyPos = pos;
+	position = pos;
 	target = tar;
 	this->range = range;
 	KiteTimer = 0;
@@ -41,7 +41,7 @@ short Enemy::GetResources()
 
 float Enemy::GetDistance()
 {
-	Vector3 view = target - EnemyPos;
+	Vector3 view = target - position;
 	return sqrt(pow(view.x, 2) + pow(view.y, 2) + pow(view.z, 2));
 }
 
@@ -54,12 +54,12 @@ void Enemy::EnemyMove(double dt)
 {
 	fireDelay += dt;
 	Vector3 view = Vector3(0, 0, 0);
-	if (target != EnemyPos)
-		view = (target - EnemyPos).Normalized();
+	if (target != position)
+		view = (target - position).Normalized();
 		
 	if (GetDistance() > range + KiteTimer)
 	{
-		EnemyPos += Vector3(view.x,0,view.z)*MoveSpeed*dt;
+		position += Vector3(view.x,0,view.z)*MoveSpeed*dt;
 		if (Shooting == true)
 		{
 			if (armRotate > 0)
@@ -109,9 +109,9 @@ void Enemy::EnemyShootAt(const double &dt,const float &bulletSpeed)
 		else
 		{
 			Shooting = true;
-			bulletPos = EnemyPos;
+			bulletPos = position;
 			bulletTarget = target + Vector3((rand() % 2)/2.f, (rand() % 2)/2.f, (rand() % 2)/2.f);
-			bulletView = bulletTarget - EnemyPos;
+			bulletView = bulletTarget - position;
 		}
 	}
 	else if (fireDelay >= 5)
@@ -131,8 +131,8 @@ void Enemy::EnemyShootAt(const double &dt,const float &bulletSpeed)
 
 float Enemy::findDirection()
 {
-	Vector3 view = target - EnemyPos;
-	if (target.z > EnemyPos.z)
+	Vector3 view = target - position;
+	if (target.z > position.z)
 		return Math::RadianToDegree(atan(view.x / view.z)) - 180;
 	else
 		return Math::RadianToDegree(atan(view.x / view.z));
@@ -144,13 +144,13 @@ void Enemy::EnemyKite(double dt)
 	if (KiteTimer < 3)
 	{
 		Vector3 view = Vector3(0, 0, 0);
-		if (target != EnemyPos)
-			view = (target - EnemyPos).Normalized();
+		if (target != position)
+			view = (target - position).Normalized();
 		Vector3 right = view.Cross(Vector3(0, 1, 0));
 		if (moveRight == true)
-			EnemyPos += right*(MoveSpeed / 4)*dt;
+			position += right*(MoveSpeed / 4)*dt;
 		else
-			EnemyPos -= right*(MoveSpeed / 4)*dt;
+			position -= right*(MoveSpeed / 4)*dt;
 	}
 }
 

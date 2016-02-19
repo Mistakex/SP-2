@@ -2,10 +2,11 @@
 #define ENEMY_H
 #include"Vector3.h"
 #include <vector>
+#include"GameObject.h"
 
 using std::vector;
 
-class Enemy
+class Enemy: public GameObject
 {
 public:
 	Enemy(Vector3 pos,Vector3 tar,int hp = 100, int attack = 5, int movespeed = 10, int range = 10);
@@ -17,8 +18,6 @@ public:
 	float GetDistance();
 	bool GetShooting();
 	
-
-	Vector3 GetEnemypos();
 	Vector3 EnemyKiting();			//Shoot ,stop ,move again
 
 	void EnemyKite(double dt);
@@ -29,7 +28,6 @@ public:
 
 	bool InRangeOfPlayer();		// dist away from player
 	bool isDead();					//dead or not
-	Vector3 EnemyPos;
 	Vector3 target;
 	Vector3 bulletPos;
 	Vector3 bulletTarget;

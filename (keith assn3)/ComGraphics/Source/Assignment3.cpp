@@ -373,7 +373,7 @@ void Assignment3::Update(double dt)
 		if (Aliens.empty() == false)
 		{
 			Turrets[i].LookAtEnemy(Aliens[0]);
-			Turrets[i].TargetEnemy(Aliens[0].EnemyPos);
+			Turrets[i].TargetEnemy(Aliens[0].position);
 			Turrets[i].ShootAtEnemy(dt);
 		}
 	}
@@ -932,7 +932,7 @@ void Assignment3::Render()
 	for (size_t i = 0; i < Aliens.size(); ++i)
 	{
 		modelStack.PushMatrix();
-		modelStack.Translate(Aliens[i].EnemyPos.x, Aliens[i].EnemyPos.y, Aliens[i].EnemyPos.z);
+		modelStack.Translate(Aliens[i].position.x, Aliens[i].position.y, Aliens[i].position.z);
 		modelStack.Rotate(Aliens[i].findDirection(), 0, 1, 0);
 		RenderAlien(Aliens[i].armRotate);
 		modelStack.PopMatrix();
