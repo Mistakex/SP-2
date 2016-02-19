@@ -16,6 +16,7 @@
 #include "Flag.h"
 #include "Astronaut.h"
 #include "Weapon.h"
+#include "Bullet.h"
 
 #include <stdlib.h>
 #include <sstream>
@@ -301,18 +302,26 @@ void Assignment3::Update(double dt)
 	camera.Update(dt);
 	pistol.update(dt);
 
-	if (Application::IsKeyPressed(VK_MBUTTON) && isPistol == false && debounce.TimeCountDown(dt) < 0)
+	if (Application::IsKeyPressed(0x31) && debounce.TimeCountDown(dt) < 0)
 	{
 		debounce.resetTime();
 		player.WeaponState = 2;
-		isPistol = true;
+		//isPistol = true;
 	}
-	if (Application::IsKeyPressed(VK_MBUTTON) && isPistol == true && debounce.TimeCountDown(dt) < 0)
+	if (Application::IsKeyPressed(0x32) && debounce.TimeCountDown(dt) < 0)
 	{
 		debounce.resetTime();
 		player.WeaponState = 1;
-		isPistol = false;
+		//isPistol = false;
 	}
+	if (Application::IsKeyPressed(0x33) && debounce.TimeCountDown(dt) < 0)
+	{
+		debounce.resetTime();
+		player.WeaponState = 6;
+		//isPistol = false;
+	}
+
+
 
 	// updating 2nd light
 	light[1].position.Set(camera.position.x + camera.target.x/15,
@@ -940,7 +949,7 @@ void Assignment3::Render()
 	if (player.isMining)
 	{
 		modelStack.PushMatrix();
-		RenderModelOnScreen(meshList[GEO_HITORNOT], false, 3, 39.6, 31.65, Vector3(90, 0, 0));
+		RenderModelOnScreen(meshList[GEO_HITORNOT], false, 3, 39.9, 29.9, Vector3(90, 0, 0));
 		modelStack.PopMatrix();
 	}
 

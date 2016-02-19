@@ -118,6 +118,7 @@ private:
 	
 	//Turret Position
 	Vector3 TurretPos;
+
 	//Gun
 	bool isPistol = false;
 	bool isZoom = false;
