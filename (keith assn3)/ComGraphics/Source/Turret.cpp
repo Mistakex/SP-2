@@ -1,12 +1,12 @@
 #include "Turret.h"
 
-
 Turret::Turret(const int&hp, const int&dmg, const Vector3 &pos) :damage(dmg), position(pos)
 {
 	Hp = hp;
 	fireDelay = 0;
 	shooting = 0;
 	BulletSpeed = 5.0f;
+	turretRotation = 0;
 }
 
 Turret::~Turret()
@@ -15,8 +15,8 @@ Turret::~Turret()
 void Turret::LookAtEnemy(Enemy enemy)
 {
 	Target = enemy.EnemyPos;
-	Vector3 view = Target - enemy.EnemyPos;
-	if (Target.z > enemy.EnemyPos.z){ turretRotation = Math::RadianToDegree(atan(view.x / view.z)) - 180; }
+	Vector3 view = Target - position;
+	if (Target.z > enemy.EnemyPos.z){ turretRotation = Math::RadianToDegree(atan(view.x / view.z))-180.0f; }
 	else{ turretRotation = Math::RadianToDegree(atan(view.x / view.z)); }
 }
 void Turret::ShootAtEnemy(double dt)

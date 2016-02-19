@@ -42,6 +42,10 @@ class Assignment3 : public Scene
 		GEO_ASTRONAUT,
 		GEO_PLAYERHP,
 		GEO_PLUSRESOURCES,
+		//Turret
+		GEO_TURRETHEAD,
+		GEO_TURRETBASE,
+
 		NUM_GEOMETRY,
 	};
 	enum UNIFORM_TYPE

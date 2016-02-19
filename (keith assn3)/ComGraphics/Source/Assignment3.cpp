@@ -273,6 +273,12 @@ void Assignment3::Init()
 	meshList[GEO_ASTRONAUT] = MeshBuilder::GenerateOBJ("Astronaut", "OBJ//astronaut.obj");
 	meshList[GEO_ASTRONAUT]->textureID = LoadTGA("Image//astronautUV.tga");
 
+	meshList[GEO_TURRETHEAD] = MeshBuilder::GenerateOBJ("turrettop", "OBJ//TurretHead.obj");
+	meshList[GEO_TURRETHEAD]->textureID = LoadTGA("Image//turrettop.tga");
+
+	meshList[GEO_TURRETBASE] = MeshBuilder::GenerateOBJ("TurretBase", "OBJ//TurretBase.obj");
+	meshList[GEO_TURRETBASE]->textureID = LoadTGA("Image//turretbottom.tga");
+
 	meshList[GEO_PLAYERHP] = MeshBuilder::GenerateQuad("PlayerHP", Color(1, 0, 0));
 
 	meshList[GEO_PLUSRESOURCES] = MeshBuilder::GenerateText("+ 1 Resources", 16, 16);
@@ -885,7 +891,15 @@ void Assignment3::Render()
 		modelStack.PushMatrix();
 		modelStack.Translate(Turrets[i].GetPosition().x, Turrets[i].GetPosition().y, Turrets[i].GetPosition().z);
 		modelStack.Scale(0.3f, 0.3f, 0.3f);
-		RenderMesh(meshList[GEO_LIGHTBALL], true);
+		RenderMesh(meshList[GEO_TURRETBASE], true);
+		modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+		std::cout << Turrets[i].turretRotation << std::endl;
+		modelStack.Translate(Turrets[i].GetPosition().x, Turrets[i].GetPosition().y-0.7, Turrets[i].GetPosition().z);
+		modelStack.Rotate(Turrets[i].turretRotation, 0, 1, 0);
+		modelStack.Scale(0.3f, 0.3f, 0.3f);
+		RenderMesh(meshList[GEO_TURRETHEAD], true);
 		modelStack.PopMatrix();
 
 		if (Turrets[i].GetShooting() == true)
