@@ -42,6 +42,7 @@ class Assignment3 : public Scene
 		GEO_ASTRONAUT,
 		GEO_PLAYERHP,
 		GEO_PLUSRESOURCES,
+		GEO_UI,
 		//Turret
 		GEO_TURRETHEAD,
 		GEO_TURRETBASE,

@@ -284,6 +284,8 @@ void Assignment3::Init()
 	meshList[GEO_PLUSRESOURCES] = MeshBuilder::GenerateText("+ 1 Resources", 16, 16);
 	meshList[GEO_PLUSRESOURCES]->textureID = LoadTGA("Image//calibri.tga");
 
+	meshList[GEO_UI] = MeshBuilder::GenerateQuad("UI Screen", Color(0.25, 0.87, 0.81));
+
 	Mtx44 projection;
 	projection.SetToPerspective(70.0f, 4.0f / 3.0f, 0.1f, 5000.0f);
 	projectionStack.LoadMatrix(projection);
@@ -914,11 +916,9 @@ void Assignment3::Render()
 	}
 	//ASTRONAUT
 	modelStack.PushMatrix();
-	glBlendFunc(1.5, 1);
 	modelStack.Translate(a.GetAstronautPos().x, a.GetAstronautPos().y, a.GetAstronautPos().z);
 	modelStack.Scale(0.3f, 0.3f, 0.3f);
 	RenderMesh(meshList[GEO_ASTRONAUT], true);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	modelStack.PopMatrix();
 
 	if (a.playerIsNear)
@@ -987,6 +987,13 @@ void Assignment3::Render()
 		RenderModelOnScreen(meshList[GEO_HITORNOT], false, 3, 39.9, 29.9, Vector3(90, 0, 0));
 		modelStack.PopMatrix();
 	}
+
+	//UI Screen
+	modelStack.PushMatrix();
+	glBlendFunc(1.5, 1);
+	RenderModelOnScreen(meshList[GEO_UI], false, 20, 40, 30, Vector3(90, 0, 0));
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	modelStack.PopMatrix();
 
 	// crosshair
 	modelStack.PushMatrix();
