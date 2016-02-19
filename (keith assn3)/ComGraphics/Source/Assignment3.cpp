@@ -241,7 +241,7 @@ void Assignment3::Init()
 	meshList[GEO_ALIENBODY]->textureID = LoadTGA("Image//ALIENBODY.tga");
 
 	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text", 16, 16);
-	meshList[GEO_TEXT]->textureID = LoadTGA("Image//calibri.tga");
+	meshList[GEO_TEXT]->textureID = LoadTGA("Image//grisaiaCustom.tga");
 
 	meshList[GEO_FLAGPOLE] = MeshBuilder::GenerateOBJ("Pole", "OBJ//flagpole.obj");
 	meshList[GEO_FLAGPOLE]->textureID = LoadTGA("Image//flagpoleUV.tga");
@@ -679,7 +679,7 @@ void Assignment3::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, 
 	for (unsigned i = 0; i < text.length(); ++i)
 	{
 		Mtx44 characterSpacing;
-		characterSpacing.SetToTranslation(i * 0.8f + 0.5f, 0.5f, 0); //1.0f is the spacing of each character, you may change this value
+		characterSpacing.SetToTranslation(i * 0.3f + 0.5f, 0.5f, 0); //1.0f is the spacing of each character, you may change this value
 		Mtx44 MVP = projectionStack.Top() * viewStack.Top() * modelStack.Top() * characterSpacing;
 		glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
 
@@ -914,9 +914,11 @@ void Assignment3::Render()
 	}
 	//ASTRONAUT
 	modelStack.PushMatrix();
+	glBlendFunc(1.5, 1);
 	modelStack.Translate(a.GetAstronautPos().x, a.GetAstronautPos().y, a.GetAstronautPos().z);
 	modelStack.Scale(0.3f, 0.3f, 0.3f);
 	RenderMesh(meshList[GEO_ASTRONAUT], true);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	modelStack.PopMatrix();
 
 	if (a.playerIsNear)
