@@ -285,7 +285,8 @@ void Assignment3::Init()
 	meshList[GEO_PLUSRESOURCES] = MeshBuilder::GenerateText("+ 1 Resources", 16, 16);
 	meshList[GEO_PLUSRESOURCES]->textureID = LoadTGA("Image//grisaiaCustom.tga");
 
-	meshList[GEO_UI] = MeshBuilder::GenerateQuad("UI Screen", Color(0.25f, 0.87f, 0.81f));
+	meshList[GEO_UI] = MeshBuilder::GenerateQuad("UI Screen", Color(1,1,1));
+	meshList[GEO_UI]->textureID = LoadTGA("Image//UI_Frame.tga");
 
 	Mtx44 projection;
 	projection.SetToPerspective(70.0f, 4.0f / 3.0f, 0.1f, 5000.0f);
