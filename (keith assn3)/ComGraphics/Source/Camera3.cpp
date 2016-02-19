@@ -101,7 +101,7 @@ void Camera3::Update(double dt)
 		{
 			if (position.y > 0.f)
 			{
-				position.y -= 7 * dt;
+				position.y -= 10.f * dt;
 			}
 			else
 			{
@@ -142,30 +142,31 @@ void Camera3::Update(double dt)
 		{
 			isFlying = true;
 		}
+		else
+		{
+			isFlying = false;
+		}
 
-		if (isFlying == true && GetAsyncKeyState(' '))
+		if (isFlying == true)
 		{
 			position += Vector3(0.f, 5.5 * dt, 0.f);
 			JUMPING_UP = true;
-			if (position.y < 0.f)
-			{
-				position.y = 0.f;
-				JUMPING_UP = false;
-			}
 			if (position.y >= 50.f)
 			{
 				position -= Vector3(0.f, 7 * dt, 0.f);
 			}
-		}
-
-		if (position.y > 0.f && !GetAsyncKeyState(' '))
-		{
-			position -= Vector3(0.f, 7 * dt, 0.f);
-			JUMPING_UP = true;
 			if (position.y < 0.f)
 			{
 				position.y = 0.f;
 				JUMPING_UP = false;
+			}
+		}
+		else if (isFlying == false)
+		{
+			position -= Vector3(0.f, 7 * dt, 0.f);
+			if (position.y < 0.f)
+			{
+				position.y = 0.f;
 			}
 		}
 	}

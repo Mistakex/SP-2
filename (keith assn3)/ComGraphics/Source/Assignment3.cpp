@@ -324,9 +324,9 @@ void Assignment3::Update(double dt)
 
 
 	// updating 2nd light
-	light[1].position.Set(camera.position.x,
-		camera.position.y,
-		camera.position.z);
+	light[1].position.Set(camera.position.x + camera.target.x/15,
+		camera.position.y + camera.target.y/15,
+		camera.position.z + camera.target.z/15);
 	light[1].spotDirection.Set(-(camera.target.x - camera.position.x), -(camera.target.y - camera.position.y), -(camera.target.z - camera.position.z));
 
 	//first light
