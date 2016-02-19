@@ -75,8 +75,8 @@ void Assignment3::Init()
 	player.WeaponState = 1;
 	pistol.init(&camera);
 	//srand
-	srand(time(NULL));
-	for (int i = 0; i < 3; ++i)
+	srand(time_t(NULL));
+	for (float i = 0; i < 3; ++i)
 	{
 		Aliens.push_back(Enemy(Vector3(i, 0, i), Vector3(0, 0, 0)));
 	}
@@ -252,8 +252,8 @@ void Assignment3::Init()
 	meshList[GEO_ALLYFLAG] = MeshBuilder::GenerateOBJ("enemyFlag", "OBJ//flag.obj");
 	meshList[GEO_ALLYFLAG]->textureID = LoadTGA("Image//OurFlag.tga");
 
-	meshList[GEO_UNCAPTURED] = MeshBuilder::GenerateTorus("UncapturedZone", Color(1, 0, 0), 18, 18, 1, 0.05);
-	meshList[GEO_CAPTURED] = MeshBuilder::GenerateTorus("CapturedZone", Color(0, 0, 1), 18, 18, 1, 0.05);
+	meshList[GEO_UNCAPTURED] = MeshBuilder::GenerateTorus("UncapturedZone", Color(1, 0, 0), 18, 18, 1.f, 0.05f);
+	meshList[GEO_CAPTURED] = MeshBuilder::GenerateTorus("CapturedZone", Color(0, 0, 1), 18, 18, 1.f, 0.05f);
 
 	meshList[GEO_ALLYFLAG] = MeshBuilder::GenerateOBJ("enemyFlag", "OBJ//flag.obj");
 	meshList[GEO_ALLYFLAG]->textureID = LoadTGA("Image//OurFlag.tga");
@@ -282,9 +282,9 @@ void Assignment3::Init()
 	meshList[GEO_PLAYERHP] = MeshBuilder::GenerateQuad("PlayerHP", Color(1, 0, 0));
 
 	meshList[GEO_PLUSRESOURCES] = MeshBuilder::GenerateText("+ 1 Resources", 16, 16);
-	meshList[GEO_PLUSRESOURCES]->textureID = LoadTGA("Image//calibri.tga");
+	meshList[GEO_PLUSRESOURCES]->textureID = LoadTGA("Image//grisaiaCustom.tga");
 
-	meshList[GEO_UI] = MeshBuilder::GenerateQuad("UI Screen", Color(0.25, 0.87, 0.81));
+	meshList[GEO_UI] = MeshBuilder::GenerateQuad("UI Screen", Color(0.25f, 0.87f, 0.81f));
 
 	Mtx44 projection;
 	projection.SetToPerspective(70.0f, 4.0f / 3.0f, 0.1f, 5000.0f);
@@ -343,13 +343,13 @@ void Assignment3::Update(double dt)
 	if ((countdownAlienSpawn.TimeCountDown(dt) <= 0) && (Aliens.size()) < 10 &&(f.flagIsBlue == true))
 	{
 		countdownAlienSpawn.resetTime();
-		int spwanAlienz = (rand() % 100 - 50);
-		Enemy newAlien(Vector3(50, 0,spwanAlienz ), Vector3(camera.position.x, -1, camera.position.z), 100, 5, 10, 10);
+		float spwanAlienz = (rand() % 100 - 50.f);
+		Enemy newAlien(Vector3(50.f, 0.f,spwanAlienz ), Vector3(camera.position.x, -1.f, camera.position.z), 100, 5, 10, 10);
 		Aliens.push_back(newAlien);
 	}
 
 	//Alien moving
-	for (int i = 0; i < Aliens.size(); ++i)
+	for (size_t i = 0; i < Aliens.size(); ++i)
 	{
 		Aliens[i].target = camera.position;
 		Aliens[i].EnemyMove(dt);
@@ -357,18 +357,18 @@ void Assignment3::Update(double dt)
 	//Rocks spawn
 	if (countdownRock.TimeCountDown(dt) <= 0 && Rocks.size() < 10)
 	{
-		randomx = rand() % 100 -50;
-		randomz = rand() % 100 -50;
+		randomx = rand() % 100 -50.f;
+		randomz = rand() % 100 -50.f;
 		
 		if (getMagnitude(Vector3(randomx, -1, randomz), Vector3(camera.position.x, -1, camera.position.z)) >= 20.0f)//spwan 20 units away from the player
 		{
 			countdownRock.resetTime();
-			Rock newRock(Vector3(randomx, -1, randomz), rand() % 4 + 1);
+			Rock newRock(Vector3(randomx, -1.f, randomz), rand() % 4 + 1.f);
 			Rocks.push_back(newRock);
 		}
 	}
 	//Turrets Aim and Shoot
-	for (int i = 0; i < Turrets.size(); i++)
+	for (size_t i = 0; i < Turrets.size(); i++)
 	{
 		if (Aliens.empty() == false)
 		{
@@ -427,7 +427,7 @@ void Assignment3::Update(double dt)
 				Turret newTurret(100, 10, Vector3(TurretPos.x + camera.position.x, 0, TurretPos.z + camera.position.z));
 				Turrets.push_back(newTurret);
 				countdownTurretSpawn.resetTime();
-				TurretPos = (0, 0, 0);//reset the value of the variable
+				TurretPos = (0.f, 0.f, 0.f);//reset the value of the variable
 			}
 		}
 	}
@@ -880,7 +880,7 @@ void Assignment3::Render()
 			for (int j = 0; j < 2; ++j)
 			{
 				modelStack.PushMatrix();
-				modelStack.Translate(-20, -0.5, 10 - j * 20);
+				modelStack.Translate(-20.f, -0.5f, 10.f - j * 20.f);
 				modelStack.Scale(3, 2, 3);
 				RenderMesh(meshList[GEO_CRATER], true);
 				modelStack.PopMatrix();
@@ -888,7 +888,7 @@ void Assignment3::Render()
 		}
 	}
 	//TURRETS
-	for (int i = 0; i < Turrets.size(); i++)
+	for (size_t i = 0; i < Turrets.size(); i++)
 	{
 		modelStack.PushMatrix();
 		modelStack.Translate(Turrets[i].GetPosition().x, Turrets[i].GetPosition().y-1, Turrets[i].GetPosition().z);
@@ -898,7 +898,7 @@ void Assignment3::Render()
 
 		modelStack.PushMatrix();
 		std::cout << Turrets[i].turretRotation << std::endl;
-		modelStack.Translate(Turrets[i].GetPosition().x, Turrets[i].GetPosition().y-0.7, Turrets[i].GetPosition().z);
+		modelStack.Translate(Turrets[i].GetPosition().x, Turrets[i].GetPosition().y-0.7f, Turrets[i].GetPosition().z);
 		modelStack.Rotate(Turrets[i].turretRotation, 0, 1, 0);
 		modelStack.Scale(0.3f, 0.3f, 0.3f);
 		RenderMesh(meshList[GEO_TURRETHEAD], true);
@@ -909,7 +909,7 @@ void Assignment3::Render()
 			//std::cout << Turrets[i].bulletPos << std::endl;
 			modelStack.PushMatrix();
 			modelStack.Translate(Turrets[i].bulletPos.x, Turrets[i].bulletPos.y, Turrets[i].bulletPos.z);
-			modelStack.Scale(0.1, 0.1, 0.1);
+			modelStack.Scale(0.1f, 0.1f, 0.1f);
 			RenderMesh(meshList[GEO_BULLET], true);
 			modelStack.PopMatrix();
 		}
@@ -929,7 +929,7 @@ void Assignment3::Render()
 	}
 
 	//ALIEN
-	for (int i = 0; i < Aliens.size(); ++i)
+	for (size_t i = 0; i < Aliens.size(); ++i)
 	{
 		modelStack.PushMatrix();
 		modelStack.Translate(Aliens[i].EnemyPos.x, Aliens[i].EnemyPos.y, Aliens[i].EnemyPos.z);
@@ -941,14 +941,14 @@ void Assignment3::Render()
 		{
 			modelStack.PushMatrix();
 			modelStack.Translate(Aliens[i].bulletPos.x, Aliens[i].bulletPos.y, Aliens[i].bulletPos.z);
-			modelStack.Scale(0.1, 0.1, 0.1);
+			modelStack.Scale(0.1f, 0.1f, 0.1f);
 			RenderMesh(meshList[GEO_BULLET], true);
 			modelStack.PopMatrix();
 		}
 	}
 
 	// ROCKS
-	for (int i = 0; i < Rocks.size(); i++)
+	for (size_t i = 0; i < Rocks.size(); i++)
 	{
 		modelStack.PushMatrix();
 		modelStack.Translate(Rocks[i].Position.x, Rocks[i].Position.y, Rocks[i].Position.z);
@@ -961,7 +961,7 @@ void Assignment3::Render()
 	{
 		modelStack.PushMatrix();
 		modelStack.Translate(pistol.Magazine[i].getPosition().x, pistol.Magazine[i].getPosition().y, pistol.Magazine[i].getPosition().z);
-		modelStack.Scale(0.1, 0.1, 0.1);
+		modelStack.Scale(0.1f, 0.1f, 0.1f);
 		RenderMesh(meshList[GEO_BULLET], true);
 		modelStack.PopMatrix();
 	}
@@ -976,7 +976,7 @@ void Assignment3::Render()
 	if (player.isMining)
 	{
 		modelStack.PushMatrix();
-		RenderTextOnScreen(meshList[GEO_PLUSRESOURCES], "+1 Resources", Color(0, 1, 0), 3, 9, 14);
+		RenderTextOnScreen(meshList[GEO_PLUSRESOURCES], "+1 Resources", Color(0, 1, 0), 3, 11.5, 15);
 		modelStack.PopMatrix();
 	}
 
@@ -984,20 +984,20 @@ void Assignment3::Render()
 	if (player.isMining)
 	{
 		modelStack.PushMatrix();
-		RenderModelOnScreen(meshList[GEO_HITORNOT], false, 3, 39.9, 29.9, Vector3(90, 0, 0));
+		RenderModelOnScreen(meshList[GEO_HITORNOT], false, 3.f, 39.9f, 29.9f, Vector3(90, 0, 0));
 		modelStack.PopMatrix();
 	}
+
+	// crosshair
+	modelStack.PushMatrix();
+	RenderTextOnScreen(meshList[GEO_CROSSHAIR], "+", Color(0, 1, 0), 3.f, 13.1f, 9.5f);
+	modelStack.PopMatrix();
 
 	//UI Screen
 	modelStack.PushMatrix();
 	glBlendFunc(1.5, 1);
 	RenderModelOnScreen(meshList[GEO_UI], false, 20, 40, 30, Vector3(90, 0, 0));
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	modelStack.PopMatrix();
-
-	// crosshair
-	modelStack.PushMatrix();
-	RenderTextOnScreen(meshList[GEO_CROSSHAIR], "+", Color(0, 1, 0), 3, 13.1, 9.5);
 	modelStack.PopMatrix();
 	
 	// FRAMERATE
@@ -1016,16 +1016,16 @@ void Assignment3::Render()
 void Assignment3::RenderAlien(float armRotate)
 {
 	modelStack.PushMatrix();
-	modelStack.Translate(0, -3.2, 0);
+	modelStack.Translate(0.f, -3.2f, 0.f);
 	RenderMesh(meshList[GEO_ALIENHEAD], true);
 	RenderMesh(meshList[GEO_ALIENBODY], true);
 	modelStack.PushMatrix();
-	modelStack.Translate(0, 2.9, 0);
+	modelStack.Translate(0.f, 2.9f, 0.f);
 	modelStack.Rotate(armRotate, 1, 0, 0);
-	modelStack.Translate(0, -2.9, 0);
+	modelStack.Translate(0.f, -2.9f, 0.f);
 	modelStack.PushMatrix(); // arms
-	modelStack.Translate(-0.3, 2.7, 0);
-	modelStack.Scale(0.2, 0.4, 0.4);
+	modelStack.Translate(-0.3f, 2.7f, 0.f);
+	modelStack.Scale(0.2f, 0.4f, 0.4f);
 	RenderMesh(meshList[GEO_ALIENPART], true);
 	modelStack.PushMatrix();
 	modelStack.Translate(3, 0, 0);
