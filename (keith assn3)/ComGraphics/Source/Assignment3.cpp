@@ -22,6 +22,8 @@
 #include <stdlib.h>
 #include <sstream>
 
+#include "Music.h"
+
 extern GLFWwindow* m_window;
 
 using std::cout;
@@ -82,6 +84,8 @@ void Assignment3::Init()
 		Aliens.push_back(Enemy(Vector3(i, 0, i), Vector3(0, 0, 0), Vector3(0.5, 1, 0.5)));
 	}
 	// Init VBO here
+	//playMusic(2);
+	PlaySound(TEXT("Music/bgm2.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 
 	// Set background color to dark blue
 	glClearColor(0.0f, 0.0f, 0.1f, 0.0f);
@@ -405,7 +409,7 @@ void Assignment3::Update(double dt)
 		if (Aliens.empty() == false)
 		{
 			Turrets[i].LookAtEnemy(Aliens[0]);
-			Turrets[i].TargetEnemy(Aliens[0].position);
+			Turrets[i].TargetEnemy(Aliens[0].EnemyPos);
 			Turrets[i].ShootAtEnemy(dt);
 		}
 	}

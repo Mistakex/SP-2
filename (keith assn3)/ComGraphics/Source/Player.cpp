@@ -1,4 +1,5 @@
 #include"Player.h"
+#include "Music.h"
 
 Player::Player(const int &hp) : HP(hp)
 {
@@ -31,6 +32,7 @@ void Player::WhileMining(const double &dt)
 	float speed = 500;
 	if (isMining == true)
 	{
+		playMusic(1);
 		MiningAction += speed * dt;
 		if (MiningAction >= 45.f)
 		{
