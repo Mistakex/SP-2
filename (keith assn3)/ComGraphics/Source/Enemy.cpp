@@ -1,6 +1,6 @@
 #include "Enemy.h"
 
-
+vector<Enemy*> Enemy::Aliens2;
 
 Enemy::Enemy(Vector3 pos,Vector3 tar, int hp, int attack, int movespeed, int range) : Hp(hp), AttackDamage(attack), MoveSpeed(movespeed)
 {
@@ -13,10 +13,23 @@ Enemy::Enemy(Vector3 pos,Vector3 tar, int hp, int attack, int movespeed, int ran
 	bulletTarget = Vector3(0, 0, 0);
 	fireDelay = 0;
 	armRotate = 0;
+
+	Aliens2.push_back(this);
 }
 
 Enemy::~Enemy()
 {
+	for (vector<Enemy*>::iterator it = Aliens2.begin(); it != Aliens2.end();)
+	{
+		if (*it == this)
+		{
+			it = Aliens2.erase(it);
+		}
+		else
+		{
+			it++;
+		}
+	}
 }
 
 int Enemy::GetEnemyHp()

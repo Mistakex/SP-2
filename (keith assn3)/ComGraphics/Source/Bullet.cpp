@@ -15,6 +15,11 @@ Vector3 Bullet::getPosition()
 	return position;
 }
 
+Vector3 Bullet::getView()
+{
+	return view;
+}
+
 void Bullet::updatePosition(const Vector3 &pos)
 {
 	position = pos;

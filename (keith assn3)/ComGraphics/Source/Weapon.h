@@ -3,6 +3,10 @@
 
 #include "Bullet.h"
 #include "Camera3.h"
+#include <vector>
+#include "Enemy.h"
+
+using std::vector;
 
 class Weapon
 {
@@ -16,6 +20,7 @@ public:
 	int getUpgradeCost();
 	void setUpgradeCost(int newUC);
 	void update(double dt);
+	bool checkBulletCollision(vector<Enemy*> aliens,Bullet bullet);
 	Bullet* Magazine;
 	int upgradeCost;
 	int Damage;

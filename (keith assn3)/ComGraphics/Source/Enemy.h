@@ -33,6 +33,7 @@ public:
 	Vector3 bulletTarget;
 	float armRotate;
 
+	static vector<Enemy*> Aliens2;
 private:
 	int Hp;
 	int AttackDamage;

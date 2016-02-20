@@ -11,16 +11,16 @@ GameObject::GameObject()
 
 GameObject::~GameObject()
 {
-	//count--;
-	//for (vector<GameObject*>::iterator it = allGameObjects.begin(); it != allGameObjects.end(); )
-	//{
-	//	if (*it == this)
-	//	{
-	//		it = allGameObjects.erase(it);
-	//	}
-	//	else
-	//	{
-	//		++it;
-	//	}
-	//}
+	count--;
+	for (vector<GameObject*>::iterator it = allGameObjects.begin(); it != allGameObjects.end(); )
+	{
+		if (*it == this)
+		{
+			it = allGameObjects.erase(it);
+		}
+		else
+		{
+			++it;
+		}
+	}
 }

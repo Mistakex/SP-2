@@ -9,6 +9,7 @@ public:
 	Bullet();
 	~Bullet();
 	Vector3 getPosition();
+	Vector3 getView();
 	void updatePosition(const Vector3 &pos);
 	void setView(const Vector3 &view);
 	void moveBullet(double dt);

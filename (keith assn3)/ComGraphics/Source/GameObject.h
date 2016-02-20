@@ -10,7 +10,7 @@ class GameObject
 public:
 	virtual ~GameObject();
 	Vector3 position;
-	Vector3 range;
+	Vector3 rangexyz;
 	static vector<GameObject*> allGameObjects;
 	static size_t count;
 protected:

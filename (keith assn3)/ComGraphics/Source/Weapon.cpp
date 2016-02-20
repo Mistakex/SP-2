@@ -72,3 +72,13 @@ void Weapon::update(double dt)
 			Magazine[i].moveBullet(dt);
 	}
 }
+
+bool Weapon::checkBulletCollision(vector<Enemy*> aliens,Bullet bullet)
+{
+	
+	for (vector<Enemy*>::iterator it = aliens.begin(); it != aliens.end(); ++it)
+	{
+		
+	}
+	return false;
+}

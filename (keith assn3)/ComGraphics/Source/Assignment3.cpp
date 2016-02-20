@@ -17,6 +17,7 @@
 #include "Astronaut.h"
 #include "Weapon.h"
 #include "Bullet.h"
+#include "Enemy.h"
 
 #include <stdlib.h>
 #include <sstream>
@@ -26,7 +27,6 @@ extern GLFWwindow* m_window;
 using std::cout;
 using std::endl;
 
-vector<Enemy> Aliens;
 vector<Rock> Rocks;
 vector<Turret> Turrets;
 Weapon pistol(20, 30, 100, 5, false);
