@@ -309,7 +309,7 @@ static std::stringstream resources;
 
 void Assignment3::Update(double dt)
 {
-
+	//************************************Will change this function to a pause function//
 	//countdown for camera lock
 	countdownCameraLock.TimeCountDown(dt);
 	//mouse rotation of camera
@@ -323,7 +323,7 @@ void Assignment3::Update(double dt)
 	{
 		camera.Update(dt);
 	}
-	
+	////*********************************************////
 	pistol.update(dt);
 	debounce.TimeCountDown(dt);
 	if (Application::IsKeyPressed(0x31) && debounce.GetTimeNow() < 0)
@@ -360,8 +360,23 @@ void Assignment3::Update(double dt)
 	{
 		countdownAlienSpawn.resetTime();
 		float spwanAlienz = (rand() % 100 - 50.f);
-		Enemy newAlien(Vector3(50.f, 0.f,spwanAlienz ), Vector3(camera.position.x, -1.f, camera.position.z), 100, 5, 10, 10);
-		Aliens.push_back(newAlien);
+		short s = rand() % 3;
+		std::cout << s << std::endl;
+		if (s == 0)
+		{
+			Enemy newAlien(Vector3(55.f, 0.f,spwanAlienz ), Vector3(camera.position.x, -1.f, camera.position.z), 100, 5, 10, 10);
+			Aliens.push_back(newAlien);
+		}
+		else if (s == 1)
+		{
+			Enemy newAlien(Vector3(55.f, 0.f, spwanAlienz), Vector3(camera.position.x, -1.f, camera.position.z), 200, 5, 5, 10, 2.0f);
+			Aliens.push_back(newAlien);
+		}
+		else
+		{
+			Enemy newAlien(Vector3(55.f, 0.f, spwanAlienz), Vector3(camera.position.x, -1.f, camera.position.z), 40, 5, 17, 10, 0.7f);
+			Aliens.push_back(newAlien);
+		}
 	}
 
 	//Alien moving
@@ -952,6 +967,7 @@ void Assignment3::Render()
 		modelStack.PushMatrix();
 		modelStack.Translate(Aliens[i].position.x, Aliens[i].position.y, Aliens[i].position.z);
 		modelStack.Rotate(Aliens[i].findDirection(), 0, 1, 0);
+		modelStack.Scale(Aliens[i].EnemySize, 1, Aliens[i].EnemySize);
 		RenderAlien(Aliens[i].armRotate);
 		modelStack.PopMatrix();
 

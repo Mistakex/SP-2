@@ -2,7 +2,7 @@
 
 vector<Enemy*> Enemy::Aliens2;
 
-Enemy::Enemy(Vector3 pos,Vector3 tar, int hp, int attack, int movespeed, int range) : Hp(hp), AttackDamage(attack), MoveSpeed(movespeed)
+Enemy::Enemy(Vector3 pos,Vector3 tar, int hp, int attack, int movespeed, int range,float size) : Hp(hp), AttackDamage(attack), MoveSpeed(movespeed)
 {
 	position = pos;
 	target = tar;
@@ -13,7 +13,7 @@ Enemy::Enemy(Vector3 pos,Vector3 tar, int hp, int attack, int movespeed, int ran
 	bulletTarget = Vector3(0, 0, 0);
 	fireDelay = 0;
 	armRotate = 0;
-
+	EnemySize = size;
 	Aliens2.push_back(this);
 }
 
