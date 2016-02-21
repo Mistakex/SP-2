@@ -2,11 +2,17 @@
 
 vector<Enemy*> Enemy::Aliens2;
 
-Enemy::Enemy(Vector3 pos,Vector3 tar, int hp, int attack, int movespeed, int range,float size) : Hp(hp), AttackDamage(attack), MoveSpeed(movespeed)
+Enemy::Enemy()
+{
+	
+}
+
+Enemy::Enemy(Vector3 pos,Vector3 tar, Vector3 range, int hp, int attack, int movespeed,int range2,float size) : Hp(hp), AttackDamage(attack), MoveSpeed(movespeed)
 {
 	position = pos;
 	target = tar;
-	this->range = range;
+	rangexyz = range;
+	this->range = range2;
 	KiteTimer = 0;
 	Shooting = false;
 	bulletPos = Vector3(0, 0, 0);

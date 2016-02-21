@@ -79,7 +79,7 @@ void Assignment3::Init()
 	srand(time_t(NULL));
 	for (float i = 0; i < 3; ++i)
 	{
-		Aliens.push_back(Enemy(Vector3(i, 0, i), Vector3(0, 0, 0)));
+		Aliens.push_back(Enemy(Vector3(i, 0, i), Vector3(0, 0, 0), Vector3(0.5, 1, 0.5)));
 	}
 	// Init VBO here
 
@@ -364,17 +364,17 @@ void Assignment3::Update(double dt)
 		std::cout << s << std::endl;
 		if (s == 0)
 		{
-			Enemy newAlien(Vector3(55.f, 0.f,spwanAlienz ), Vector3(camera.position.x, -1.f, camera.position.z), 100, 5, 10, 10);
+			Enemy newAlien(Vector3(55.f, 0.f,spwanAlienz ), Vector3(camera.position.x, -1.f, camera.position.z),Vector3(0.5,1,0.5), 100, 5, 10,10);
 			Aliens.push_back(newAlien);
 		}
 		else if (s == 1)
 		{
-			Enemy newAlien(Vector3(55.f, 0.f, spwanAlienz), Vector3(camera.position.x, -1.f, camera.position.z), 200, 5, 5, 10, 2.0f);
+			Enemy newAlien(Vector3(55.f, 0.f, spwanAlienz), Vector3(camera.position.x, -1.f, camera.position.z),Vector3(0.5,1,0.5), 200, 5, 5,10, 2.0f);
 			Aliens.push_back(newAlien);
 		}
 		else
 		{
-			Enemy newAlien(Vector3(55.f, 0.f, spwanAlienz), Vector3(camera.position.x, -1.f, camera.position.z), 40, 5, 17, 10, 0.7f);
+			Enemy newAlien(Vector3(55.f, 0.f, spwanAlienz), Vector3(camera.position.x, -1.f, camera.position.z),Vector3(0.5,1,0.5), 40, 5, 17,10, 0.7f);
 			Aliens.push_back(newAlien);
 		}
 	}
@@ -384,6 +384,7 @@ void Assignment3::Update(double dt)
 	{
 		Aliens[i].target = camera.position;
 		Aliens[i].EnemyMove(dt);
+
 	}
 	//Rocks spawn
 	if (countdownRock.TimeCountDown(dt) <= 0 && Rocks.size() < 10)
@@ -443,7 +444,7 @@ void Assignment3::Update(double dt)
 		}
 		if (player.WeaponState == 2 && countdownPistol.GetTimeNow() <= 0)
 		{
-			pistol.Fire();
+			pistol.Fire(Aliens);
 			countdownPistol.resetTime();
 		}
 		else if (player.WeaponState == 6 && countdownTurretSpawn.GetTimeNow() <= 0)
@@ -1015,7 +1016,7 @@ void Assignment3::Render()
 	}
 
 	// Indicator for Mining
-	if (player.isMining)
+	if (player.isMining || pistol.hit)
 	{
 		modelStack.PushMatrix();
 		RenderModelOnScreen(meshList[GEO_HITORNOT], false, 3.f, 39.9f, 29.9f, Vector3(90, 0, 0));

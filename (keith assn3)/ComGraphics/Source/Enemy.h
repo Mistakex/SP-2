@@ -9,7 +9,8 @@ using std::vector;
 class Enemy: public GameObject
 {
 public:
-	Enemy(Vector3 pos,Vector3 tar,int hp = 100, int attack = 5, int movespeed = 10, int range = 10,float size = 1);
+	Enemy();
+	Enemy(Vector3 pos, Vector3 tar, Vector3 range, int hp = 100, int attack = 5, int movespeed = 10, int range2 = 10, float size = 1);
 	~Enemy();
 	int GetEnemyHp();
 	int GetEnemyAtt();
@@ -34,11 +35,13 @@ public:
 	float armRotate;
 	float EnemySize;
 	static vector<Enemy*> Aliens2;
+
+
 private:
+	int range;
 	int Hp;
 	int AttackDamage;
 	int MoveSpeed;
-	int range;
 	short Resources;
 	bool dead;
 	double KiteTimer;
