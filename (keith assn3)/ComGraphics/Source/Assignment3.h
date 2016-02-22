@@ -43,6 +43,7 @@ class Assignment3 : public Scene
 		GEO_PLAYERHP,
 		GEO_PLUSRESOURCES,
 		GEO_UI,
+		GEO_INFO,
 		//Turret
 		GEO_TURRETHEAD,
 		GEO_TURRETBASE,
@@ -102,7 +103,7 @@ public:
 private:
 	void RenderText(Mesh* mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
-	void RenderUIOnScreen(Mesh *mesh, bool enableLight, Vector3 scale, float x, float y);
+	void RenderUIOnScreen(Mesh *mesh, bool enableLight, Vector3 scale, float x, float y, Vector3 rotation);
 	void RenderModelOnScreen(Mesh *mesh, bool enableLight, float size, float x, float y,Vector3 rotation);
 	void RenderMesh(Mesh *mesh, bool enableLight);
 	void RenderSkybox();
@@ -122,6 +123,7 @@ private:
 	Countdown countdownTurretSpawn = Countdown(1.0f);
 	Countdown countdownCameraLock = Countdown(0.5f);
 	Player player = Player(100);
+	Countdown infoscreen = Countdown(0.5f);
 	
 	//Turret Position
 	Vector3 TurretPos;
@@ -130,6 +132,9 @@ private:
 	//Gun
 	bool isPistol = false;
 	bool isZoom = false;
+
+	//info screen
+	bool isShown = false;
 
 	unsigned m_vertexArrayID;
 	Mesh *meshList[NUM_GEOMETRY];

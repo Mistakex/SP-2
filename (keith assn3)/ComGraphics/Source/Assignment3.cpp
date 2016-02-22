@@ -268,6 +268,9 @@ void Assignment3::Init()
 	meshList[GEO_UI] = MeshBuilder::GenerateQuad("UI Screen", Color(1,1,1));
 	meshList[GEO_UI]->textureID = LoadTGA("Image//UI_Frame.tga");
 
+	meshList[GEO_INFO] = MeshBuilder::GenerateQuad("Info", Color(1, 1, 1));
+	meshList[GEO_INFO]->textureID = LoadTGA("Image//instructions.tga");
+
 	Mtx44 projection;
 	projection.SetToPerspective(70.0f, 4.0f / 3.0f, 0.1f, 5000.0f);
 	projectionStack.LoadMatrix(projection);
@@ -292,8 +295,10 @@ void Assignment3::Update(double dt)
 	//************************************Will change this function to a pause function//
 	//countdown for camera lock
 	countdownCameraLock.TimeCountDown(dt);
+	infoscreen.TimeCountDown(dt);
+
 	//mouse rotation of camera
-	if (Application::IsKeyPressed(VK_LMENU) && countdownCameraLock.GetTimeNow() <= 0)
+	if (Application::IsKeyPressed(0x50) && countdownCameraLock.GetTimeNow() <= 0 || Application::IsKeyPressed(VK_F1))
 	{
 		if (CameraMouseUpdate == false){ CameraMouseUpdate = true; }
 		else{ CameraMouseUpdate = false; }
@@ -732,7 +737,7 @@ void Assignment3::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, 
 	glEnable(GL_DEPTH_TEST);
 }
 
-void Assignment3::RenderUIOnScreen(Mesh *mesh, bool enableLight, Vector3 scale, float x, float y) // used to render helmet on screen
+void Assignment3::RenderUIOnScreen(Mesh *mesh, bool enableLight, Vector3 scale, float x, float y, Vector3 rotation) // used to render helmet on screen
 {
 
 	Mtx44 ortho;
@@ -746,8 +751,9 @@ void Assignment3::RenderUIOnScreen(Mesh *mesh, bool enableLight, Vector3 scale, 
 	modelStack.LoadIdentity(); //Reset modelStack
 	modelStack.Translate(x, y, 0);
 	modelStack.Scale(scale.x, scale.y, scale.z);
-	//modelStack.Rotate(90, 0, 0, 1);
-	modelStack.Rotate(90, 1, 0, 0);
+	modelStack.Rotate(rotation.x, 1, 0, 0);
+	modelStack.Rotate(rotation.y, 0, 1, 0);
+	modelStack.Rotate(rotation.z, 0, 0, 1);
 	RenderMesh(mesh, enableLight);
 
 	projectionStack.PopMatrix();
@@ -1031,9 +1037,30 @@ void Assignment3::Render()
 	//UI Screen
 	modelStack.PushMatrix();
 	glBlendFunc(1.5, 1);
-	RenderUIOnScreen(meshList[GEO_UI], false, Vector3(82, 10, 50), 40, 5);
+	RenderUIOnScreen(meshList[GEO_UI], false, Vector3(82, 10, 50), 40, 5, Vector3(90, 0, 0));
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	modelStack.PopMatrix();
+	
+	// INFO
+	if (isShown == true)
+	{
+		modelStack.PushMatrix();
+		glBlendFunc(1.5, 1);
+		RenderUIOnScreen(meshList[GEO_INFO], false, Vector3(40, 40, 40), 40, 30, Vector3(90, 270, 0));
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		modelStack.PopMatrix();
+	}
+
+	if (Application::IsKeyPressed(VK_F1) && infoscreen.GetTimeNow() <= 0)
+	{
+		if (isShown == false)
+		{
+			isShown = true;
+		}
+		else
+			isShown = false;
+		infoscreen.resetTime();
+	}
 	
 	// FRAMERATE
 	modelStack.PushMatrix();
