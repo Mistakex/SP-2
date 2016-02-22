@@ -394,6 +394,7 @@ void Assignment3::Update(double dt)
 		//Turrets Aim and Shoot
 		for (size_t i = 0; i < Turrets.size(); i++)
 		{
+			if (Aliens.empty() == true){ Turrets[i].bulletPos = (0, -1, 0); }
 			short s = 0;
 			if (Aliens.empty() == false)
 			{
