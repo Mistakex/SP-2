@@ -20,14 +20,15 @@ public:
 	Vector3 GetPosition();
 	float turretRotation;		//rotates to the enemy position
 	Vector3 bulletPos;
+	Vector3 Target;
+	bool shooting;
+	bool hit;
 private:
 	int Hp;
 	const int damage;
 	const Vector3 position;
-	Vector3 Target;
 	Vector3 Alien;
 	float fireDelay;
-	bool shooting;
 	float BulletSpeed;
 	bool DoneTargeting;
 };

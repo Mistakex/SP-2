@@ -7,6 +7,7 @@ Turret::Turret(const int&hp, const int&dmg, const Vector3 &pos) :damage(dmg), po
 	shooting = 0;
 	BulletSpeed = 5.0f;
 	turretRotation = 0;
+	hit = 0;
 }
 
 Turret::~Turret()
@@ -24,7 +25,7 @@ void Turret::LookAtEnemy(Enemy enemy)
 void Turret::ShootAtEnemy(double dt)
 {
 	fireDelay += dt;
-	if (fireDelay < 3)
+	if (fireDelay > 1 && hit == false)
 	{
 		if (shooting == true)
 		{
@@ -37,8 +38,9 @@ void Turret::ShootAtEnemy(double dt)
 			Target = Alien;
 		}
 	}
-	else
+	else if (hit == true)
 	{
+		hit = false;
 		shooting = false;
 		fireDelay = 0;
 	}
