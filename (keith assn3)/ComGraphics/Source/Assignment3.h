@@ -126,7 +126,8 @@ private:
 	
 	//Turret Position
 	Vector3 TurretPos;
-
+	//Rock resource
+	int resourceOfRock;
 	//Gun
 	bool isPistol = false;
 	bool isZoom = false;

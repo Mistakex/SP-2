@@ -431,9 +431,9 @@ void Assignment3::Update(double dt)
 					if (player.isMining == false)
 					{
 						player.isMining = true;
-						player.ObtainResources(1);
+						resourceOfRock=(*i).GetResources();
+						player.ObtainResources(resourceOfRock);
 						(*i).ReduceSize();
-						cout << "Mining..." << endl;
 					}
 					if ((*i).Size <= 0)
 					{
@@ -1014,7 +1014,7 @@ void Assignment3::Render()
 	if (player.isMining)
 	{
 		modelStack.PushMatrix();
-		RenderTextOnScreen(meshList[GEO_PLUSRESOURCES], "+1 Resources", Color(0, 1, 0), 3, 11.5, 15);
+		RenderTextOnScreen(meshList[GEO_PLUSRESOURCES], std::to_string(resourceOfRock)+" + Resources", Color(0, 1, 0), 3, 11.5, 15);
 		modelStack.PopMatrix();
 	}
 

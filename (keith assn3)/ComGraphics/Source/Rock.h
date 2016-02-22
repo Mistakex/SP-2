@@ -7,9 +7,10 @@ public:
 	Rock(Vector3 pos,float SizeOfRock);
 	~Rock();
 	void ReduceSize();
-	short GetResources();
+	int GetResources();
 	float GetSize();
 
+	int Resources;
 	float Size;
 	Vector3 Position;
 private:

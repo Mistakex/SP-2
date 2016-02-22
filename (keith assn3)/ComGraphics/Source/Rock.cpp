@@ -9,14 +9,14 @@ Rock::Rock(Vector3 pos, float SizeOfRock)
 	Position.z = pos.z;
 }
 
-short Rock::GetResources()
+int Rock::GetResources()
 {
-	return (rand() % 5);
+	Resources = (rand() % 5+1);
+	return Resources;
 }
 void Rock::ReduceSize()
 {
 	Size -= 0.5;
-	GetResources();
 }
 float Rock::GetSize()
 {
