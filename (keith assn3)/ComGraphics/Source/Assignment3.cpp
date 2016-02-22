@@ -388,11 +388,20 @@ void Assignment3::Update(double dt)
 	//Turrets Aim and Shoot
 	for (size_t i = 0; i < Turrets.size(); i++)
 	{
+		short s = 0;
 		if (Aliens.empty() == false)
 		{
-			Turrets[i].LookAtEnemy(Aliens[0]);
-			Turrets[i].TargetEnemy(Aliens[0].position);
-			Turrets[i].ShootAtEnemy(dt);
+			while (s < Aliens.size()-1)
+			{
+				if (getMagnitude(Turrets[i].GetPosition(), Aliens[i].position) <= 15.f)
+				{
+					Turrets[i].LookAtEnemy(Aliens[s]);
+					Turrets[i].TargetEnemy(Aliens[s].position);
+					Turrets[i].ShootAtEnemy(dt);
+					break;
+				}
+				s++;
+			}
 		}
 	}
 	//Rock mining
@@ -434,7 +443,7 @@ void Assignment3::Update(double dt)
 			pistol.Fire(&Aliens);
 			countdownPistol.resetTime();
 		}
-		else if (player.WeaponState == 6 && countdownTurretSpawn.GetTimeNow() <= 0)
+		else if (player.WeaponState == 6 && countdownTurretSpawn.GetTimeNow() <= 0 && player.getResources() >= 50)
 		{
 			/////////////////////Add requirements for resources///////////////
 			float a = 1; //used to mutiply camera view to get intersection with 0
@@ -445,6 +454,7 @@ void Assignment3::Update(double dt)
 					TurretPos = camera.view*a;
 					a += 0.1;
 				}
+				player.ObtainResources(-50);
 				Turret newTurret(100, 10, Vector3(TurretPos.x + camera.position.x, 0, TurretPos.z + camera.position.z));
 				Turrets.push_back(newTurret);
 				countdownTurretSpawn.resetTime();
