@@ -3,6 +3,7 @@
 #include"Vector3.h"
 #include <vector>
 #include"GameObject.h"
+#include "Camera3.h"
 
 using std::vector;
 
@@ -26,6 +27,7 @@ public:
 	void EnemyTakeDmg(int Dmg);
 	void EnemyShootAt(const double &dt,const float &bulletSpeed);			//shooting of the enemy
 	float findDirection();
+	void update(Camera3 camera,const double &dt);
 
 	bool InRangeOfPlayer();		// dist away from player
 	bool isDead();					//dead or not
@@ -34,8 +36,6 @@ public:
 	Vector3 bulletTarget;
 	float armRotate;
 	float EnemySize;
-	static vector<Enemy*> Aliens2;
-
 
 private:
 	int range;

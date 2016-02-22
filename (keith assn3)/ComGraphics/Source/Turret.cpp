@@ -12,6 +12,7 @@ Turret::Turret(const int&hp, const int&dmg, const Vector3 &pos) :damage(dmg), po
 Turret::~Turret()
 {
 }
+
 void Turret::LookAtEnemy(Enemy enemy)
 {
 	Target = enemy.position;
@@ -19,6 +20,7 @@ void Turret::LookAtEnemy(Enemy enemy)
 	if (Target.z > position.z){ turretRotation = Math::RadianToDegree(atan(view.x / view.z))-180.0f; }
 	else{ turretRotation = Math::RadianToDegree(atan(view.x / view.z)); }
 }
+
 void Turret::ShootAtEnemy(double dt)
 {
 	fireDelay += dt;

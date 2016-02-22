@@ -381,12 +381,18 @@ void Assignment3::Update(double dt)
 		}
 	}
 
-	//Alien moving
-	for (size_t i = 0; i < Aliens.size(); ++i)
+	//Alien update
+	for (vector<Enemy>::iterator it = Aliens.begin(); it != Aliens.end();)
 	{
-		Aliens[i].target = camera.position;
-		Aliens[i].EnemyMove(dt);
-
+		(*it).update(camera, dt);
+		if ((*it).isDead())
+		{
+			it = Aliens.erase(it);
+		}
+		else
+		{
+			++it;
+		}
 	}
 	//Rocks spawn
 	if (countdownRock.TimeCountDown(dt) <= 0 && Rocks.size() < 10)
@@ -447,7 +453,7 @@ void Assignment3::Update(double dt)
 		}
 		if (player.WeaponState == 2 && countdownPistol.GetTimeNow() <= 0)
 		{
-			pistol.Fire(Aliens);
+			pistol.Fire(&Aliens);
 			countdownPistol.resetTime();
 		}
 		else if (player.WeaponState == 6 && countdownTurretSpawn.GetTimeNow() <= 0)

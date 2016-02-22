@@ -14,13 +14,13 @@ public:
 	Weapon(const int &dmg,const int &AmmoInClip,const int &MaxAmmoForWeap, const int& price,const bool &AllowZoomForWeap);
 	~Weapon();
 	void init(Camera3 *target);
-	void Fire(vector<Enemy> aliens);						//Goes into Update
+	void Fire(vector<Enemy> *aliens);						//Goes into Update
 	bool GetAllowZoom();
 	bool GetZoom();
 	int getUpgradeCost();
 	void setUpgradeCost(int newUC);
 	void update(double dt);
-	bool checkBulletCollision(vector<Enemy> aliens,Bullet bullet);
+	bool checkBulletCollision(vector<Enemy> *aliens,Bullet bullet);
 	Bullet* Magazine;
 	int upgradeCost;
 	int Damage;

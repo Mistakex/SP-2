@@ -25,7 +25,7 @@ void Weapon::init(Camera3 *camera)
 	this->camera = camera;
 }
 
-void Weapon::Fire(vector<Enemy> aliens)
+void Weapon::Fire(vector<Enemy> *aliens)
 {
 	if (bulletCount < AmmoInClip)
 	{
@@ -79,7 +79,7 @@ void Weapon::update(double dt)
 	if (hit == true)
 	{
 		hitDelay += dt;
-		if (hitDelay > 0.3f)
+		if (hitDelay > 0.2f)
 		{
 			hit = false;
 			hitDelay = 0.f;
@@ -87,9 +87,9 @@ void Weapon::update(double dt)
 	}
 }
 
-bool Weapon::checkBulletCollision(vector<Enemy> aliens,Bullet bullet)
+bool Weapon::checkBulletCollision(vector<Enemy> *aliens,Bullet bullet)
 {
-	for (vector<Enemy>::iterator it = aliens.begin(); it != aliens.end(); ++it)
+	for (vector<Enemy>::iterator it = aliens->begin(); it != aliens->end(); ++it)
 	{
 		
 		Vector3 temp = bullet.getPosition();
@@ -100,6 +100,7 @@ bool Weapon::checkBulletCollision(vector<Enemy> aliens,Bullet bullet)
 				&& temp.y >(*it).position.y - (*it).rangexyz.y && temp.y < (*it).position.y + (*it).rangexyz.y
 				&& temp.z >(*it).position.z - (*it).rangexyz.z && temp.z < (*it).position.z + (*it).rangexyz.z)
 			{
+				(*it).EnemyTakeDmg(Damage);
 				return true;
 			}
 		}
