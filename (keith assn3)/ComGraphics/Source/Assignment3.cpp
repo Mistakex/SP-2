@@ -302,265 +302,266 @@ void Assignment3::Update(double dt)
 	if (CameraMouseUpdate == true)
 	{
 		camera.Update(dt);
-	}
-	////*********************************************////
-	pistol.update(dt);
-	debounce.TimeCountDown(dt);
-	if (Application::IsKeyPressed(0x31) && debounce.GetTimeNow() < 0)
-	{
-		debounce.resetTime();
-		player.WeaponState = 2;
-		//isPistol = true;
-	}
-	if (Application::IsKeyPressed(0x32) && debounce.GetTimeNow() < 0)
-	{
-		debounce.resetTime();
-		player.WeaponState = 1;
-		//isPistol = false;
-	}
-	if (Application::IsKeyPressed(0x33) && debounce.GetTimeNow() < 0)
-	{
-		debounce.resetTime();
-		player.WeaponState = 6;
-		//isPistol = false;
-	}
+
+		////*********************************************////
+		pistol.update(dt);
+		debounce.TimeCountDown(dt);
+		if (Application::IsKeyPressed(0x31) && debounce.GetTimeNow() < 0)
+		{
+			debounce.resetTime();
+			player.WeaponState = 2;
+			//isPistol = true;
+		}
+		if (Application::IsKeyPressed(0x32) && debounce.GetTimeNow() < 0)
+		{
+			debounce.resetTime();
+			player.WeaponState = 1;
+			//isPistol = false;
+		}
+		if (Application::IsKeyPressed(0x33) && debounce.GetTimeNow() < 0)
+		{
+			debounce.resetTime();
+			player.WeaponState = 6;
+			//isPistol = false;
+		}
 
 
 
-	// updating 2nd light
-	light[1].position.Set(camera.position.x + camera.target.x/15,
-		camera.position.y + camera.target.y/15,
-		camera.position.z + camera.target.z/15);
-	light[1].spotDirection.Set(-(camera.target.x - camera.position.x), -(camera.target.y - camera.position.y), -(camera.target.z - camera.position.z));
+		// updating 2nd light
+		light[1].position.Set(camera.position.x + camera.target.x / 15,
+			camera.position.y + camera.target.y / 15,
+			camera.position.z + camera.target.z / 15);
+		light[1].spotDirection.Set(-(camera.target.x - camera.position.x), -(camera.target.y - camera.position.y), -(camera.target.z - camera.position.z));
 
-	//first light
-	light[0].position.Set(0.f, 5.f, 20.f);
-	//Alien Spawn
-	if ((countdownAlienSpawn.TimeCountDown(dt) <= 0) && (Aliens.size()) < 10 &&(f.flagIsBlue == true))
-	{
-		countdownAlienSpawn.resetTime();
-		float spwanAlienz = (rand() % 100 - 50.f);
-		short s = rand() % 3;
-		std::cout << s << std::endl;
-		if (s == 0)
+		//first light
+		light[0].position.Set(0.f, 5.f, 20.f);
+		//Alien Spawn
+		if ((countdownAlienSpawn.TimeCountDown(dt) <= 0) && (Aliens.size()) < 10 && (f.flagIsBlue == true))
 		{
-			Enemy newAlien(Vector3(55.f, 0.f,spwanAlienz ), Vector3(camera.position.x, -1.f, camera.position.z),Vector3(0.5,1,0.5), 100, 5, 10,10);
-			Aliens.push_back(newAlien);
-		}
-		else if (s == 1)
-		{
-			Enemy newAlien(Vector3(55.f, 0.f, spwanAlienz), Vector3(camera.position.x, -1.f, camera.position.z),Vector3(0.5,1,0.5), 200, 5, 5,10, 2.0f);
-			Aliens.push_back(newAlien);
-		}
-		else
-		{
-			Enemy newAlien(Vector3(55.f, 0.f, spwanAlienz), Vector3(camera.position.x, -1.f, camera.position.z),Vector3(0.5,1,0.5), 40, 5, 17,10, 0.7f);
-			Aliens.push_back(newAlien);
-		}
-	}
-
-	//Alien update
-	for (vector<Enemy>::iterator it = Aliens.begin(); it != Aliens.end();)
-	{
-		(*it).update(camera, dt, &player);
-		if ((*it).isDead())
-		{
-			it = Aliens.erase(it);
-		}
-		else
-		{
-			++it;
-		}
-	}
-	//Rocks spawn
-	if (countdownRock.TimeCountDown(dt) <= 0 && Rocks.size() < 10)
-	{
-		randomx = rand() % 100 -50.f;
-		randomz = rand() % 100 -50.f;
-		
-		if (getMagnitude(Vector3(randomx, -1, randomz), Vector3(camera.position.x, -1, camera.position.z)) >= 20.0f)//spwan 20 units away from the player
-		{
-			countdownRock.resetTime();
-			Rock newRock(Vector3(randomx, -1.f, randomz), rand() % 4 + 1.f);
-			Rocks.push_back(newRock);
-		}
-	}
-	//Turrets Aim and Shoot
-	for (size_t i = 0; i < Turrets.size(); i++)
-	{
-		short s = 0;
-		if (Aliens.empty() == false)
-		{
-			while (s < Aliens.size()-1)
+			countdownAlienSpawn.resetTime();
+			float spwanAlienz = (rand() % 100 - 50.f);
+			short s = rand() % 3;
+			std::cout << s << std::endl;
+			if (s == 0)
 			{
-				if (getMagnitude(Turrets[i].GetPosition(), Aliens[i].position) <= 15.f)
-				{
-					Turrets[i].LookAtEnemy(Aliens[s]);
-					Turrets[i].TargetEnemy(Aliens[s].position);
-					Turrets[i].ShootAtEnemy(dt);
-					break;
-				}
-				s++;
+				Enemy newAlien(Vector3(55.f, 0.f, spwanAlienz), Vector3(camera.position.x, -1.f, camera.position.z), Vector3(0.5, 1, 0.5), 100, 5, 10, 10);
+				Aliens.push_back(newAlien);
+			}
+			else if (s == 1)
+			{
+				Enemy newAlien(Vector3(55.f, 0.f, spwanAlienz), Vector3(camera.position.x, -1.f, camera.position.z), Vector3(0.5, 1, 0.5), 200, 5, 5, 10, 2.0f);
+				Aliens.push_back(newAlien);
+			}
+			else
+			{
+				Enemy newAlien(Vector3(55.f, 0.f, spwanAlienz), Vector3(camera.position.x, -1.f, camera.position.z), Vector3(0.5, 1, 0.5), 40, 5, 17, 10, 0.7f);
+				Aliens.push_back(newAlien);
 			}
 		}
-	}
-	//Rock mining
-	player.WhileMining(dt);
-	//Timers
-	countdownMining.TimeCountDown(dt);
-	countdownTurretSpawn.TimeCountDown(dt);
-	countdownPistol.TimeCountDown(dt);
-	if (Application::IsKeyPressed(VK_LBUTTON)) //check for keypress and weapon holding
-	{
-		
-		if (player.WeaponState == 1 && (Rocks.empty() == 0) && ( countdownMining.GetTimeNow()<= 0))
+
+		//Alien update
+		for (vector<Enemy>::iterator it = Aliens.begin(); it != Aliens.end();)
 		{
-			vector<Rock>::iterator i = Rocks.begin();
-			while (i != Rocks.end())
+			(*it).update(camera, dt, &player);
+			if ((*it).isDead())
 			{
-				if ((getMagnitude(Vector3((*i).Position.x, -1, (*i).Position.z), Vector3(camera.position.x, camera.position.y - 1, camera.position.z)) - (*i).Size * 2.f) < 0
-					&& player.getAngle(camera.view, Vector3((*i).Position.x, -1, (*i).Position.z) - camera.position) < 45.f)
+				it = Aliens.erase(it);
+			}
+			else
+			{
+				++it;
+			}
+		}
+		//Rocks spawn
+		if (countdownRock.TimeCountDown(dt) <= 0 && Rocks.size() < 10)
+		{
+			randomx = rand() % 100 - 50.f;
+			randomz = rand() % 100 - 50.f;
+
+			if (getMagnitude(Vector3(randomx, -1, randomz), Vector3(camera.position.x, -1, camera.position.z)) >= 20.0f)//spwan 20 units away from the player
+			{
+				countdownRock.resetTime();
+				Rock newRock(Vector3(randomx, -1.f, randomz), rand() % 4 + 1.f);
+				Rocks.push_back(newRock);
+			}
+		}
+		//Turrets Aim and Shoot
+		for (size_t i = 0; i < Turrets.size(); i++)
+		{
+			short s = 0;
+			if (Aliens.empty() == false)
+			{
+				while (s < Aliens.size() - 1)
 				{
-					if (player.isMining == false)
+					if (getMagnitude(Turrets[i].GetPosition(), Aliens[i].position) <= 15.f)
 					{
-						player.isMining = true;
-						resourceOfRock=(*i).GetResources();
-						player.ObtainResources(resourceOfRock);
-						(*i).ReduceSize();
+						Turrets[i].LookAtEnemy(Aliens[s]);
+						Turrets[i].TargetEnemy(Aliens[s].position);
+						Turrets[i].ShootAtEnemy(dt);
+						break;
 					}
-					if ((*i).Size <= 0)
-					{
-						Rocks.erase(i);
-					}
-					countdownMining.resetTime();
-					break;
+					s++;
 				}
-				else{ i++; }
 			}
 		}
-		if (player.WeaponState == 2 && countdownPistol.GetTimeNow() <= 0)
+		//Rock mining
+		player.WhileMining(dt);
+		//Timers
+		countdownMining.TimeCountDown(dt);
+		countdownTurretSpawn.TimeCountDown(dt);
+		countdownPistol.TimeCountDown(dt);
+		if (Application::IsKeyPressed(VK_LBUTTON)) //check for keypress and weapon holding
 		{
-			pistol.Fire(&Aliens);
-			countdownPistol.resetTime();
-		}
-		else if (player.WeaponState == 6 && countdownTurretSpawn.GetTimeNow() <= 0 && player.getResources() >= 50)
-		{
-			/////////////////////Add requirements for resources///////////////
-			float a = 1; //used to mutiply camera view to get intersection with 0
-			if (camera.target.y <= 0)
+
+			if (player.WeaponState == 1 && (Rocks.empty() == 0) && (countdownMining.GetTimeNow() <= 0))
 			{
-				while (TurretPos.y >= -1)
+				vector<Rock>::iterator i = Rocks.begin();
+				while (i != Rocks.end())
 				{
-					TurretPos = camera.view*a;
-					a += 0.1;
+					if ((getMagnitude(Vector3((*i).Position.x, -1, (*i).Position.z), Vector3(camera.position.x, camera.position.y - 1, camera.position.z)) - (*i).Size * 2.f) < 0
+						&& player.getAngle(camera.view, Vector3((*i).Position.x, -1, (*i).Position.z) - camera.position) < 45.f)
+					{
+						if (player.isMining == false)
+						{
+							player.isMining = true;
+							resourceOfRock = (*i).GetResources();
+							player.ObtainResources(resourceOfRock);
+							(*i).ReduceSize();
+						}
+						if ((*i).Size <= 0)
+						{
+							Rocks.erase(i);
+						}
+						countdownMining.resetTime();
+						break;
+					}
+					else{ i++; }
 				}
-				player.ObtainResources(-50);
-				Turret newTurret(100, 10, Vector3(TurretPos.x + camera.position.x, 0, TurretPos.z + camera.position.z));
-				Turrets.push_back(newTurret);
-				countdownTurretSpawn.resetTime();
-				TurretPos = (0.f, 0.f, 0.f);//reset the value of the variable
+			}
+			if (player.WeaponState == 2 && countdownPistol.GetTimeNow() <= 0)
+			{
+				pistol.Fire(&Aliens);
+				countdownPistol.resetTime();
+			}
+			else if (player.WeaponState == 6 && countdownTurretSpawn.GetTimeNow() <= 0 && player.getResources() >= 50)
+			{
+				/////////////////////Add requirements for resources///////////////
+				float a = 1; //used to mutiply camera view to get intersection with 0
+				if (camera.target.y <= 0)
+				{
+					while (TurretPos.y >= -1)
+					{
+						TurretPos = camera.view*a;
+						a += 0.1;
+					}
+					player.ObtainResources(-50);
+					Turret newTurret(100, 10, Vector3(TurretPos.x + camera.position.x, 0, TurretPos.z + camera.position.z));
+					Turrets.push_back(newTurret);
+					countdownTurretSpawn.resetTime();
+					TurretPos = (0.f, 0.f, 0.f);//reset the value of the variable
+				}
 			}
 		}
-	}
-	if (Application::IsKeyPressed(VK_RBUTTON) && isZoom == false && rightClick.TimeCountDown(dt) < 0)
-	{
-		if (player.WeaponState == 2)
+		if (Application::IsKeyPressed(VK_RBUTTON) && isZoom == false && rightClick.TimeCountDown(dt) < 0)
 		{
-			Mtx44 projection;
-			projection.SetToPerspective(30.0f, 4.0f / 3.0f, 0.1f, 5000.0f);
-			projectionStack.LoadMatrix(projection);
-			camera.MouseSensitivity = 0.1f;
-			isZoom = true;
+			if (player.WeaponState == 2)
+			{
+				Mtx44 projection;
+				projection.SetToPerspective(30.0f, 4.0f / 3.0f, 0.1f, 5000.0f);
+				projectionStack.LoadMatrix(projection);
+				camera.MouseSensitivity = 0.1f;
+				isZoom = true;
+			}
+			rightClick.resetTime();
 		}
-		rightClick.resetTime();
-	}
 
-	if (Application::IsKeyPressed(VK_RBUTTON) && isZoom == true && rightClick.TimeCountDown(dt) < 0)
-	{
-		if (player.WeaponState == 2)
+		if (Application::IsKeyPressed(VK_RBUTTON) && isZoom == true && rightClick.TimeCountDown(dt) < 0)
 		{
-			Mtx44 projection;
-			projection.SetToPerspective(70.0f, 4.0f / 3.0f, 0.1f, 5000.0f);
-			projectionStack.LoadMatrix(projection);
-			isZoom = false;
-			camera.MouseSensitivity = 0.2f;
+			if (player.WeaponState == 2)
+			{
+				Mtx44 projection;
+				projection.SetToPerspective(70.0f, 4.0f / 3.0f, 0.1f, 5000.0f);
+				projectionStack.LoadMatrix(projection);
+				isZoom = false;
+				camera.MouseSensitivity = 0.2f;
+			}
+			rightClick.resetTime();
 		}
-		rightClick.resetTime();
-	}
 
-	//framerate
-	framerate << "Framerate:" << 1 / dt;
+		//framerate
+		framerate << "Framerate:" << 1 / dt;
 
-	//resources
-	resources << "Resources: " << player.getResources();
+		//resources
+		resources << "Resources: " << player.getResources();
 
-	//rotation of skybox
-	if (skyBoxRotate < 360.f)
-	{
-		skyBoxRotate += (float)dt;
-	}
-	else
-	{
-		skyBoxRotate = 0.f;
-	}
-
-	
-	// flag rising up when get close
-	if (f.getMagnitude(camera.position) <= 7.5f)
-	{
-		if (f.flagIsBlue == true)
+		//rotation of skybox
+		if (skyBoxRotate < 360.f)
 		{
-			f.FlagHeightIncrease(2.5f, dt);
-		}
-		else if (f.FlagHeightDecrease(0.5f, dt) <= 0.5f)
-		{
-			f.flagIsBlue = true;
-		}
-	}
-
-	//Astronaut
-	if ((getMagnitude(a.GetAstronautPos(), camera.position)) < 3)
-	{
-		a.playerIsNear = true;
-	}
-	else
-	{
-		a.playerIsNear = false;
-	}
-
-	//small test to see if - resources work. Dont need to add debounce, going to be replaced with ui functions
-	if (((getMagnitude(a.GetAstronautPos(), camera.position)) < 3) && Application::IsKeyPressed('E'))
-	{
-		if (player.getResources() > 0)
-		{
-			player.ObtainResources(-1);
-			cout << player.getResources() << endl;
+			skyBoxRotate += (float)dt;
 		}
 		else
-			cout << "not enuff" << endl;
-	}
+		{
+			skyBoxRotate = 0.f;
+		}
 
-	if (Application::IsKeyPressed('T'))
-	{
-		player.TakeDmg(1);
-		cout << player.GetHp() << endl;
-	}
 
-	// backface culling
-	//if (Application::IsKeyPressed('1')) //enable back face culling
-	//	glEnable(GL_CULL_FACE);
-	//if (Application::IsKeyPressed('2')) //disable back face culling
-	//	glDisable(GL_CULL_FACE);
-	//if (Application::IsKeyPressed('3'))
-	//	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); //default fill mode
-	//if (Application::IsKeyPressed('4'))
-	//	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //wireframe mode
+		// flag rising up when get close
+		if (f.getMagnitude(camera.position) <= 7.5f)
+		{
+			if (f.flagIsBlue == true)
+			{
+				f.FlagHeightIncrease(2.5f, dt);
+			}
+			else if (f.FlagHeightDecrease(0.5f, dt) <= 0.5f)
+			{
+				f.flagIsBlue = true;
+			}
+		}
 
-	//reset everything
-	if (Application::IsKeyPressed('R'))
-	{
-		f.flagIsBlue = false;
-		f.flagheight = 2;
+		//Astronaut
+		if ((getMagnitude(a.GetAstronautPos(), camera.position)) < 3)
+		{
+			a.playerIsNear = true;
+		}
+		else
+		{
+			a.playerIsNear = false;
+		}
+
+		//small test to see if - resources work. Dont need to add debounce, going to be replaced with ui functions
+		if (((getMagnitude(a.GetAstronautPos(), camera.position)) < 3) && Application::IsKeyPressed('E'))
+		{
+			if (player.getResources() > 0)
+			{
+				player.ObtainResources(-1);
+				cout << player.getResources() << endl;
+			}
+			else
+				cout << "not enuff" << endl;
+		}
+
+		if (Application::IsKeyPressed('T'))
+		{
+			player.TakeDmg(1);
+			cout << player.GetHp() << endl;
+		}
+
+		// backface culling
+		if (Application::IsKeyPressed('7')) //enable back face culling
+			glEnable(GL_CULL_FACE);
+		if (Application::IsKeyPressed('8')) //disable back face culling
+			glDisable(GL_CULL_FACE);
+		if (Application::IsKeyPressed('9'))
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); //default fill mode
+		if (Application::IsKeyPressed('0'))
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //wireframe mode
+
+		//reset everything
+		if (Application::IsKeyPressed('R'))
+		{
+			f.flagIsBlue = false;
+			f.flagheight = 2;
+		}
 	}
 }
 
