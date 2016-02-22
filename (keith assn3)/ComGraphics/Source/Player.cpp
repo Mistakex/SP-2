@@ -32,7 +32,7 @@ void Player::WhileMining(const double &dt)
 	float speed = 500;
 	if (isMining == true)
 	{
-		playMusic(1);
+		playMusic(0);
 		MiningAction += speed * dt;
 		if (MiningAction >= 45.f)
 		{

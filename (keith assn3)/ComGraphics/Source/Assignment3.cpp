@@ -934,7 +934,7 @@ void Assignment3::Render()
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
-		std::cout << Turrets[i].turretRotation << std::endl;
+		//std::cout << Turrets[i].turretRotation << std::endl;
 		modelStack.Translate(Turrets[i].GetPosition().x, Turrets[i].GetPosition().y-0.7f, Turrets[i].GetPosition().z);
 		modelStack.Rotate(Turrets[i].turretRotation, 0, 1, 0);
 		modelStack.Scale(0.3f, 0.3f, 0.3f);
