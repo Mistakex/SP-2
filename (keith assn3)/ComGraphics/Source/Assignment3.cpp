@@ -407,7 +407,7 @@ void Assignment3::Update(double dt)
 		if (Aliens.empty() == false)
 		{
 			Turrets[i].LookAtEnemy(Aliens[0]);
-			Turrets[i].TargetEnemy(Aliens[0].EnemyPos);
+			Turrets[i].TargetEnemy(Aliens[0].position);
 			Turrets[i].ShootAtEnemy(dt);
 		}
 	}
@@ -433,6 +433,7 @@ void Assignment3::Update(double dt)
 						player.isMining = true;
 						player.ObtainResources(1);
 						(*i).ReduceSize();
+						cout << "Mining..." << endl;
 					}
 					if ((*i).Size <= 0)
 					{
