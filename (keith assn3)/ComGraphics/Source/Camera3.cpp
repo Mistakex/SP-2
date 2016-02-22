@@ -21,6 +21,7 @@ void Camera3::Init(const Vector3& pos, const Vector3& target, const Vector3& up)
 	Vector3 right = view.Cross(up);
 	right.y = 0;
 	right.Normalize();
+	MouseSensitivity = 0.2;
 	this->up = defaultUp = right.Cross(view).Normalized();
 }
 
@@ -247,7 +248,7 @@ void Camera3::Update(double dt)
 	}
 
 	//mouse rotation of camera
-	CameraRotation(0.2f);
+	CameraRotation(MouseSensitivity);
 
 	view = (target - position).Normalized();
 	right = view.Cross(defaultUp);

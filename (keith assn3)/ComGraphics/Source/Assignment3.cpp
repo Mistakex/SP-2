@@ -475,6 +475,7 @@ void Assignment3::Update(double dt)
 			Mtx44 projection;
 			projection.SetToPerspective(30.0f, 4.0f / 3.0f, 0.1f, 5000.0f);
 			projectionStack.LoadMatrix(projection);
+			camera.MouseSensitivity = 0.1f;
 			isZoom = true;
 		}
 		rightClick.resetTime();
@@ -488,6 +489,7 @@ void Assignment3::Update(double dt)
 			projection.SetToPerspective(70.0f, 4.0f / 3.0f, 0.1f, 5000.0f);
 			projectionStack.LoadMatrix(projection);
 			isZoom = false;
+			camera.MouseSensitivity = 0.2f;
 		}
 		rightClick.resetTime();
 	}
