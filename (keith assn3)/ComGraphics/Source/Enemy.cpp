@@ -54,7 +54,7 @@ bool Enemy::GetShooting()
 	return Shooting;
 }
 
-void Enemy::EnemyMove(double dt)
+void Enemy::EnemyMove(double dt,Player *p)
 {
 	fireDelay += dt;
 	Vector3 view = Vector3(0, 0, 0);
@@ -69,16 +69,17 @@ void Enemy::EnemyMove(double dt)
 			if (armRotate > 0)
 				armRotate -= 90 * dt;
 			bulletPos += bulletView*10*dt;
+			checkBulletCollision(p);
 		}
 	}
 	else if (KiteTimer < 7)
 	{
 		EnemyKite(dt);
-		EnemyShootAt(dt, 10);
+		EnemyShootAt(dt, 10,p);
 	}
 	else if (KiteTimer >= 7)
 	{
-		EnemyShootAt(dt, 10);
+		EnemyShootAt(dt, 10,p);
 		KiteTimer = 0;
 		if (rand() % 2 == 0)
 		{
@@ -91,7 +92,7 @@ void Enemy::EnemyMove(double dt)
 	}
 	else
 	{
-		EnemyShootAt(dt, 10);
+		EnemyShootAt(dt, 10,p);
 	}
 }
 
@@ -100,7 +101,7 @@ void Enemy::EnemyTakeDmg(int Dmg)
 	Hp -= Dmg;
 }
 
-void Enemy::EnemyShootAt(const double &dt,const float &bulletSpeed)
+void Enemy::EnemyShootAt(const double &dt,const float &bulletSpeed, Player *p)
 {
 	if (fireDelay < 3)
 	{
@@ -109,6 +110,7 @@ void Enemy::EnemyShootAt(const double &dt,const float &bulletSpeed)
 			if (armRotate > 0)
 				armRotate -= 90 * dt;
 			bulletPos += bulletView*bulletSpeed*dt;
+			checkBulletCollision(p);
 		}
 		else
 		{
@@ -178,8 +180,22 @@ bool Enemy::isDead()
 		return false;
 }
 
-void Enemy::update(Camera3 camera,const double &dt)
+void Enemy::update(Camera3 camera,const double &dt, Player *p)
 {
 	target = camera.position;
-	EnemyMove(dt);
+	EnemyMove(dt,p);
+}
+
+bool Enemy::checkBulletCollision(Player *p)
+{
+	float x = 0.5f, y = 1.f, z = 0.5f;
+	if (bulletPos.x > target.x - x && bulletPos.x < target.x + x
+		&& bulletPos.y > target.y - y && bulletPos.x < target.y + y
+		&& bulletPos.z > target.z - z && bulletPos.z < target.z + z)
+	{
+		(*p).TakeDmg(AttackDamage);
+		std::cout << (*p).GetHp() << std::endl;
+		return true;
+	}
+	return false;
 }

@@ -109,7 +109,6 @@ private:
 	void RenderAlien(float armRotate = 0);
 
 	void checkCollision(const Vector3 &center, float x1, float z1, float y1);
-	bool getIntersection(const Vector3 &center, const Vector3 &centerRange, const Vector3 &target, const Vector3 &targetRange);
 	float getMagnitude(const Vector3 user, const Vector3 target);	//find the magnitude between 2 points
 	float randomx, randomz;											//random locations for the rock spawn
 

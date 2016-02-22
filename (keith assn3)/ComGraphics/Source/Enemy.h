@@ -4,6 +4,7 @@
 #include <vector>
 #include"GameObject.h"
 #include "Camera3.h"
+#include "Player.h"
 
 using std::vector;
 
@@ -23,11 +24,12 @@ public:
 	Vector3 EnemyKiting();			//Shoot ,stop ,move again
 
 	void EnemyKite(double dt);
-	void EnemyMove(double dt);				//move to find
+	void EnemyMove(double dt,Player *p);				//move to find
 	void EnemyTakeDmg(int Dmg);
-	void EnemyShootAt(const double &dt,const float &bulletSpeed);			//shooting of the enemy
+	void EnemyShootAt(const double &dt,const float &bulletSpeed,Player *p);			//shooting of the enemy
 	float findDirection();
-	void update(Camera3 camera,const double &dt);
+	void update(Camera3 camera,const double &dt,Player *p);
+	bool checkBulletCollision(Player *p);
 
 	bool InRangeOfPlayer();		// dist away from player
 	bool isDead();					//dead or not

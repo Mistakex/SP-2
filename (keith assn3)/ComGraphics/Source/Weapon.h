@@ -11,6 +11,7 @@ using std::vector;
 class Weapon
 {
 public:
+	Weapon();
 	Weapon(const int &dmg,const int &AmmoInClip,const int &MaxAmmoForWeap, const int& price,const bool &AllowZoomForWeap);
 	~Weapon();
 	void init(Camera3 *target);

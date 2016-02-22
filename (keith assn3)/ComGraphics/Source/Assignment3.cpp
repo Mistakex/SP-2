@@ -50,28 +50,6 @@ float Assignment3::getMagnitude(const Vector3 object, const Vector3 target)
 	return sqrt(pow(a.x, 2) + pow(a.y, 2) + pow(a.z, 2));
 }
 
-bool getIntersection(const Vector3 &center, const Vector3 &centerRange, const Vector3 &target, const Vector3 &targetRange)
-{
-	Vector3 positiveCheck = center + centerRange;
-	Vector3 negativeCheck = center - centerRange;
-	Vector3 tarPositiveCheck = target + targetRange;
-	Vector3 tarNegativeCheck = target - targetRange;
-
-	if (positiveCheck.x > tarNegativeCheck.x && positiveCheck.x < tarPositiveCheck.x
-		&&positiveCheck.y > tarNegativeCheck.y && positiveCheck.y < tarPositiveCheck.y
-		&&positiveCheck.z > tarNegativeCheck.z && positiveCheck.z < tarPositiveCheck.z)
-	{
-		return true;
-	}
-	else if (negativeCheck.x > tarNegativeCheck.x && negativeCheck.x < tarPositiveCheck.x
-		&& negativeCheck.y > tarNegativeCheck.y && negativeCheck.y < tarPositiveCheck.y
-		&& negativeCheck.z > tarNegativeCheck.z && negativeCheck.z < tarPositiveCheck.z)
-	{
-		return true;
-	}
-	return false;
-}
-
 void Assignment3::Init()
 {
 	CameraMouseUpdate = true;
@@ -384,7 +362,7 @@ void Assignment3::Update(double dt)
 	//Alien update
 	for (vector<Enemy>::iterator it = Aliens.begin(); it != Aliens.end();)
 	{
-		(*it).update(camera, dt);
+		(*it).update(camera, dt, &player);
 		if ((*it).isDead())
 		{
 			it = Aliens.erase(it);
