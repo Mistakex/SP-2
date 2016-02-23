@@ -11,7 +11,6 @@ public:
 	virtual ~GameObject();
 	Vector3 position;
 	Vector3 rangexyz;
-	static vector<GameObject*> allGameObjects;
 	static size_t count;
 protected:
 	GameObject();

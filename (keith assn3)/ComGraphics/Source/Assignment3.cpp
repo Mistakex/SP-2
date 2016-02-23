@@ -59,7 +59,7 @@ void Assignment3::Init()
 	srand(time_t(NULL));
 	for (float i = 0; i < 3; ++i)
 	{
-		Aliens.push_back(Enemy(Vector3(i, 0, i), Vector3(0, 0, 0), Vector3(0.5, 1, 0.5)));
+		Aliens.push_back(Enemy(Vector3(i*2, 0, i*2), Vector3(0, 0, 0), Vector3(0.5, 1, 0.5)));
 	}
 	// Init VBO here
 
@@ -177,7 +177,7 @@ void Assignment3::Init()
 
 
 	//Initialize camera settings
-	camera.Init(Vector3(0, 0, 10), Vector3(10,0,0), Vector3(0, 1, 0));
+	camera.Init(Vector3(0, 0, 30), Vector3(10,0,0), Vector3(0, 1, 0));
 
 	meshList[GEO_AXES] = MeshBuilder::GenerateAxes("reference", 1000, 1000, 1000);
 
@@ -262,9 +262,6 @@ void Assignment3::Init()
 
 	meshList[GEO_PLAYERHP] = MeshBuilder::GenerateQuad("PlayerHP", Color(1, 0, 0));
 
-	meshList[GEO_PLUSRESOURCES] = MeshBuilder::GenerateText("+ 1 Resources", 16, 16);
-	meshList[GEO_PLUSRESOURCES]->textureID = LoadTGA("Image//grisaiaCustom.tga");
-
 	meshList[GEO_UI] = MeshBuilder::GenerateQuad("UI Screen", Color(1,1,1));
 	meshList[GEO_UI]->textureID = LoadTGA("Image//UI_Frame.tga");
 
@@ -273,6 +270,8 @@ void Assignment3::Init()
 
 	meshList[GEO_HEALTH] = MeshBuilder::GenerateQuad("Health", Color(1, 0, 1));
 
+	meshList[GEO_SPACESHIP] = MeshBuilder::GenerateOBJ("Spaceship", "OBJ//SpaceObject.obj");
+	meshList[GEO_SPACESHIP]->textureID = LoadTGA("Image//SpaceObjectUV.tga");
 
 	Mtx44 projection;
 	projection.SetToPerspective(70.0f, 4.0f / 3.0f, 0.1f, 5000.0f);
@@ -441,8 +440,8 @@ void Assignment3::Update(double dt)
 				vector<Rock>::iterator i = Rocks.begin();
 				while (i != Rocks.end())
 				{
-					if ((getMagnitude(Vector3((*i).Position.x, -1, (*i).Position.z), Vector3(camera.position.x, camera.position.y - 1, camera.position.z)) - (*i).Size * 2.f) < 0
-						&& player.getAngle(camera.view, Vector3((*i).Position.x, -1, (*i).Position.z) - camera.position) < 45.f)
+					if ((getMagnitude(Vector3((*i).position.x, -1, (*i).position.z), Vector3(camera.position.x, camera.position.y - 1, camera.position.z)) - (*i).Size * 2.f) < 0
+						&& player.getAngle(camera.view, Vector3((*i).position.x, -1, (*i).position.z) - camera.position) < 45.f)
 					{
 						if (player.isMining == false)
 						{
@@ -535,11 +534,11 @@ void Assignment3::Update(double dt)
 				if (f.flagIsBlue == true)
 				{
 					f.FlagHeightIncrease(2.5f, dt);
+					isCaptured = true;
 				}
 				else if (f.FlagHeightDecrease(0.5f, dt) <= 0.5f)
 				{
 					f.flagIsBlue = true;
-					isCaptured = true;
 				}
 			}
 			else
@@ -906,12 +905,6 @@ void Assignment3::Render()
 		modelStack.Translate(0, f.FLAGPOLE.y - 1, f.FLAGPOLE.z);
 		RenderMesh(meshList[GEO_UNCAPTURED], true);
 		modelStack.PopMatrix();
-		if (isCapturing == true)
-		{
-			modelStack.PushMatrix();
-			RenderTextOnScreen(meshList[GEO_TEXT], "Capturing Flag...", Color(0, 1, 0), 5, 6, 10);
-			modelStack.PopMatrix();
-		}
 	}
 	else
 	{
@@ -1044,7 +1037,7 @@ void Assignment3::Render()
 	for (size_t i = 0; i < Rocks.size(); i++)
 	{
 		modelStack.PushMatrix();
-		modelStack.Translate(Rocks[i].Position.x, Rocks[i].Position.y, Rocks[i].Position.z);
+		modelStack.Translate(Rocks[i].position.x, Rocks[i].position.y, Rocks[i].position.z);
 		modelStack.Scale(Rocks[i].Size, Rocks[i].Size, Rocks[i].Size);
 		RenderMesh(meshList[GEO_ROCK], true);
 		modelStack.PopMatrix();
@@ -1059,61 +1052,14 @@ void Assignment3::Render()
 		modelStack.PopMatrix();
 	}
 
-	//POLE
-	modelStack.PushMatrix();
-	modelStack.Scale(1.5, 2, 1.5);
-	modelStack.PushMatrix();
-	modelStack.Scale(2, 2, 2);
-	modelStack.Translate(0, f.FLAGPOLE.y - 1, f.FLAGPOLE.z);
-	modelStack.Rotate(90, 0, 1, 0);
-	RenderMesh(meshList[GEO_FLAGPOLE], true);
-	modelStack.PopMatrix();
-
-	//FLAG
-	if (!f.flagIsBlue)
+	//SPACESHIP
+	if (f.flagIsBlue)
 	{
 		modelStack.PushMatrix();
-		modelStack.Scale(2, 2, 2);
-		modelStack.Translate(1.5, f.flagheight, f.FLAGPOLE.z);
-		modelStack.Rotate(90, 0, 1, 0);
-		RenderMesh(meshList[GEO_ENEMYFLAG], true);
+		modelStack.Translate(0, -1, 50);
+		RenderMesh(meshList[GEO_SPACESHIP], true);
 		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Scale(5, 2, 5);
-		modelStack.Translate(0, f.FLAGPOLE.y - 1, f.FLAGPOLE.z);
-		RenderMesh(meshList[GEO_UNCAPTURED], true);
-		modelStack.PopMatrix();
-		if (isCapturing == true)
-		{
-			modelStack.PushMatrix();
-			RenderTextOnScreen(meshList[GEO_TEXT], "Capturing Flag...", Color(0, 1, 0), 5, 6, 10);
-			modelStack.PopMatrix();
-		}
 	}
-	else
-	{
-		modelStack.PushMatrix();
-		modelStack.Scale(2, 2, 2);
-		modelStack.Translate(1.5, f.flagheight, f.FLAGPOLE.z);
-		modelStack.Rotate(90, 0, 1, 0);
-		RenderMesh(meshList[GEO_ALLYFLAG], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Scale(5, 2, 5);
-		modelStack.Translate(0, f.FLAGPOLE.y - 1, f.FLAGPOLE.z);
-		RenderMesh(meshList[GEO_CAPTURED], true);
-		modelStack.PopMatrix();
-
-		if (isCaptured == true)
-		{
-			modelStack.PushMatrix();
-			RenderTextOnScreen(meshList[GEO_TEXT], "Flag Captured!", Color(0, 1, 0), 5, 6, 10);
-			modelStack.PopMatrix();
-		}
-	}
-	modelStack.PopMatrix();
 
 	// Weapons
 	if (player.WeaponState == 1)
@@ -1125,13 +1071,13 @@ void Assignment3::Render()
 	if (player.isMining)
 	{
 		modelStack.PushMatrix();
-		RenderTextOnScreen(meshList[GEO_PLUSRESOURCES],"+" + std::to_string(resourceOfRock)+" Resources", Color(0, 1, 0), 3, 11.5, 15);
+		RenderTextOnScreen(meshList[GEO_TEXT],"+" + std::to_string(resourceOfRock)+" Resources", Color(0, 1, 0), 3, 11.5, 15);
 		modelStack.PopMatrix();
 	}
 	if (KillMessage.GetTimeNow() >0)
 	{
 		modelStack.PushMatrix();
-		RenderTextOnScreen(meshList[GEO_PLUSRESOURCES], "+" + std::to_string(Alienresources) + " Resources", Color(0, 1, 0), 3, 11.5, 15);
+		RenderTextOnScreen(meshList[GEO_TEXT], "+" + std::to_string(Alienresources) + " Resources", Color(0, 1, 0), 3, 11.5, 15);
 		modelStack.PopMatrix();
 	}
 
@@ -1191,6 +1137,16 @@ void Assignment3::Render()
 	RenderTextOnScreen(meshList[GEO_TEXT], resources.str(), Color(1, 0, 1), 2, 4, 2);
 	
 	modelStack.PopMatrix();
+
+	if (!f.flagIsBlue)
+	{
+		if (isCapturing == true)
+		{
+			modelStack.PushMatrix();
+			RenderTextOnScreen(meshList[GEO_TEXT], "Capturing Flag...", Color(0, 1, 0), 5, 6, 10);
+			modelStack.PopMatrix();
+		}
+	}
 
 }
 

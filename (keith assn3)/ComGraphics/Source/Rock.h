@@ -1,7 +1,8 @@
 #ifndef ROCK_H
 #define ROCK_H
 #include "Vector3.h"
-class Rock
+#include "GameObject.h"
+class Rock : public GameObject
 {
 public:
 	Rock(Vector3 pos,float SizeOfRock);
@@ -12,7 +13,6 @@ public:
 
 	int Resources;
 	float Size;
-	Vector3 Position;
 private:
 };
 

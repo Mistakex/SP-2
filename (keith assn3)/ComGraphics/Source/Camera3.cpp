@@ -202,7 +202,6 @@ void Camera3::Update(double dt)
 			moveZ += -view.z*(WALKSPEED / 2.f);
 
 		}
-
 		if (!checkCollision(Vector3(0, 0, 0), Vector3(1,3,1), moveX + position.x, position.z))
 		{
 			position.x += moveX;
