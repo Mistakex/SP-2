@@ -1063,7 +1063,7 @@ void Assignment3::Render()
 	RenderUIOnScreen(meshList[GEO_UI], false, Vector3(82, 10, 50), 40, 5, 6, Vector3(90, 0, 0));
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	modelStack.PushMatrix();
-	RenderUIOnScreen(meshList[GEO_HEALTH], false, Vector3(player.GetHp() * 0.2, 2, -1), 20, 7, 7, Vector3(90, 0, 0));
+	RenderUIOnScreen(meshList[GEO_HEALTH], false, Vector3(player.GetHp() * 0.2, 2, -1), 22 - (100 - player.GetHp())*0.1, 7, 7, Vector3(90, 0, 0));
 	RenderTextOnScreen(meshList[GEO_TEXT], "HP: ", Color(1, 0, 1), 2, 4, 3);
 	RenderTextOnScreen(meshList[GEO_TEXT], std::to_string(player.GetHp()), Color(1, 0, 1), 2, 5, 3);
 	modelStack.PopMatrix();
