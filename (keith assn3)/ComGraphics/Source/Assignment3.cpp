@@ -415,7 +415,8 @@ void Assignment3::Update(double dt)
 					}
 					else if (Turrets[i].shooting == true)
 					{
-						Turrets[i].bulletPos = (0, -10, 0);
+						Turrets[i].bulletPos = Turrets[i].GetPosition();
+						Turrets[i].bulletPos.y = -0.5f;
 					}
 					s++;
 				}
