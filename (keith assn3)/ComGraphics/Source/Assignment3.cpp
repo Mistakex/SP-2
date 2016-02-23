@@ -315,22 +315,17 @@ void Assignment3::Update(double dt)
 		{
 			debounce.resetTime();
 			player.WeaponState = 2;
-			//isPistol = true;
 		}
 		if (Application::IsKeyPressed(0x32) && debounce.GetTimeNow() < 0)
 		{
 			debounce.resetTime();
 			player.WeaponState = 1;
-			//isPistol = false;
 		}
 		if (Application::IsKeyPressed(0x33) && debounce.GetTimeNow() < 0)
 		{
 			debounce.resetTime();
 			player.WeaponState = 6;
-			//isPistol = false;
 		}
-
-
 
 		// updating 2nd light
 		light[1].position.Set(camera.position.x + camera.target.x / 15,
@@ -394,7 +389,7 @@ void Assignment3::Update(double dt)
 		//Turrets Aim and Shoot
 		for (size_t i = 0; i < Turrets.size(); i++)
 		{
-			if (Aliens.empty() == true){ Turrets[i].bulletPos = (0, -1, 0); }
+			if (Aliens.empty() == true){ Turrets[i].bulletPos = (0, -10, 0); }
 			short s = 0;
 			if (Aliens.empty() == false)
 			{
@@ -410,11 +405,15 @@ void Assignment3::Update(double dt)
 							if (getMagnitude(Turrets[i].bulletPos, Turrets[i].Target) <= 1.0f && Turrets[i].hit == false)
 							{
 								Turrets[i].hit = true;
-								Turrets[i].bulletPos = (0, -1, 0);
+								Turrets[i].bulletPos = (0, -10, 0);
 								Aliens[s].EnemyTakeDmg(Turrets[i].GetDamage());
 							}
 						}
 						break;
+					}
+					else if (Turrets[i].shooting == true)
+					{
+						Turrets[i].bulletPos = (0, -10, 0);
 					}
 					s++;
 				}
