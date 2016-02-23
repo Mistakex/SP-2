@@ -339,7 +339,7 @@ void Assignment3::Update(double dt)
 		//first light
 		light[0].position.Set(0.f, 5.f, 20.f);
 		//Alien Spawn
-		if ((countdownAlienSpawn.TimeCountDown(dt) <= 0) && (Aliens.size()) < 10 && (f.flagIsBlue == true))
+		if ((countdownAlienSpawn.TimeCountDown(dt) <= 0) && (Aliens.size()) < 20 && (f.flagIsBlue == true))
 		{
 			countdownAlienSpawn.resetTime();
 			float spwanAlienz = (rand() % 100 - 50.f);

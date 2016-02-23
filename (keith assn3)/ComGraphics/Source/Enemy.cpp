@@ -98,7 +98,10 @@ void Enemy::EnemyMove(double dt,Player *p)
 
 void Enemy::EnemyTakeDmg(int Dmg)
 {
-	Hp -= Dmg;
+	if (Hp - Dmg >= 0)
+		Hp -= Dmg;
+	else
+		Hp = 0;
 }
 
 void Enemy::EnemyShootAt(const double &dt,const float &bulletSpeed, Player *p)
