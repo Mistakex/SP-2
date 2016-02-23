@@ -876,62 +876,6 @@ void Assignment3::Render()
 	RenderMesh(meshList[GEO_QUAD], true);
 	modelStack.PopMatrix();
 
-	//POLE
-	modelStack.PushMatrix();
-	modelStack.Scale(1.5, 2, 1.5);
-	modelStack.PushMatrix();
-	modelStack.Scale(2, 2, 2);
-	modelStack.Translate(0, f.FLAGPOLE.y - 1, f.FLAGPOLE.z);
-	modelStack.Rotate(90, 0, 1, 0);
-	RenderMesh(meshList[GEO_FLAGPOLE], true);
-	modelStack.PopMatrix();
-
-	//FLAG
-	if (!f.flagIsBlue)
-	{
-		modelStack.PushMatrix();
-		modelStack.Scale(2, 2, 2);
-		modelStack.Translate(1.5, f.flagheight, f.FLAGPOLE.z);
-		modelStack.Rotate(90, 0, 1, 0);
-		RenderMesh(meshList[GEO_ENEMYFLAG], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Scale(5, 2, 5);
-		modelStack.Translate(0, f.FLAGPOLE.y - 1, f.FLAGPOLE.z);
-		RenderMesh(meshList[GEO_UNCAPTURED], true);
-		modelStack.PopMatrix();
-		if (isCapturing == true)
-		{
-			modelStack.PushMatrix();
-			RenderTextOnScreen(meshList[GEO_TEXT], "Capturing Flag...", Color(0, 1, 0), 5, 6, 10);
-			modelStack.PopMatrix();
-		}
-	}
-	else
-	{
-		modelStack.PushMatrix();
-		modelStack.Scale(2, 2, 2);
-		modelStack.Translate(1.5, f.flagheight, f.FLAGPOLE.z);
-		modelStack.Rotate(90, 0, 1, 0);
-		RenderMesh(meshList[GEO_ALLYFLAG], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Scale(5, 2, 5);
-		modelStack.Translate(0, f.FLAGPOLE.y - 1, f.FLAGPOLE.z);
-		RenderMesh(meshList[GEO_CAPTURED], true);
-		modelStack.PopMatrix();
-
-		if (isCaptured == true)
-		{
-			modelStack.PushMatrix();
-			RenderTextOnScreen(meshList[GEO_TEXT], "Flag Captured!", Color(0, 1, 0), 5, 6, 10);
-			modelStack.PopMatrix();
-		}
-	}
-	modelStack.PopMatrix();
-
 	//CRATERS;
 	for (int i = 0; i < 3; ++i)
 	{
@@ -1053,6 +997,62 @@ void Assignment3::Render()
 		RenderMesh(meshList[GEO_BULLET], true);
 		modelStack.PopMatrix();
 	}
+
+	//POLE
+	modelStack.PushMatrix();
+	modelStack.Scale(1.5, 2, 1.5);
+	modelStack.PushMatrix();
+	modelStack.Scale(2, 2, 2);
+	modelStack.Translate(0, f.FLAGPOLE.y - 1, f.FLAGPOLE.z);
+	modelStack.Rotate(90, 0, 1, 0);
+	RenderMesh(meshList[GEO_FLAGPOLE], true);
+	modelStack.PopMatrix();
+
+	//FLAG
+	if (!f.flagIsBlue)
+	{
+		modelStack.PushMatrix();
+		modelStack.Scale(2, 2, 2);
+		modelStack.Translate(1.5, f.flagheight, f.FLAGPOLE.z);
+		modelStack.Rotate(90, 0, 1, 0);
+		RenderMesh(meshList[GEO_ENEMYFLAG], true);
+		modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+		modelStack.Scale(5, 2, 5);
+		modelStack.Translate(0, f.FLAGPOLE.y - 1, f.FLAGPOLE.z);
+		RenderMesh(meshList[GEO_UNCAPTURED], true);
+		modelStack.PopMatrix();
+		if (isCapturing == true)
+		{
+			modelStack.PushMatrix();
+			RenderTextOnScreen(meshList[GEO_TEXT], "Capturing Flag...", Color(0, 1, 0), 5, 6, 10);
+			modelStack.PopMatrix();
+		}
+	}
+	else
+	{
+		modelStack.PushMatrix();
+		modelStack.Scale(2, 2, 2);
+		modelStack.Translate(1.5, f.flagheight, f.FLAGPOLE.z);
+		modelStack.Rotate(90, 0, 1, 0);
+		RenderMesh(meshList[GEO_ALLYFLAG], true);
+		modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+		modelStack.Scale(5, 2, 5);
+		modelStack.Translate(0, f.FLAGPOLE.y - 1, f.FLAGPOLE.z);
+		RenderMesh(meshList[GEO_CAPTURED], true);
+		modelStack.PopMatrix();
+
+		if (isCaptured == true)
+		{
+			modelStack.PushMatrix();
+			RenderTextOnScreen(meshList[GEO_TEXT], "Flag Captured!", Color(0, 1, 0), 5, 6, 10);
+			modelStack.PopMatrix();
+		}
+	}
+	modelStack.PopMatrix();
 
 	// Weapons
 	if (player.WeaponState == 1)
