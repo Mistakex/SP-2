@@ -13,7 +13,7 @@ Camera3::~Camera3()
 {
 }
 
-void Camera3::Init(const Vector3& pos, const Vector3& target, const Vector3& up)
+void Camera3::Init(const Vector3& pos, const Vector3& target, const Vector3& up,vector<Rock> *Rocks)
 {
 	this->position = defaultPosition = pos;
 	this->target = defaultTarget = target;
@@ -23,6 +23,7 @@ void Camera3::Init(const Vector3& pos, const Vector3& target, const Vector3& up)
 	right.Normalize();
 	MouseSensitivity = 0.2;
 	this->up = defaultUp = right.Cross(view).Normalized();
+	this->Rocks = Rocks;
 }
 
 void Camera3::CameraRotation(float CAMERASPEED)
@@ -76,6 +77,18 @@ bool Camera3::checkCollision(const Vector3 &center, const Vector3 &range,float m
 	{
 		return false;
 	}
+}
+
+bool Camera3::checkAllCollision(float moveX, float moveZ) // used to check collision for objects
+{
+	for (vector<Rock>::iterator it = Rocks->begin(); it != Rocks->end(); ++it)
+	{
+		if (checkCollision(it->position, it->rangexyz, moveX, moveZ))
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
 void Camera3::Update(double dt)
@@ -202,11 +215,11 @@ void Camera3::Update(double dt)
 			moveZ += -view.z*(WALKSPEED / 2.f);
 
 		}
-		if (!checkCollision(Vector3(0, 0, 0), Vector3(1,3,1), moveX + position.x, position.z))
+		if (!checkAllCollision(moveX + position.x, position.z))
 		{
 			position.x += moveX;
 		}
-		if (!checkCollision(Vector3(0, 0, 0), Vector3(1, 3, 1), position.x, moveZ + position.z))
+		if (!checkAllCollision(position.x, moveZ + position.z))
 		{
 			position.z += moveZ;
 		}

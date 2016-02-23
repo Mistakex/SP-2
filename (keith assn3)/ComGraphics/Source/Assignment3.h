@@ -101,6 +101,7 @@ public:
 	virtual void Exit();
 
 	vector<Enemy> Aliens;
+	vector<GameObject*> Collisions;
 
 private:
 	void RenderText(Mesh* mesh, std::string text, Color color);

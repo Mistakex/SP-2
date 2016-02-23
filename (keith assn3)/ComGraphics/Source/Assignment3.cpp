@@ -177,7 +177,7 @@ void Assignment3::Init()
 
 
 	//Initialize camera settings
-	camera.Init(Vector3(0, 0, 30), Vector3(10,0,0), Vector3(0, 1, 0));
+	camera.Init(Vector3(0, 0, 30), Vector3(10,0,0), Vector3(0, 1, 0),&Rocks);
 
 	meshList[GEO_AXES] = MeshBuilder::GenerateAxes("reference", 1000, 1000, 1000);
 
