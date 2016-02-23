@@ -273,6 +273,7 @@ void Assignment3::Init()
 
 	meshList[GEO_HEALTH] = MeshBuilder::GenerateQuad("Health", Color(1, 0, 1));
 
+
 	Mtx44 projection;
 	projection.SetToPerspective(70.0f, 4.0f / 3.0f, 0.1f, 5000.0f);
 	projectionStack.LoadMatrix(projection);
@@ -361,13 +362,16 @@ void Assignment3::Update(double dt)
 				Aliens.push_back(newAlien);
 			}
 		}
-
+		KillMessage.TimeCountDown(dt);
 		//Alien update
 		for (vector<Enemy>::iterator it = Aliens.begin(); it != Aliens.end();)
 		{
 			(*it).update(camera, dt, &player);
 			if ((*it).isDead())
 			{
+				Alienresources = rand() % 15 + 5;
+				KillMessage.resetTime();
+				player.ObtainResources(Alienresources);
 				it = Aliens.erase(it);
 			}
 			else
@@ -525,24 +529,25 @@ void Assignment3::Update(double dt)
 
 
 		// flag rising up when get close
-		if (f.getMagnitude(camera.position) <= 7.5f)
-		{
-			isCapturing = true;
-			if (f.flagIsBlue == true)
+			if (f.getMagnitude(camera.position) <= 7.5f)
 			{
-				f.FlagHeightIncrease(2.5f, dt);
+				isCapturing = true;
+				if (f.flagIsBlue == true)
+				{
+					f.FlagHeightIncrease(2.5f, dt);
+				}
+				else if (f.FlagHeightDecrease(0.5f, dt) <= 0.5f)
+				{
+					f.flagIsBlue = true;
+					isCaptured = true;
+				}
 			}
-			else if (f.FlagHeightDecrease(0.5f, dt) <= 0.5f)
+			else
 			{
-				f.flagIsBlue = true;
-				isCaptured = true;
+				isCapturing = false;
+				isCaptured = false;
 			}
-		}
-		else
-		{
-			isCapturing = false;
-			isCaptured = false;
-		}
+
 
 		//Astronaut
 		if ((getMagnitude(a.GetAstronautPos(), camera.position)) < 3)
@@ -876,6 +881,62 @@ void Assignment3::Render()
 	RenderMesh(meshList[GEO_QUAD], true);
 	modelStack.PopMatrix();
 
+	//POLE
+	modelStack.PushMatrix();
+	modelStack.Scale(1.5, 2, 1.5);
+	modelStack.PushMatrix();
+	modelStack.Scale(2, 2, 2);
+	modelStack.Translate(0, f.FLAGPOLE.y - 1, f.FLAGPOLE.z);
+	modelStack.Rotate(90, 0, 1, 0);
+	RenderMesh(meshList[GEO_FLAGPOLE], true);
+	modelStack.PopMatrix();
+
+	//FLAG
+	if (!f.flagIsBlue)
+	{
+		modelStack.PushMatrix();
+		modelStack.Scale(2, 2, 2);
+		modelStack.Translate(1.5, f.flagheight, f.FLAGPOLE.z);
+		modelStack.Rotate(90, 0, 1, 0);
+		RenderMesh(meshList[GEO_ENEMYFLAG], true);
+		modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+		modelStack.Scale(5, 2, 5);
+		modelStack.Translate(0, f.FLAGPOLE.y - 1, f.FLAGPOLE.z);
+		RenderMesh(meshList[GEO_UNCAPTURED], true);
+		modelStack.PopMatrix();
+		if (isCapturing == true)
+		{
+			modelStack.PushMatrix();
+			RenderTextOnScreen(meshList[GEO_TEXT], "Capturing Flag...", Color(0, 1, 0), 5, 6, 10);
+			modelStack.PopMatrix();
+		}
+	}
+	else
+	{
+		modelStack.PushMatrix();
+		modelStack.Scale(2, 2, 2);
+		modelStack.Translate(1.5, f.flagheight, f.FLAGPOLE.z);
+		modelStack.Rotate(90, 0, 1, 0);
+		RenderMesh(meshList[GEO_ALLYFLAG], true);
+		modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+		modelStack.Scale(5, 2, 5);
+		modelStack.Translate(0, f.FLAGPOLE.y - 1, f.FLAGPOLE.z);
+		RenderMesh(meshList[GEO_CAPTURED], true);
+		modelStack.PopMatrix();
+
+		if (isCaptured == true)
+		{
+			modelStack.PushMatrix();
+			RenderTextOnScreen(meshList[GEO_TEXT], "Flag Captured!", Color(0, 1, 0), 5, 6, 10);
+			modelStack.PopMatrix();
+		}
+	}
+	modelStack.PopMatrix();
+
 	//CRATERS;
 	for (int i = 0; i < 3; ++i)
 	{
@@ -1064,7 +1125,13 @@ void Assignment3::Render()
 	if (player.isMining)
 	{
 		modelStack.PushMatrix();
-		RenderTextOnScreen(meshList[GEO_PLUSRESOURCES], std::to_string(resourceOfRock)+" + Resources", Color(0, 1, 0), 3, 11.5, 15);
+		RenderTextOnScreen(meshList[GEO_PLUSRESOURCES],"+" + std::to_string(resourceOfRock)+" Resources", Color(0, 1, 0), 3, 11.5, 15);
+		modelStack.PopMatrix();
+	}
+	if (KillMessage.GetTimeNow() >0)
+	{
+		modelStack.PushMatrix();
+		RenderTextOnScreen(meshList[GEO_PLUSRESOURCES], "+" + std::to_string(Alienresources) + " Resources", Color(0, 1, 0), 3, 11.5, 15);
 		modelStack.PopMatrix();
 	}
 

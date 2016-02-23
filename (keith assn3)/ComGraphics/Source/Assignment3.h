@@ -114,6 +114,7 @@ private:
 	float getMagnitude(const Vector3 user, const Vector3 target);	//find the magnitude between 2 points
 	float randomx, randomz;											//random locations for the rock spawn
 
+
 	// countdown
 	Countdown countdownRock = Countdown(10.0f);
 	Countdown countdownMining = Countdown(0.5f);
@@ -123,9 +124,11 @@ private:
 	Countdown rightClick = Countdown(0.2f);
 	Countdown countdownTurretSpawn = Countdown(1.0f);
 	Countdown countdownCameraLock = Countdown(0.5f);
-	Player player = Player(100);
 	Countdown infoscreen = Countdown(0.5f);
+	Countdown KillMessage = Countdown(0.3f);
+	Player player = Player(100);
 	
+
 	//Turret Position
 	Vector3 TurretPos;
 	//Rock resource
@@ -136,6 +139,8 @@ private:
 	//Flag
 	bool isCapturing = false;
 	bool isCaptured = false;
+	//After killing aliens
+	int Alienresources;
 
 	//info screen
 	bool isShown = false;
