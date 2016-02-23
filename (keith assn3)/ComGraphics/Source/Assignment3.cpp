@@ -271,6 +271,8 @@ void Assignment3::Init()
 	meshList[GEO_INFO] = MeshBuilder::GenerateQuad("Info", Color(1, 1, 1));
 	meshList[GEO_INFO]->textureID = LoadTGA("Image//instructions.tga");
 
+	meshList[GEO_HEALTH] = MeshBuilder::GenerateQuad("Health", Color(1, 0, 1));
+
 	Mtx44 projection;
 	projection.SetToPerspective(70.0f, 4.0f / 3.0f, 0.1f, 5000.0f);
 	projectionStack.LoadMatrix(projection);
@@ -747,7 +749,7 @@ void Assignment3::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, 
 	glEnable(GL_DEPTH_TEST);
 }
 
-void Assignment3::RenderUIOnScreen(Mesh *mesh, bool enableLight, Vector3 scale, float x, float y, Vector3 rotation) // used to render helmet on screen
+void Assignment3::RenderUIOnScreen(Mesh *mesh, bool enableLight, Vector3 scale, float x, float y, float z, Vector3 rotation) // used to render helmet on screen
 {
 
 	Mtx44 ortho;
@@ -759,7 +761,7 @@ void Assignment3::RenderUIOnScreen(Mesh *mesh, bool enableLight, Vector3 scale, 
 	viewStack.LoadIdentity(); //No need camera for ortho mode
 	modelStack.PushMatrix();
 	modelStack.LoadIdentity(); //Reset modelStack
-	modelStack.Translate(x, y, 0);
+	modelStack.Translate(x, y, z);
 	modelStack.Scale(scale.x, scale.y, scale.z);
 	modelStack.Rotate(rotation.x, 1, 0, 0);
 	modelStack.Rotate(rotation.y, 0, 1, 0);
@@ -771,7 +773,7 @@ void Assignment3::RenderUIOnScreen(Mesh *mesh, bool enableLight, Vector3 scale, 
 	modelStack.PopMatrix();
 }
 
-void Assignment3::RenderModelOnScreen(Mesh *mesh, bool enableLight, float size, float x, float y,Vector3 rotation) // used to render pickaxe on screen
+void Assignment3::RenderModelOnScreen(Mesh *mesh, bool enableLight, float size, float x, float y, float z, Vector3 rotation) // used to render pickaxe on screen
 {
 
 	Mtx44 ortho;
@@ -783,7 +785,7 @@ void Assignment3::RenderModelOnScreen(Mesh *mesh, bool enableLight, float size, 
 	viewStack.LoadIdentity(); //No need camera for ortho mode
 	modelStack.PushMatrix();
 	modelStack.LoadIdentity(); //Reset modelStack
-	modelStack.Translate(x, y, 6);
+	modelStack.Translate(x, y, z);
 	modelStack.Scale(size, size, size);
 	modelStack.Rotate(rotation.x, 1, 0, 0);
 	modelStack.Rotate(rotation.y, 0, 1, 0);
@@ -1030,9 +1032,9 @@ void Assignment3::Render()
 
 	// Weapons
 	if (player.WeaponState == 1)
-		RenderModelOnScreen(meshList[GEO_PICKAXE], true, 10.f, 70.f, 0.f, Vector3(0, -45.f, player.getMiningAction()));
+		RenderModelOnScreen(meshList[GEO_PICKAXE], true, 10.f, 70.f, 0.f, 5, Vector3(0, -45.f, player.getMiningAction()));
 	else if (player.WeaponState == 2)
-		RenderModelOnScreen(meshList[GEO_GUN], true, 25.f, 60.f, 5.f, Vector3(10.f, 15.f, 0.f));
+		RenderModelOnScreen(meshList[GEO_GUN], true, 25.f, 60.f, 5.f, -1, Vector3(10.f, 15.f, 0.f));
 
 	// Message appears when u mine rocks
 	if (player.isMining)
@@ -1046,7 +1048,7 @@ void Assignment3::Render()
 	if (player.isMining || pistol.hit)
 	{
 		modelStack.PushMatrix();
-		RenderModelOnScreen(meshList[GEO_HITORNOT], false, 3.f, 39.9f, 29.9f, Vector3(90, 0, 0));
+		RenderModelOnScreen(meshList[GEO_HITORNOT], false, 3.f, 39.9f, 29.9f, 6, Vector3(90, 0, 0));
 		modelStack.PopMatrix();
 	}
 
@@ -1055,19 +1057,24 @@ void Assignment3::Render()
 	RenderTextOnScreen(meshList[GEO_CROSSHAIR], "+", Color(0, 1, 0), 3.f, 13.1f, 9.5f);
 	modelStack.PopMatrix();
 
-	//UI Screen
+	//UI Screen & Player Health
 	modelStack.PushMatrix();
 	glBlendFunc(1.5, 1);
-	RenderUIOnScreen(meshList[GEO_UI], false, Vector3(82, 10, 50), 40, 5, Vector3(90, 0, 0));
+	RenderUIOnScreen(meshList[GEO_UI], false, Vector3(82, 10, 50), 40, 5, 6, Vector3(90, 0, 0));
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	modelStack.PushMatrix();
+	RenderUIOnScreen(meshList[GEO_HEALTH], false, Vector3(player.GetHp() * 0.2, 2, -1), 20, 7, 7, Vector3(90, 0, 0));
+	RenderTextOnScreen(meshList[GEO_TEXT], "HP: ", Color(1, 0, 1), 2, 4, 3);
+	RenderTextOnScreen(meshList[GEO_TEXT], std::to_string(player.GetHp()), Color(1, 0, 1), 2, 5, 3);
 	modelStack.PopMatrix();
-	
+	modelStack.PopMatrix();
+
 	// INFO
 	if (isShown == true)
 	{
 		modelStack.PushMatrix();
 		glBlendFunc(1.5, 1);
-		RenderUIOnScreen(meshList[GEO_INFO], false, Vector3(40, 40, 40), 40, 30, Vector3(90, 270, 0));
+		RenderUIOnScreen(meshList[GEO_INFO], false, Vector3(40, 40, 40), 40, 30, 6, Vector3(90, 270, 0));
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		modelStack.PopMatrix();
 	}

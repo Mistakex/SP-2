@@ -44,6 +44,7 @@ class Assignment3 : public Scene
 		GEO_PLUSRESOURCES,
 		GEO_UI,
 		GEO_INFO,
+		GEO_HEALTH,
 		//Turret
 		GEO_TURRETHEAD,
 		GEO_TURRETBASE,
@@ -103,8 +104,8 @@ public:
 private:
 	void RenderText(Mesh* mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
-	void RenderUIOnScreen(Mesh *mesh, bool enableLight, Vector3 scale, float x, float y, Vector3 rotation);
-	void RenderModelOnScreen(Mesh *mesh, bool enableLight, float size, float x, float y,Vector3 rotation);
+	void RenderUIOnScreen(Mesh *mesh, bool enableLight, Vector3 scale, float x, float y, float z, Vector3 rotation);
+	void RenderModelOnScreen(Mesh *mesh, bool enableLight, float size, float x, float y, float z, Vector3 rotation);
 	void RenderMesh(Mesh *mesh, bool enableLight);
 	void RenderSkybox();
 	void RenderAlien(float armRotate = 0);
