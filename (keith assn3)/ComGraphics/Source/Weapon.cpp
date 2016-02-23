@@ -107,3 +107,4 @@ bool Weapon::checkBulletCollision(vector<Enemy> *aliens,Bullet bullet)
 	}
 	return false;
 }
+

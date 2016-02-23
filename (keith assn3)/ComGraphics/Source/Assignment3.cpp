@@ -285,7 +285,7 @@ static float SCALE_LIMIT = 5.f;
 static float LSPEED = 10.f; // LIGHT SPEED
 
 Flag f(Vector3(0, 0.75f, 0));
-Astronaut a(Vector3(5, 0, 0));
+Astronaut a(Vector3(5, -1, 0));
 
 static float skyBoxRotate = 0.f; // rotation of skybox
 
@@ -549,13 +549,15 @@ void Assignment3::Update(double dt)
 		//small test to see if - resources work. Dont need to add debounce, going to be replaced with ui functions
 		if (((getMagnitude(a.GetAstronautPos(), camera.position)) < 3) && Application::IsKeyPressed('E'))
 		{
-			if (player.getResources() > 0)
+			/*if (player.getResources() > 0)
 			{
 				player.ObtainResources(-1);
 				cout << player.getResources() << endl;
 			}
 			else
-				cout << "not enuff" << endl;
+				cout << "not enuff" << endl;*/
+			/*a.UpgradeWeapon(pistol, player);*/
+			a.UpgradeWeapon(pistol, player);
 		}
 
 		if (Application::IsKeyPressed('T'))
