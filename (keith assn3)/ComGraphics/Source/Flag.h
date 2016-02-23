@@ -23,7 +23,6 @@ private:
 
 	bool flagRise;    //if flag is risen
 	bool isEnemyflag; //Enemy or your flag
-
 };
 
 #endif // !FLAG_H

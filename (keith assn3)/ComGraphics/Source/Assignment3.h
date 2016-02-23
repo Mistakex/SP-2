@@ -133,6 +133,9 @@ private:
 	//Gun
 	bool isPistol = false;
 	bool isZoom = false;
+	//Flag
+	bool isCapturing = false;
+	bool isCaptured = false;
 
 	//info screen
 	bool isShown = false;

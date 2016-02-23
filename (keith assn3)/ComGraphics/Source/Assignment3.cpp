@@ -527,6 +527,7 @@ void Assignment3::Update(double dt)
 		// flag rising up when get close
 		if (f.getMagnitude(camera.position) <= 7.5f)
 		{
+			isCapturing = true;
 			if (f.flagIsBlue == true)
 			{
 				f.FlagHeightIncrease(2.5f, dt);
@@ -534,7 +535,13 @@ void Assignment3::Update(double dt)
 			else if (f.FlagHeightDecrease(0.5f, dt) <= 0.5f)
 			{
 				f.flagIsBlue = true;
+				isCaptured = true;
 			}
+		}
+		else
+		{
+			isCapturing = false;
+			isCaptured = false;
 		}
 
 		//Astronaut
@@ -894,6 +901,12 @@ void Assignment3::Render()
 		modelStack.Translate(0, f.FLAGPOLE.y - 1, f.FLAGPOLE.z);
 		RenderMesh(meshList[GEO_UNCAPTURED], true);
 		modelStack.PopMatrix();
+		if (isCapturing == true)
+		{
+			modelStack.PushMatrix();
+			RenderTextOnScreen(meshList[GEO_TEXT], "Capturing Flag...", Color(0, 1, 0), 5, 6, 10);
+			modelStack.PopMatrix();
+		}
 	}
 	else
 	{
@@ -909,6 +922,13 @@ void Assignment3::Render()
 		modelStack.Translate(0, f.FLAGPOLE.y - 1, f.FLAGPOLE.z);
 		RenderMesh(meshList[GEO_CAPTURED], true);
 		modelStack.PopMatrix();
+
+		if (isCaptured == true)
+		{
+			modelStack.PushMatrix();
+			RenderTextOnScreen(meshList[GEO_TEXT], "Flag Captured!", Color(0, 1, 0), 5, 6, 10);
+			modelStack.PopMatrix();
+		}
 	}
 	modelStack.PopMatrix();
 
