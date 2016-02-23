@@ -51,7 +51,14 @@ void Player::WhileMining(const double &dt)
 }
 void Player::TakeDmg(int dmg)
 {
-	HP -= dmg;
+	if (HP - dmg >= 0)
+	{
+		HP -= dmg;
+	}
+	else 
+	{
+		HP = 0;
+	}
 }
 
 void Player::RecoverHp(int recovered)

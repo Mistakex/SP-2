@@ -300,7 +300,7 @@ void Assignment3::Update(double dt)
 	infoscreen.TimeCountDown(dt);
 
 	//mouse rotation of camera
-	if (Application::IsKeyPressed(0x50) && countdownCameraLock.GetTimeNow() <= 0 || Application::IsKeyPressed(VK_F1))
+	if (Application::IsKeyPressed(0x50) && countdownCameraLock.GetTimeNow() <= 0)
 	{
 		if (CameraMouseUpdate == false){ CameraMouseUpdate = true; }
 		else{ CameraMouseUpdate = false; }
@@ -309,7 +309,8 @@ void Assignment3::Update(double dt)
 	if (CameraMouseUpdate == true)
 	{
 		camera.Update(dt);
-
+		framerate.str("");
+		resources.str("");
 		////*********************************************////
 		pistol.update(dt);
 		debounce.TimeCountDown(dt);
@@ -1096,12 +1097,12 @@ void Assignment3::Render()
 	// FRAMERATE
 	modelStack.PushMatrix();
 	RenderTextOnScreen(meshList[GEO_TEXT], framerate.str(), Color(1, 0, 1), 2, 4, 1);
-	framerate.str("");
-	modelStack.PopMatrix();
 
+	modelStack.PopMatrix();
+	//RESOURCES
 	modelStack.PushMatrix();
 	RenderTextOnScreen(meshList[GEO_TEXT], resources.str(), Color(1, 0, 1), 2, 4, 2);
-	resources.str("");
+	
 	modelStack.PopMatrix();
 
 }
