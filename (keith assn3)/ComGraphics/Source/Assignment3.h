@@ -136,7 +136,6 @@ private:
 	//Rock resource
 	int resourceOfRock;
 	//Gun
-	bool isPistol = false;
 	bool isZoom = false;
 	//Flag
 	bool isCapturing = false;

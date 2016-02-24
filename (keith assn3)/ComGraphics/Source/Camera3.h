@@ -29,9 +29,10 @@ public:
 	bool checkCollision(const Vector3 &center, const Vector3 &range, float moveX, float moveY);
 	bool checkAllCollision(float moveX, float moveZ);
 	Countdown debounce = Countdown(0.5f);
-	bool isFlying = false;
-	bool jetpackMode = false;
-	bool isFlyingOn = false;
+	bool isFlying;
+	bool jetpackMode;
+	bool isFlyingOn;
+	bool OnControls;
 
 	vector<Rock> *Rocks;
 };

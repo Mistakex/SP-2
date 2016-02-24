@@ -7,6 +7,7 @@ extern bool moving;
 
 Camera3::Camera3()
 {
+	OnControls = true;
 }
 
 Camera3::~Camera3()
@@ -93,180 +94,182 @@ bool Camera3::checkAllCollision(float moveX, float moveZ) // used to check colli
 
 void Camera3::Update(double dt)
 {
-	static const float WALKSPEED = 0.2f; // walkspeed
-	static const float CAMERA_SPEED = 50.f;
-	static bool Enabled = false;
-	
-	debounce.TimeCountDown(dt);
-	if (Application::IsKeyPressed('O') && isFlyingOn == false && debounce.TimeCountDown(dt) < 0)
+	if (OnControls)
 	{
-		debounce.resetTime();
-		isFlyingOn = true;
-	}
-	if (Application::IsKeyPressed('O') && isFlyingOn == true && debounce.TimeCountDown(dt) < 0)
-	{
-		debounce.resetTime();
-		isFlyingOn = false;
-	}
+		static const float WALKSPEED = 0.2f; // walkspeed
+		static const float CAMERA_SPEED = 50.f;
 
-	if (isFlyingOn == false)
-	{
-		if (JUMPING == false)
+		debounce.TimeCountDown(dt);
+		if (Application::IsKeyPressed('O') && isFlyingOn == false && debounce.TimeCountDown(dt) < 0)
 		{
-			if (position.y > 0.f)
+			debounce.resetTime();
+			isFlyingOn = true;
+		}
+		if (Application::IsKeyPressed('O') && isFlyingOn == true && debounce.TimeCountDown(dt) < 0)
+		{
+			debounce.resetTime();
+			isFlyingOn = false;
+		}
+
+		if (isFlyingOn == false)
+		{
+			if (JUMPING == false)
 			{
-				position.y -= 10.f * dt;
+				if (position.y > 0.f)
+				{
+					position.y -= 10.f * dt;
+				}
+				else
+				{
+					position.y = 0.f;
+				}
+			}
+			if (JUMPING == true)
+			{
+				if (JUMPING_UP == true && JUMP_SPEED > 0.f)
+				{
+					position += Vector3(0.f, JUMP_SPEED * dt, 0.f);
+					JUMP_SPEED -= 10 * dt;
+					if (JUMP_SPEED <= 0.f)
+					{
+						JUMPING_UP = false;
+					}
+				}
+				if (JUMPING_UP == false && JUMP_SPEED < 10.f)
+				{
+					position -= Vector3(0.f, JUMP_SPEED * dt, 0.f);
+					JUMP_SPEED += 10 * dt;
+					if (JUMP_SPEED >= 10.f)
+					{
+						JUMPING_UP = true;
+						JUMPING = false;
+					}
+				}
+				if (position.y < 0.f)
+				{
+					position.y = 0.f;
+				}
+			}
+		}
+
+		if (isFlyingOn == true)
+		{
+			if (GetAsyncKeyState(' '))
+			{
+				isFlying = true;
 			}
 			else
 			{
-				position.y = 0.f;
+				isFlying = false;
 			}
-		}
-		if (JUMPING == true)
-		{
-			if (JUMPING_UP == true && JUMP_SPEED > 0.f)
+
+			if (isFlying == true)
 			{
-				position += Vector3(0.f, JUMP_SPEED * dt, 0.f);
-				JUMP_SPEED -= 10 * dt;
-				if (JUMP_SPEED <= 0.f)
+				position += Vector3(0.f, 5.5 * dt, 0.f);
+				JUMPING_UP = true;
+				if (position.y >= 50.f)
 				{
+					position -= Vector3(0.f, 7 * dt, 0.f);
+				}
+				if (position.y < 0.f)
+				{
+					position.y = 0.f;
 					JUMPING_UP = false;
 				}
 			}
-			if (JUMPING_UP == false && JUMP_SPEED < 10.f)
-			{
-				position -= Vector3(0.f, JUMP_SPEED * dt, 0.f);
-				JUMP_SPEED += 10 * dt;
-				if (JUMP_SPEED >= 10.f)
-				{
-					JUMPING_UP = true;
-					JUMPING = false;
-				}
-			}
-			if (position.y < 0.f)
-			{
-				position.y = 0.f;
-			}
-		}
-	}
-
-	if (isFlyingOn == true)
-	{
-		if (GetAsyncKeyState(' '))
-		{
-			isFlying = true;
-		}
-		else
-		{
-			isFlying = false;
-		}
-
-		if (isFlying == true)
-		{
-			position += Vector3(0.f, 5.5 * dt, 0.f);
-			JUMPING_UP = true;
-			if (position.y >= 50.f)
+			else if (isFlying == false)
 			{
 				position -= Vector3(0.f, 7 * dt, 0.f);
+				if (position.y < 0.f)
+				{
+					position.y = 0.f;
+				}
 			}
-			if (position.y < 0.f)
+		}
+
+		//movement keys are now geood
+		if (Application::IsKeyPressed('A') || Application::IsKeyPressed('D') || Application::IsKeyPressed('W') || Application::IsKeyPressed('S'))
+		{
+			float moveX = 0, moveZ = 0;
+			if (Application::IsKeyPressed('A'))
 			{
-				position.y = 0.f;
-				JUMPING_UP = false;
+				moveX += -right.x*(WALKSPEED / 2.f);
+				moveZ += -right.z*(WALKSPEED / 2.f);
+
 			}
-		}
-		else if (isFlying == false)
-		{
-			position -= Vector3(0.f, 7 * dt, 0.f);
-			if (position.y < 0.f)
+			if (Application::IsKeyPressed('D'))
 			{
-				position.y = 0.f;
+				moveX += right.x*(WALKSPEED / 2.f);
+				moveZ += right.z*(WALKSPEED / 2.f);
+
+			}
+			if (Application::IsKeyPressed('W'))
+			{
+				view = (Vector3(target.x, 0.f, target.z) - Vector3(position.x, 0.f, position.z)).Normalized();
+				moveX += view.x*(WALKSPEED / 2.f);
+				moveZ += view.z*(WALKSPEED / 2.f);
+
+			}
+			if (Application::IsKeyPressed('S'))
+			{
+				view = (Vector3(target.x, 0.f, target.z) - Vector3(position.x, 0.f, position.z)).Normalized();
+				moveX += -view.x*(WALKSPEED / 2.f);
+				moveZ += -view.z*(WALKSPEED / 2.f);
+
+			}
+			if (!checkAllCollision(moveX + position.x, position.z))
+			{
+				position.x += moveX;
+			}
+			if (!checkAllCollision(position.x, moveZ + position.z))
+			{
+				position.z += moveZ;
 			}
 		}
-	}
-
-	//movement keys are now geood
-	if (Application::IsKeyPressed('A') || Application::IsKeyPressed('D') || Application::IsKeyPressed('W') || Application::IsKeyPressed('S'))
-	{
-		float moveX = 0, moveZ = 0;
-		if (Application::IsKeyPressed('A'))
+		if (Application::IsKeyPressed(' '))
 		{
-			moveX += -right.x*(WALKSPEED / 2.f);
-			moveZ += -right.z*(WALKSPEED / 2.f);
-
+			if (JUMPING == false && position.y <= 0.f)
+			{
+				JUMPING = true;
+			}
 		}
-		if (Application::IsKeyPressed('D'))
+
+		// boundaries
+		float bounds = 100.f;
+
+		if (position.x < -bounds)
 		{
-			moveX += right.x*(WALKSPEED / 2.f);
-			moveZ += right.z*(WALKSPEED / 2.f);
-
+			position.x = -bounds;
 		}
-		if (Application::IsKeyPressed('W'))
+		else if (position.x > bounds)
 		{
-			view = (Vector3(target.x, 0.f, target.z) - Vector3(position.x, 0.f, position.z)).Normalized();
-			moveX += view.x*(WALKSPEED / 2.f);
-			moveZ += view.z*(WALKSPEED / 2.f);
-
+			position.x = bounds;
 		}
-		if (Application::IsKeyPressed('S'))
+
+		if (position.z < -bounds)
 		{
-			view = (Vector3(target.x, 0.f, target.z) - Vector3(position.x, 0.f, position.z)).Normalized();
-			moveX += -view.x*(WALKSPEED / 2.f);
-			moveZ += -view.z*(WALKSPEED / 2.f);
-
+			position.z = -bounds;
 		}
-		if (!checkAllCollision(moveX + position.x, position.z))
+		else if (position.z > bounds)
 		{
-			position.x += moveX;
+			position.z = bounds;
 		}
-		if (!checkAllCollision(position.x, moveZ + position.z))
+
+		//reset
+		if (Application::IsKeyPressed('R'))
 		{
-			position.z += moveZ;
+			Reset();
 		}
-	}
-	if (Application::IsKeyPressed(' '))
-	{
-		if (JUMPING == false && position.y <= 0.f)
-		{
-			JUMPING = true;
-		}
-	}
 
-	// boundaries
-	float bounds = 100.f;
+		//mouse rotation of camera
+		CameraRotation(MouseSensitivity);
 
-	if (position.x < -bounds)
-	{
-		position.x = -bounds;
+		view = (target - position).Normalized();
+		right = view.Cross(defaultUp);
+		right.y = 0;
+		right.Normalize();
+		this->up = right.Cross(view).Normalized();
 	}
-	else if (position.x > bounds)
-	{
-		position.x = bounds;
-	}
-
-	if (position.z < -bounds)
-	{
-		position.z = -bounds;
-	}
-	else if (position.z > bounds)
-	{
-		position.z = bounds;
-	}
-	
-	//reset
-	if (Application::IsKeyPressed('R'))
-	{
-		Reset();
-	}
-
-	//mouse rotation of camera
-	CameraRotation(MouseSensitivity);
-
-	view = (target - position).Normalized();
-	right = view.Cross(defaultUp);
-	right.y = 0;
-	right.Normalize();
-	this->up = right.Cross(view).Normalized();
 }
 
 void Camera3::Reset()

@@ -18,6 +18,7 @@
 #include "Weapon.h"
 #include "Bullet.h"
 #include "Enemy.h"
+#include "Ship.h"
 
 #include <stdlib.h>
 #include <sstream>
@@ -56,6 +57,7 @@ void Assignment3::Init()
 	player.WeaponState = 1;
 	pistol.init(&camera);
 	//srand
+	KillMessage.TimeCountDown(0.3);
 	srand(time_t(NULL));
 	for (float i = 0; i < 3; ++i)
 	{
@@ -525,29 +527,26 @@ void Assignment3::Update(double dt)
 		{
 			skyBoxRotate = 0.f;
 		}
-
-
 		// flag rising up when get close
-			if (f.getMagnitude(camera.position) <= 7.5f)
+		if (f.getMagnitude(camera.position) <= 7.5f)
+		{
+			if (f.flagIsBlue == true)
 			{
-				isCapturing = true;
-				if (f.flagIsBlue == true)
+				if (f.FlagHeightIncrease(2.5f, dt) >= 2.5f)
 				{
-					f.FlagHeightIncrease(2.5f, dt);
 					isCaptured = true;
-				}
-				else if (f.FlagHeightDecrease(0.5f, dt) <= 0.5f)
-				{
-					f.flagIsBlue = true;
-				}
+				};
 			}
-			else
+			else if (f.FlagHeightDecrease(0.5f, dt) <= 0.5f)
 			{
-				isCapturing = false;
-				isCaptured = false;
+				f.flagIsBlue = true;
+				isCapturing = true;
 			}
-
-
+		}
+		else
+		{
+			isCapturing = false;
+		}
 		//Astronaut
 		if ((getMagnitude(a.GetAstronautPos(), camera.position)) < 3)
 		{
@@ -920,13 +919,6 @@ void Assignment3::Render()
 		modelStack.Translate(0, f.FLAGPOLE.y - 1, f.FLAGPOLE.z);
 		RenderMesh(meshList[GEO_CAPTURED], true);
 		modelStack.PopMatrix();
-
-		if (isCaptured == true)
-		{
-			modelStack.PushMatrix();
-			RenderTextOnScreen(meshList[GEO_TEXT], "Flag Captured!", Color(0, 1, 0), 5, 6, 10);
-			modelStack.PopMatrix();
-		}
 	}
 	modelStack.PopMatrix();
 
@@ -988,6 +980,7 @@ void Assignment3::Render()
 			modelStack.PopMatrix();
 		}
 	}
+
 	//ASTRONAUT
 	modelStack.PushMatrix();
 	modelStack.Translate(a.GetAstronautPos().x, a.GetAstronautPos().y, a.GetAstronautPos().z);
@@ -1135,19 +1128,23 @@ void Assignment3::Render()
 	//RESOURCES
 	modelStack.PushMatrix();
 	RenderTextOnScreen(meshList[GEO_TEXT], resources.str(), Color(1, 0, 1), 2, 4, 2);
-	
 	modelStack.PopMatrix();
 
-	if (!f.flagIsBlue)
+	if (f.getMagnitude(camera.position) <= 7.5f)
 	{
-		if (isCapturing == true)
+		if (isCaptured == false)
 		{
 			modelStack.PushMatrix();
 			RenderTextOnScreen(meshList[GEO_TEXT], "Capturing Flag...", Color(0, 1, 0), 5, 6, 10);
 			modelStack.PopMatrix();
 		}
+		else
+		{
+			modelStack.PushMatrix();
+			RenderTextOnScreen(meshList[GEO_TEXT], "Flag Captured!", Color(0, 1, 0), 5, 6, 10);
+			modelStack.PopMatrix();
+		}
 	}
-
 }
 
 void Assignment3::RenderAlien(float armRotate)
