@@ -29,7 +29,7 @@ void Ship::cutscene(const double &dt)
 	}
 	else if (cutsceneTimer < 4.f)
 	{
-		Camera->position = (position.x, 0, position.y);
+		Camera->position = (position.x, 0, position.z);
 		position += Vector3(0, 3, 0)*dt;
 	}
 	else if (cutsceneTimer < 8.f)
