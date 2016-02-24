@@ -571,7 +571,7 @@ void Assignment3::Update(double dt)
 			isCapturing = false;
 		}
 		//Astronaut
-		if (((getMagnitude(a.GetAstronautPos(), camera.position)) < 3) && Application::IsKeyPressed('E'))
+		if (Application::IsKeyPressed('E') && ((getMagnitude(a.GetAstronautPos(), camera.position)) < 3))
 		{
 			gameState = GS_ASTRONAUT_INTERACTION;
 		}
