@@ -50,6 +50,7 @@ float Assignment3::getMagnitude(const Vector3 object, const Vector3 target)
 
 void Assignment3::Init()
 {
+	ship.updateCutscene = true;
 
 	gameState = GS_MAIN;
 	CameraMouseUpdate = true;
@@ -303,9 +304,6 @@ static std::stringstream resources;
 
 void Assignment3::Update(double dt)
 {
-	//ship.updateCutscene = true;
-	//ship.cutscene(dt);
-
 	if (gameState == GS_MAIN)
 	{
 		camera.OnControls = true;
@@ -314,6 +312,8 @@ void Assignment3::Update(double dt)
 	{
 		Scene1Updates(dt);
 	}
+
+	ship.cutscene(dt);
 
 	//************************************Will change this function to a pause function//
 	//countdown for camera lock
@@ -733,8 +733,6 @@ void Assignment3::Render()
 	//skybox
 	RenderSkybox();
 
-
-
 	//axes
 	RenderMesh(meshList[GEO_AXES], false);
 
@@ -793,7 +791,7 @@ void Assignment3::Render()
 	}
 
 	//SPACESHIP
-	if (f.flagIsBlue)
+	if (f.flagIsBlue || ship.updateCutscene)
 	{
 		modelStack.PushMatrix();
 		modelStack.Translate(ship.position.x, -1 + ship.position.y, ship.position.z);

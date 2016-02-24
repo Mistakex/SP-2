@@ -47,12 +47,16 @@ void Ship::cutscene(const double &dt)
 		}
 		else if (cutsceneTimer > 9.f)
 		{
+			Camera->OnControls = true;
+			Camera->position = Vector3(0, 0, 10);
 			if (fadesize - 10.f*dt > 0.f)
 				fadesize -= 100.f * dt;
 			else
 			{
 				fadesize = 0.1f;
 				displayFade = false;
+				updateCutscene = false;
+				cutsceneTimer = 0.f;
 			}
 		}
 	}

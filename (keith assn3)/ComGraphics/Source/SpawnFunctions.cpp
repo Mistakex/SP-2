@@ -16,12 +16,12 @@ void Assignment3::AlienSpawn(double dt)
 		}
 		else if (s == 1)
 		{
-			Enemy newAlien(Vector3(55.f, 0.f, spwanAlienz), Vector3(camera.position.x, -1.f, camera.position.z), Vector3(0.5, 1, 0.5), 200, 5, 5, 10, 2.0f);
+			Enemy newAlien(Vector3(55.f, 0.f, spwanAlienz), Vector3(camera.position.x, -1.f, camera.position.z), Vector3(0.8, 1, 0.8), 200, 5, 5, 10, 2.0f);
 			Aliens.push_back(newAlien);
 		}
 		else
 		{
-			Enemy newAlien(Vector3(55.f, 0.f, spwanAlienz), Vector3(camera.position.x, -1.f, camera.position.z), Vector3(0.5, 1, 0.5), 40, 5, 17, 10, 0.7f);
+			Enemy newAlien(Vector3(55.f, 0.f, spwanAlienz), Vector3(camera.position.x, -1.f, camera.position.z), Vector3(0.25f, 1, 0.25f), 40, 5, 20, 10, 0.7f);
 			Aliens.push_back(newAlien);
 		}
 	}
