@@ -16,12 +16,14 @@ public:
 	~Weapon();
 	void init(Camera3 *target);
 	void Fire(vector<Enemy> *aliens);						//Goes into Update
+	void FireSR(vector<Enemy> *aliens);
 	bool GetAllowZoom();
 	bool GetZoom();
 	int getUpgradeCost();
 	void setUpgradeCost(int newUC);
 	void update(double dt);
 	bool checkBulletCollision(vector<Enemy> *aliens,Bullet bullet);
+	bool checkBulletCollisionSR(vector<Enemy> *aliens, Bullet bullet);
 	Bullet* Magazine;
 	int upgradeCost;
 	int Damage;

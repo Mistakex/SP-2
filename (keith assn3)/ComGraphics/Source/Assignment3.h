@@ -138,6 +138,7 @@ private:
 	Countdown countdownCameraLock = Countdown(0.5f);
 	Countdown infoscreen = Countdown(0.5f);
 	Countdown KillMessage = Countdown(0.3f);
+	Countdown CountdownSniperRifle = Countdown(1.0f);
 	Player player = Player(100);
 	
 

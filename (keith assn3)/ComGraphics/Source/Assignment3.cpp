@@ -37,6 +37,7 @@ Weapon pistol(20, 30, 100, 5, false);
 Flag f(Vector3(0, 0.75f, 0), Vector3(1, 1, 1));
 Astronaut a(Vector3(5, -1, 0));
 Ship ship(Vector3(0,0,-50),Vector3(5,5,5));
+Weapon SniperRifle(150,10,100,100,true);
 
 Assignment3::Assignment3()
 {
@@ -59,9 +60,11 @@ void Assignment3::Init()
 {
 	gameState = GS_MAIN;
 	CameraMouseUpdate = true;
-	player.WeaponState = 1;
+	player.WeaponState = 3;
 	pistol.init(&camera);
 	ship.init(&camera);
+	SniperRifle.init(&camera);
+
 	//srand
 	KillMessage.TimeCountDown(0.3);
 	srand(time_t(NULL));
@@ -459,6 +462,7 @@ void Assignment3::Update(double dt)
 		countdownMining.TimeCountDown(dt);
 		countdownTurretSpawn.TimeCountDown(dt);
 		countdownPistol.TimeCountDown(dt);
+		CountdownSniperRifle.TimeCountDown(dt);
 		if (Application::IsKeyPressed(VK_LBUTTON)) //check for keypress and weapon holding
 		{
 
@@ -491,6 +495,11 @@ void Assignment3::Update(double dt)
 			{
 				pistol.Fire(&Aliens);
 				countdownPistol.resetTime();
+			}
+			if (player.WeaponState == 3 && CountdownSniperRifle.GetTimeNow() <=0)
+			{
+				SniperRifle.FireSR(&Aliens);
+				CountdownSniperRifle.resetTime();
 			}
 			else if (player.WeaponState == 6 && countdownTurretSpawn.GetTimeNow() <= 0 /*&& player.getResources() >= 50*/)
 			{

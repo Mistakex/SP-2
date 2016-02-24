@@ -42,7 +42,23 @@ void Weapon::Fire(vector<Enemy> *aliens)
 		bulletCount = 0;
 	}
 }
-
+void Weapon::FireSR(vector<Enemy> *aliens)
+{
+	if (bulletCount < AmmoInClip)
+	{
+		Magazine[bulletCount].updatePosition(camera->target);
+		Magazine[bulletCount].setView(camera->view);
+		if (checkBulletCollisionSR(aliens, Magazine[bulletCount]) == true)
+		{
+			hit = true;
+		}
+		bulletCount++;
+	}
+	else
+	{
+		bulletCount = 0;
+	}
+}
 bool Weapon::GetAllowZoom()
 {
 	return AllowZoom;
@@ -107,4 +123,24 @@ bool Weapon::checkBulletCollision(vector<Enemy> *aliens,Bullet bullet)
 	}
 	return false;
 }
+bool Weapon::checkBulletCollisionSR(vector<Enemy> *aliens, Bullet bullet)
+{
+	bool hitenemy = 0;
+	for (vector<Enemy>::iterator it = aliens->begin(); it != aliens->end(); ++it)
+	{
 
+		Vector3 temp = bullet.getPosition();
+		for (int i = 0; i < 50; ++i)
+		{
+			temp += bullet.getView().Normalized();
+			if (temp.x >(*it).position.x - (*it).rangexyz.x && temp.x < (*it).position.x + (*it).rangexyz.x
+				&& temp.y >(*it).position.y - (*it).rangexyz.y && temp.y < (*it).position.y + (*it).rangexyz.y
+				&& temp.z >(*it).position.z - (*it).rangexyz.z && temp.z < (*it).position.z + (*it).rangexyz.z)
+			{
+				(*it).EnemyTakeDmg(Damage);
+				hitenemy = 1;
+			}
+		}
+	}
+	return hitenemy;
+}
