@@ -49,7 +49,8 @@ class Assignment3 : public Scene
 		GEO_TURRETBASE,
 		//SPACESHIP
 		GEO_SPACESHIP,
-
+		//SniperRifle
+		GEO_SNIPERRIFLE,
 		NUM_GEOMETRY,
 	};
 	enum UNIFORM_TYPE

@@ -275,6 +275,9 @@ void Assignment3::Init()
 	meshList[GEO_SPACESHIP] = MeshBuilder::GenerateOBJ("Spaceship", "OBJ//SpaceObject.obj");
 	meshList[GEO_SPACESHIP]->textureID = LoadTGA("Image//SpaceObjectUV.tga");
 
+	meshList[GEO_SNIPERRIFLE] = MeshBuilder::GenerateOBJ("/SniperRifle", "OBJ//SniperRifle.obj");
+	meshList[GEO_SNIPERRIFLE]->textureID = LoadTGA("Image///SniperRifle.tga");
+
 	Mtx44 projection;
 	projection.SetToPerspective(70.0f, 4.0f / 3.0f, 0.1f, 5000.0f);
 	projectionStack.LoadMatrix(projection);
@@ -877,6 +880,12 @@ void Assignment3::Render()
 	modelStack.Translate(0, -1, 0);
 	modelStack.Scale(300, 1, 300);
 	RenderMesh(meshList[GEO_QUAD], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(10, 3, 0);
+	modelStack.Scale(0.1, 0.1, 0.1);
+	RenderMesh(meshList[GEO_SNIPERRIFLE], true);
 	modelStack.PopMatrix();
 
 	//POLE
