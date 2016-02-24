@@ -52,6 +52,8 @@ class Assignment3 : public Scene
 		//SniperRifle
 		GEO_SNIPERRIFLE,
 		GEO_FADE,
+		//Dome
+		GEO_DOME,
 		NUM_GEOMETRY,
 	};
 	enum UNIFORM_TYPE

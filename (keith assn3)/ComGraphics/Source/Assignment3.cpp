@@ -285,9 +285,12 @@ void Assignment3::Init()
 	meshList[GEO_SPACESHIP]->textureID = LoadTGA("Image//SpaceObjectUV.tga");
 
 	meshList[GEO_SNIPERRIFLE] = MeshBuilder::GenerateOBJ("/SniperRifle", "OBJ//SniperRifle.obj");
-	meshList[GEO_SNIPERRIFLE]->textureID = LoadTGA("Image///SniperRifle.tga");
+	meshList[GEO_SNIPERRIFLE]->textureID = LoadTGA("Image//SniperRifle.tga");
 
 	meshList[GEO_FADE] = MeshBuilder::GenerateQuad("Fade", Color(0, 0, 0));
+
+	meshList[GEO_DOME] = MeshBuilder::GenerateOBJ("Dome", "OBJ//dome.obj");
+	meshList[GEO_DOME]->textureID = LoadTGA("Image//domeUV.tga");
 
 	Mtx44 projection;
 	projection.SetToPerspective(70.0f, 4.0f / 3.0f, 0.1f, 5000.0f);
@@ -1055,6 +1058,13 @@ void Assignment3::Render()
 		RenderModelOnScreen(meshList[GEO_FADE],false, Vector3(ship.fadesize,ship.fadesize,ship.fadesize),0,0,0,Vector3(90,0,0));
 		modelStack.PopMatrix();
 	}
+
+	//DOME
+	modelStack.PushMatrix();
+	modelStack.Translate(0, -1, 0);
+	modelStack.Scale(10, 10, 10);
+	RenderMesh(meshList[GEO_DOME], true);
+	modelStack.PopMatrix();
 
 
 	//Aliens HP
