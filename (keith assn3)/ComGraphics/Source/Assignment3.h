@@ -92,6 +92,15 @@ class Assignment3 : public Scene
 		U_TEXT_COLOR,
 		U_TOTAL,
 	};
+
+	enum GameStates
+	{
+		GS_MAIN,
+		GS_ASTRONAUT_INTERACTION,
+		NUM_GAMESTATES
+	};
+
+	GameStates gameState;
 public:
 	Assignment3();
 	~Assignment3();

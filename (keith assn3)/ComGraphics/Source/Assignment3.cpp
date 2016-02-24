@@ -53,6 +53,7 @@ float Assignment3::getMagnitude(const Vector3 object, const Vector3 target)
 
 void Assignment3::Init()
 {
+	gameState = GS_MAIN;
 	CameraMouseUpdate = true;
 	player.WeaponState = 1;
 	pistol.init(&camera);
@@ -299,6 +300,25 @@ static std::stringstream resources;
 
 void Assignment3::Update(double dt)
 {
+	if (gameState == GS_MAIN)
+	{
+		camera.OnControls = true;
+	}
+
+	else if (gameState == GS_ASTRONAUT_INTERACTION)
+	{
+		camera.OnControls = false;
+		if (Application::IsKeyPressed('Y'))
+		{
+			a.UpgradeWeapon(pistol, player);
+			gameState = GS_MAIN;
+		}
+		if (Application::IsKeyPressed('N'))
+		{
+			gameState = GS_MAIN;
+		}
+	}
+
 	//************************************Will change this function to a pause function//
 	//countdown for camera lock
 	countdownCameraLock.TimeCountDown(dt);
@@ -551,27 +571,9 @@ void Assignment3::Update(double dt)
 			isCapturing = false;
 		}
 		//Astronaut
-		if ((getMagnitude(a.GetAstronautPos(), camera.position)) < 3)
-		{
-			a.playerIsNear = true;
-		}
-		else
-		{
-			a.playerIsNear = false;
-		}
-
-		//small test to see if - resources work. Dont need to add debounce, going to be replaced with ui functions
 		if (((getMagnitude(a.GetAstronautPos(), camera.position)) < 3) && Application::IsKeyPressed('E'))
 		{
-			/*if (player.getResources() > 0)
-			{
-				player.ObtainResources(-1);
-				cout << player.getResources() << endl;
-			}
-			else
-				cout << "not enuff" << endl;*/
-			/*a.UpgradeWeapon(pistol, player);*/
-			a.UpgradeWeapon(pistol, player);
+			gameState = GS_ASTRONAUT_INTERACTION;
 		}
 
 		if (Application::IsKeyPressed('T'))
@@ -997,10 +999,11 @@ void Assignment3::Render()
 	RenderMesh(meshList[GEO_ASTRONAUT], true);
 	modelStack.PopMatrix();
 
-	if (a.playerIsNear)
+	if (gameState == GS_ASTRONAUT_INTERACTION)
 	{
 		modelStack.PushMatrix();
-		RenderTextOnScreen(meshList[GEO_TEXT], "yes", Color(1, 0.5f, 0), 4, 1.5, 1.5);
+		RenderUIOnScreen(meshList[GEO_UI], false, Vector3(50, 10, 1), 40, 30, 2, Vector3(90, 0, 0));
+		RenderTextOnScreen(meshList[GEO_TEXT], "Upgrade Weapon?", Color(1, 0, 1), 5, 6, 5.7f);
 		modelStack.PopMatrix();
 	}
 
