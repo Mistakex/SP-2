@@ -1049,6 +1049,13 @@ void Assignment3::Render()
 		modelStack.PopMatrix();
 	}
 
+	if (ship.displayFade)
+	{
+		modelStack.PushMatrix();
+		RenderModelOnScreen(meshList[GEO_FADE],false, Vector3(ship.fadesize,ship.fadesize,ship.fadesize),0,0,0,Vector3(90,0,0));
+		modelStack.PopMatrix();
+	}
+
 
 	//Aliens HP
 	for (int i = 0; i < Aliens.size(); i++)

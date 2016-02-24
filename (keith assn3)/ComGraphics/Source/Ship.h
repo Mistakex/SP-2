@@ -11,6 +11,9 @@ public:
 	~Ship();
 	void init(Camera3 *camera);
 	void cutscene(const double &dt);
+	float fadesize;
+	bool displayFade;
+	bool updateCutscene;
 private:
 	Camera3 *Camera;
 	float cutsceneTimer;
