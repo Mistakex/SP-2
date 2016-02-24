@@ -359,9 +359,13 @@ void Assignment3::Update(double dt)
 		if (Application::IsKeyPressed(0x33) && debounce.GetTimeNow() < 0)
 		{
 			debounce.resetTime();
+			player.WeaponState = 3;
+		}
+		if (Application::IsKeyPressed('6') && debounce.GetTimeNow() < 0)
+		{
+			debounce.resetTime();
 			player.WeaponState = 6;
 		}
-
 		// updating 2nd light
 		light[1].position.Set(camera.position.x + camera.target.x / 15,
 			camera.position.y + camera.target.y / 15,
