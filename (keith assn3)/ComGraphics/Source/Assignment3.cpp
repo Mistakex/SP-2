@@ -334,6 +334,7 @@ void Assignment3::Update(double dt)
 		resources.str("");
 		////*********************************************////
 		pistol.update(dt);
+		SniperRifle.update(dt);
 		debounce.TimeCountDown(dt);
 		if (Application::IsKeyPressed('1') && debounce.GetTimeNow() < 0)
 		{
@@ -654,7 +655,7 @@ void Assignment3::RenderModelOnScreen(Mesh *mesh, bool enableLight, Vector3 size
 {
 
 	Mtx44 ortho;
-	ortho.SetToOrtho(0, 80, 0, 60, -30, 30); //size of screen UI
+	ortho.SetToOrtho(0, 80, 0, 60, -60, 60); //size of screen UI
 	projectionStack.PushMatrix();
 	projectionStack.LoadMatrix(ortho);
 
@@ -728,11 +729,6 @@ void Assignment3::Render()
 		Position lightPosition_cameraspace = viewStack.Top() * light[0].position;
 		glUniform3fv(m_parameters[U_LIGHT1_POSITION], 1, &lightPosition_cameraspace.x);
 	}
-	modelStack.PushMatrix();
-	modelStack.Translate(10, 3, 0);
-	modelStack.Scale(0.1, 0.1, 0.1);
-	RenderMesh(meshList[GEO_SNIPERRIFLE], true);
-	modelStack.PopMatrix();
 
 	//skybox
 	RenderSkybox();
@@ -787,6 +783,15 @@ void Assignment3::Render()
 		modelStack.PopMatrix();
 	}
 
+	for (int i = 0; i < SniperRifle.AmmoInClip; ++i)
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(SniperRifle.Magazine[i].getPosition().x, SniperRifle.Magazine[i].getPosition().y, SniperRifle.Magazine[i].getPosition().z);
+		modelStack.Scale(0.05f, 0.05f, 0.05f);
+		RenderMesh(meshList[GEO_BULLET], true);
+		modelStack.PopMatrix();
+	}
+
 	//SPACESHIP
 	if (f.flagIsBlue)
 	{
@@ -823,6 +828,8 @@ void Assignment3::Render()
 		RenderModelOnScreen(meshList[GEO_PICKAXE], true, Vector3(10.f,10.f,10.f), 70.f, 0.f, 5, Vector3(0, -45.f, player.getMiningAction()));
 	else if (player.WeaponState == 2)
 		RenderModelOnScreen(meshList[GEO_GUN], true, Vector3(25.f, 25.f, 25.f), 60.f, 5.f, -1, Vector3(10.f, 15.f, 0.f));
+	else if (player.WeaponState == 3)
+		RenderModelOnScreen(meshList[GEO_SNIPERRIFLE], true, Vector3(10.f,10.f,10.f), 65.f, 2.f, -1, Vector3(10.f, -70.f, 0.f));
 
 	// Message appears when u mine rocks
 	if (player.isMining)
@@ -839,7 +846,7 @@ void Assignment3::Render()
 	}
 
 	// Indicator for Mining
-	if (player.isMining || pistol.hit)
+	if (player.isMining || pistol.hit || SniperRifle.hit)
 	{
 		modelStack.PushMatrix();
 		RenderModelOnScreen(meshList[GEO_HITORNOT], false, Vector3(3.f,3.f,3.f), 39.9f, 29.9f, 6, Vector3(90, 0, 0));
