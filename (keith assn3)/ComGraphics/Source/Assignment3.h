@@ -110,6 +110,7 @@ class Assignment3 : public Scene
 	{
 		GS_MAIN,
 		GS_ASTRONAUT_INTERACTION,
+		GS_SCENE2,
 		NUM_GAMESTATES
 	};
 
@@ -150,12 +151,17 @@ private:
 	void TurretSpawn();
 	void TurretUpdate(double dt);
 	void AlienUpdate(double dt);
+	//Render Functions
 	void RenderPole();
 	void RenderFlag();
 	void RenderCraters();
 	void RenderTurret();
 	void RenderAliens();
 	void RenderAstronaut();
+	//Scenes
+	void Scene1Updates(double dt);
+	void Scene1Render();
+
 	// countdown
 	Countdown countdownRock = Countdown(10.0f);
 	Countdown countdownMining = Countdown(0.5f);

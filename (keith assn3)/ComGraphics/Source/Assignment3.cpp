@@ -310,19 +310,9 @@ void Assignment3::Update(double dt)
 	{
 		camera.OnControls = true;
 	}
-
-	if (gameState == GS_ASTRONAUT_INTERACTION)
+	if (gameState != GS_SCENE2)
 	{
-		camera.OnControls = false;
-		if (Application::IsKeyPressed('Y'))
-		{
-			a.UpgradeWeapon(pistol, player);
-			gameState = GS_MAIN;
-		}
-		if (Application::IsKeyPressed('N'))
-		{
-			gameState = GS_MAIN;
-		}
+		Scene1Updates(dt);
 	}
 
 	//************************************Will change this function to a pause function//
@@ -474,32 +464,6 @@ void Assignment3::Update(double dt)
 		{
 			skyBoxRotate = 0.f;
 		}
-		// flag rising up when get close
-		if (f.getMagnitude(camera.position) <= 7.5f)
-		{
-			if (f.flagIsBlue == true)
-			{
-				if (f.FlagHeightIncrease(2.5f, dt) >= 2.5f)
-				{
-					isCaptured = true;
-				};
-			}
-			else if (f.FlagHeightDecrease(0.5f, dt) <= 0.5f)
-			{
-				f.flagIsBlue = true;
-				isCapturing = true;
-			}
-		}
-		else
-		{
-			isCapturing = false;
-		}
-		//Astronaut
-		if (Application::IsKeyPressed('E') && ((getMagnitude(a.GetAstronautPos(), camera.position)) < 3))
-		{
-			gameState = GS_ASTRONAUT_INTERACTION;
-		}
-
 		if (Application::IsKeyPressed('T'))
 		{
 			player.TakeDmg(1);
@@ -516,12 +480,6 @@ void Assignment3::Update(double dt)
 		if (Application::IsKeyPressed('0'))
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //wireframe mode
 
-		//reset everything
-		if (Application::IsKeyPressed('R'))
-		{
-			f.flagIsBlue = false;
-			f.flagheight = 2;
-		}
 	}
 }
 
@@ -791,22 +749,16 @@ void Assignment3::Render()
 	RenderMesh(meshList[GEO_QUAD], true);
 	modelStack.PopMatrix();
 
+	if (gameState != GS_SCENE2)
+	{
+		Scene1Render();	//flag ,pole ,astronaut,crater render
+	}
 
-	//POLE
-	RenderPole();
-
-	//FLAG
-	RenderFlag();
-
-	//CRATERS;
-	RenderCraters();
 	//TURRETS
 	RenderTurret();
 	//ALIEN
 	RenderAliens();
 
-	//ASTRONAUT
-	RenderAstronaut();
 
 	if (gameState == GS_ASTRONAUT_INTERACTION)
 	{
