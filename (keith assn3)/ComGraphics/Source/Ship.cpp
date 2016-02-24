@@ -39,16 +39,16 @@ void Ship::cutscene(const double &dt)
 		{
 			Camera->position = position - Vector3(10, 3, 0);
 			position += Vector3(100, 0, 0)*dt;
-			if (cutsceneTimer < 6.f)
+			if (cutsceneTimer > 6.f)
 			{
 				displayFade = true;
-				fadesize += 10.f * dt;
+				fadesize += 100.f * dt;
 			}
 		}
 		else if (cutsceneTimer > 9.f)
 		{
 			if (fadesize - 10.f*dt > 0.f)
-				fadesize -= 10.f * dt;
+				fadesize -= 100.f * dt;
 			else
 			{
 				fadesize = 0.1f;

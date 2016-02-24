@@ -287,7 +287,7 @@ void Assignment3::Init()
 	meshList[GEO_SNIPERRIFLE] = MeshBuilder::GenerateOBJ("/SniperRifle", "OBJ//SniperRifle.obj");
 	meshList[GEO_SNIPERRIFLE]->textureID = LoadTGA("Image//SniperRifle.tga");
 
-	meshList[GEO_FADE] = MeshBuilder::GenerateQuad("Fade", Color(0, 0, 0));
+	meshList[GEO_FADE] = MeshBuilder::GenerateQuad("Fade", Color(1, 1, 1));
 
 	meshList[GEO_DOME] = MeshBuilder::GenerateOBJ("Dome", "OBJ//dome.obj");
 	meshList[GEO_DOME]->textureID = LoadTGA("Image//domeUV.tga");
@@ -310,12 +310,15 @@ static std::stringstream resources;
 
 void Assignment3::Update(double dt)
 {
+	//ship.updateCutscene = true;
+	//ship.cutscene(dt);
+
 	if (gameState == GS_MAIN)
 	{
 		camera.OnControls = true;
 	}
 
-	else if (gameState == GS_ASTRONAUT_INTERACTION)
+	if (gameState == GS_ASTRONAUT_INTERACTION)
 	{
 		camera.OnControls = false;
 		if (Application::IsKeyPressed('Y'))
@@ -870,6 +873,8 @@ void Assignment3::Render()
 	//skybox
 	RenderSkybox();
 
+
+
 	//axes
 	RenderMesh(meshList[GEO_AXES], false);
 
@@ -1052,12 +1057,8 @@ void Assignment3::Render()
 		modelStack.PopMatrix();
 	}
 
-	if (ship.displayFade)
-	{
-		modelStack.PushMatrix();
-		RenderModelOnScreen(meshList[GEO_FADE],false, Vector3(ship.fadesize,ship.fadesize,ship.fadesize),0,0,0,Vector3(90,0,0));
-		modelStack.PopMatrix();
-	}
+
+
 
 	//DOME
 	modelStack.PushMatrix();
@@ -1102,7 +1103,7 @@ void Assignment3::Render()
 	if (player.isMining || pistol.hit)
 	{
 		modelStack.PushMatrix();
-		RenderModelOnScreen(meshList[GEO_HITORNOT], false, 3.f, 39.9f, 29.9f, 6, Vector3(90, 0, 0));
+		RenderModelOnScreen(meshList[GEO_HITORNOT], false, Vector3(3.f,3.f,3.f), 39.9f, 29.9f, 6, Vector3(90, 0, 0));
 		modelStack.PopMatrix();
 	}
 
@@ -1117,11 +1118,13 @@ void Assignment3::Render()
 	RenderModelOnScreen(meshList[GEO_UI], false, Vector3(82, 10, 50), 40, 5, 6, Vector3(90, 0, 0));
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	modelStack.PushMatrix();
-	RenderModelOnScreen(meshList[GEO_HEALTH], false, Vector3(player.GetHp() * 0.2, 2, -1), 22 - (100 - player.GetHp())*0.1, 7, 7, Vector3(90, 0, 0));
+	RenderModelOnScreen(meshList[GEO_HEALTH], false, Vector3(player.GetHp() * 0.2, 2, 0), 22 - (100 - player.GetHp())*0.1, 7, 7, Vector3(90, 0, 0));
 	RenderTextOnScreen(meshList[GEO_TEXT], "HP: ", Color(1, 0, 1), 2, 4, 3);
 	RenderTextOnScreen(meshList[GEO_TEXT], std::to_string(player.GetHp()), Color(1, 0, 1), 2, 5, 3);
 	modelStack.PopMatrix();
 	modelStack.PopMatrix();
+
+
 
 	// INFO
 	if (isShown == true)
@@ -1168,6 +1171,13 @@ void Assignment3::Render()
 			RenderTextOnScreen(meshList[GEO_TEXT], "Flag Captured!", Color(0, 1, 0), 5, 6, 10);
 			modelStack.PopMatrix();
 		}
+	}
+	//fadeaway
+	if (ship.displayFade)
+	{
+		modelStack.PushMatrix();
+		RenderModelOnScreen(meshList[GEO_FADE], false, Vector3(ship.fadesize, 150.f, 0), 0, 0, 12, Vector3(90, 0, 0));
+		modelStack.PopMatrix();
 	}
 }
 
