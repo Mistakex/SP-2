@@ -9,6 +9,16 @@
 #include"CountDown.h"
 #include "Player.h"
 #include "Turret.h"
+#include "Enemy.h"
+#include "CountDown.h"
+#include "Rock.h"
+#include "Flag.h"
+#include "Astronaut.h"
+#include "Weapon.h"
+#include "Bullet.h"
+#include "Enemy.h"
+#include "Ship.h"
+
 
 class Assignment3 : public Scene
 {
@@ -115,7 +125,13 @@ public:
 
 	vector<Enemy> Aliens;
 	vector<GameObject*> Collisions;
-
+	vector<Rock> Rocks;
+	vector<Turret> Turrets;
+	Weapon pistol = Weapon(20, 30, 100, 5, false);
+	Flag f = Flag(Vector3(0, 0.75f, 0), Vector3(1, 1, 1));
+	Astronaut a = Astronaut(Vector3(5, -1, 0));
+	Ship ship = Ship(Vector3(0, 0, -50), Vector3(5, 5, 5));
+	Weapon SniperRifle = Weapon(150, 10, 100, 100, true);
 private:
 	void RenderText(Mesh* mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
@@ -128,7 +144,18 @@ private:
 	float getMagnitude(const Vector3 user, const Vector3 target);	//find the magnitude between 2 points
 	float randomx, randomz;											//random locations for the rock spawn
 
-
+	//Spawn functions
+	void AlienSpawn(double dt);
+	void RockSpawn(double dt);
+	void TurretSpawn();
+	void TurretUpdate(double dt);
+	void AlienUpdate(double dt);
+	void RenderPole();
+	void RenderFlag();
+	void RenderCraters();
+	void RenderTurret();
+	void RenderAliens();
+	void RenderAstronaut();
 	// countdown
 	Countdown countdownRock = Countdown(10.0f);
 	Countdown countdownMining = Countdown(0.5f);

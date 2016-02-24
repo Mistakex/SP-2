@@ -31,14 +31,6 @@ using std::cout;
 using std::endl;
 
 
-vector<Rock> Rocks;
-vector<Turret> Turrets;
-Weapon pistol(20, 30, 100, 5, false);
-Flag f(Vector3(0, 0.75f, 0), Vector3(1, 1, 1));
-Astronaut a(Vector3(5, -1, 0));
-Ship ship(Vector3(0,0,-50),Vector3(5,5,5));
-Weapon SniperRifle(150,10,100,100,true);
-
 Assignment3::Assignment3()
 {
 }
@@ -58,6 +50,7 @@ float Assignment3::getMagnitude(const Vector3 object, const Vector3 target)
 
 void Assignment3::Init()
 {
+
 	gameState = GS_MAIN;
 	CameraMouseUpdate = true;
 	player.WeaponState = 3;
@@ -352,17 +345,17 @@ void Assignment3::Update(double dt)
 		////*********************************************////
 		pistol.update(dt);
 		debounce.TimeCountDown(dt);
-		if (Application::IsKeyPressed(0x31) && debounce.GetTimeNow() < 0)
+		if (Application::IsKeyPressed('1') && debounce.GetTimeNow() < 0)
 		{
 			debounce.resetTime();
 			player.WeaponState = 2;
 		}
-		if (Application::IsKeyPressed(0x32) && debounce.GetTimeNow() < 0)
+		if (Application::IsKeyPressed('2') && debounce.GetTimeNow() < 0)
 		{
 			debounce.resetTime();
 			player.WeaponState = 1;
 		}
-		if (Application::IsKeyPressed(0x33) && debounce.GetTimeNow() < 0)
+		if (Application::IsKeyPressed('3') && debounce.GetTimeNow() < 0)
 		{
 			debounce.resetTime();
 			player.WeaponState = 3;
@@ -381,93 +374,15 @@ void Assignment3::Update(double dt)
 		//first light
 		light[0].position.Set(0.f, 5.f, 20.f);
 		//Alien Spawn
-		if ((countdownAlienSpawn.TimeCountDown(dt) <= 0) && (Aliens.size()) < 20 && (f.flagIsBlue == true))
-		{
-			countdownAlienSpawn.resetTime();
-			float spwanAlienz = (rand() % 100 - 50.f);
-			short s = rand() % 3;
-			std::cout << s << std::endl;
-			if (s == 0)
-			{
-				Enemy newAlien(Vector3(55.f, 0.f, spwanAlienz), Vector3(camera.position.x, -1.f, camera.position.z), Vector3(0.5, 1, 0.5), 100, 5, 10, 10);
-				Aliens.push_back(newAlien);
-			}
-			else if (s == 1)
-			{
-				Enemy newAlien(Vector3(55.f, 0.f, spwanAlienz), Vector3(camera.position.x, -1.f, camera.position.z), Vector3(0.5, 1, 0.5), 200, 5, 5, 10, 2.0f);
-				Aliens.push_back(newAlien);
-			}
-			else
-			{
-				Enemy newAlien(Vector3(55.f, 0.f, spwanAlienz), Vector3(camera.position.x, -1.f, camera.position.z), Vector3(0.5, 1, 0.5), 40, 5, 17, 10, 0.7f);
-				Aliens.push_back(newAlien);
-			}
-		}
+		AlienSpawn(dt);
 		KillMessage.TimeCountDown(dt);
 		//Alien update
-		for (vector<Enemy>::iterator it = Aliens.begin(); it != Aliens.end();)
-		{
-			(*it).update(camera, dt, &player);
-			if ((*it).isDead())
-			{
-				Alienresources = rand() % 15 + 5;
-				KillMessage.resetTime();
-				player.ObtainResources(Alienresources);
-				it = Aliens.erase(it);
-			}
-			else
-			{
-				++it;
-			}
-		}
+		AlienUpdate(dt);
 
 		//Rocks spawn
-		if (countdownRock.TimeCountDown(dt) <= 0 && Rocks.size() < 10)
-		{
-			randomx = rand() % 100 - 50.f;
-			randomz = rand() % 100 - 50.f;
-
-			if (getMagnitude(Vector3(randomx, -1, randomz), Vector3(camera.position.x, -1, camera.position.z)) >= 20.0f)//spwan 20 units away from the player
-			{
-				countdownRock.resetTime();
-				Rock newRock(Vector3(randomx, -1.f, randomz), rand() % 4 + 1.f);
-				Rocks.push_back(newRock);
-			}
-		}
+		RockSpawn(dt);
 		//Turrets Aim and Shoot
-		for (size_t i = 0; i < Turrets.size(); i++)
-		{
-			if (Aliens.empty() == true){ Turrets[i].bulletPos = (0, -10, 0); }
-			short s = 0;
-			if (Aliens.empty() == false)
-			{
-				while (s < Aliens.size())
-				{
-					if (getMagnitude(Turrets[i].GetPosition(), Aliens[s].position) <= 15.f)
-					{
-						Turrets[i].LookAtEnemy(Aliens[s]);
-						Turrets[i].TargetEnemy(Aliens[s].position);
-						Turrets[i].ShootAtEnemy(dt);
-						if (Turrets[i].shooting == true)
-						{
-							if (getMagnitude(Turrets[i].bulletPos, Turrets[i].Target) <= 1.0f && Turrets[i].hit == false)
-							{
-								Turrets[i].hit = true;
-								Turrets[i].bulletPos = (0, -10, 0);
-								Aliens[s].EnemyTakeDmg(Turrets[i].GetDamage());
-							}
-						}
-						break;
-					}
-					else if (Turrets[i].shooting == true)
-					{
-						Turrets[i].bulletPos = Turrets[i].GetPosition();
-						Turrets[i].bulletPos.y = -0.5f;
-					}
-					s++;
-				}
-			}
-		}
+		TurretUpdate(dt);
 		//Rock mining
 		player.WhileMining(dt);
 		//Timers
@@ -513,23 +428,9 @@ void Assignment3::Update(double dt)
 				SniperRifle.FireSR(&Aliens);
 				CountdownSniperRifle.resetTime();
 			}
-			else if (player.WeaponState == 6 && countdownTurretSpawn.GetTimeNow() <= 0 /*&& player.getResources() >= 50*/)
+			else if (player.WeaponState == 6 && countdownTurretSpawn.GetTimeNow() <= 0 && player.getResources() >= 50)
 			{
-				/////////////////////Add requirements for resources///////////////
-				float a = 1; //used to mutiply camera view to get intersection with 0
-				if (camera.target.y <= 0)
-				{
-					while (TurretPos.y >= -1)
-					{
-						TurretPos = camera.view*a;
-						a += 0.1;
-					}
-					player.ObtainResources(-50);
-					Turret newTurret(100, 50, Vector3(TurretPos.x + camera.position.x, 0, TurretPos.z + camera.position.z));
-					Turrets.push_back(newTurret);
-					countdownTurretSpawn.resetTime();
-					TurretPos = (0.f, 0.f, 0.f);//reset the value of the variable
-				}
+				TurretSpawn();
 			}
 		}
 		if (Application::IsKeyPressed(VK_RBUTTON) && isZoom == false && rightClick.TimeCountDown(dt) < 0)
@@ -869,6 +770,11 @@ void Assignment3::Render()
 		Position lightPosition_cameraspace = viewStack.Top() * light[0].position;
 		glUniform3fv(m_parameters[U_LIGHT1_POSITION], 1, &lightPosition_cameraspace.x);
 	}
+	modelStack.PushMatrix();
+	modelStack.Translate(10, 3, 0);
+	modelStack.Scale(0.1, 0.1, 0.1);
+	RenderMesh(meshList[GEO_SNIPERRIFLE], true);
+	modelStack.PopMatrix();
 
 	//skybox
 	RenderSkybox();
@@ -885,120 +791,22 @@ void Assignment3::Render()
 	RenderMesh(meshList[GEO_QUAD], true);
 	modelStack.PopMatrix();
 
-	modelStack.PushMatrix();
-	modelStack.Translate(10, 3, 0);
-	modelStack.Scale(0.1, 0.1, 0.1);
-	RenderMesh(meshList[GEO_SNIPERRIFLE], true);
-	modelStack.PopMatrix();
 
 	//POLE
-	modelStack.PushMatrix();
-	modelStack.Scale(1.5, 2, 1.5);
-	modelStack.PushMatrix();
-	modelStack.Scale(2, 2, 2);
-	modelStack.Translate(0, f.position.y - 1, f.position.z);
-	modelStack.Rotate(90, 0, 1, 0);
-	RenderMesh(meshList[GEO_FLAGPOLE], true);
-	modelStack.PopMatrix();
+	RenderPole();
 
 	//FLAG
-	if (!f.flagIsBlue)
-	{
-		modelStack.PushMatrix();
-		modelStack.Scale(2, 2, 2);
-		modelStack.Translate(1.5, f.flagheight, f.position.z);
-		modelStack.Rotate(90, 0, 1, 0);
-		RenderMesh(meshList[GEO_ENEMYFLAG], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Scale(5, 2, 5);
-		modelStack.Translate(0, f.position.y - 1, f.position.z);
-		RenderMesh(meshList[GEO_UNCAPTURED], true);
-		modelStack.PopMatrix();
-	}
-	else
-	{
-		modelStack.PushMatrix();
-		modelStack.Scale(2, 2, 2);
-		modelStack.Translate(1.5, f.flagheight, f.position.z);
-		modelStack.Rotate(90, 0, 1, 0);
-		RenderMesh(meshList[GEO_ALLYFLAG], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Scale(5, 2, 5);
-		modelStack.Translate(0, f.position.y - 1, f.position.z);
-		RenderMesh(meshList[GEO_CAPTURED], true);
-		modelStack.PopMatrix();
-	}
-	modelStack.PopMatrix();
+	RenderFlag();
 
 	//CRATERS;
-	for (int i = 0; i < 3; ++i)
-	{
-		if (i == 0)
-		{
-			modelStack.PushMatrix();
-			modelStack.Translate(0, -0.5, 0);
-			modelStack.Scale(2, 2, 2);
-			RenderMesh(meshList[GEO_CRATER], true);
-			modelStack.PopMatrix();
-		}
-		else if (i == 1)
-		{
-			modelStack.PushMatrix();
-			modelStack.Translate(30, -0.5, 5);
-			modelStack.Scale(3, 2, 3);
-			RenderMesh(meshList[GEO_CRATER], true);
-			modelStack.PopMatrix();
-		}
-		else
-		{
-			for (int j = 0; j < 2; ++j)
-			{
-				modelStack.PushMatrix();
-				modelStack.Translate(-20.f, -0.5f, 10.f - j * 20.f);
-				modelStack.Scale(3, 2, 3);
-				RenderMesh(meshList[GEO_CRATER], true);
-				modelStack.PopMatrix();
-			}
-		}
-	}
+	RenderCraters();
 	//TURRETS
-	for (size_t i = 0; i < Turrets.size(); i++)
-	{
-		modelStack.PushMatrix();
-		modelStack.Translate(Turrets[i].GetPosition().x, Turrets[i].GetPosition().y-1, Turrets[i].GetPosition().z);
-		modelStack.Scale(0.3f, 0.3f, 0.3f);
-		RenderMesh(meshList[GEO_TURRETBASE], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		//std::cout << Turrets[i].turretRotation << std::endl;
-		modelStack.Translate(Turrets[i].GetPosition().x, Turrets[i].GetPosition().y-0.7f, Turrets[i].GetPosition().z);
-		modelStack.Rotate(Turrets[i].turretRotation, 0, 1, 0);
-		modelStack.Scale(0.3f, 0.3f, 0.3f);
-		RenderMesh(meshList[GEO_TURRETHEAD], true);
-		modelStack.PopMatrix();
-
-		if (Turrets[i].GetShooting() == true)
-		{
-			//std::cout << Turrets[i].bulletPos << std::endl;
-			modelStack.PushMatrix();
-			modelStack.Translate(Turrets[i].bulletPos.x, Turrets[i].bulletPos.y, Turrets[i].bulletPos.z);
-			modelStack.Scale(0.1f, 0.1f, 0.1f);
-			RenderMesh(meshList[GEO_BULLET], true);
-			modelStack.PopMatrix();
-		}
-	}
+	RenderTurret();
+	//ALIEN
+	RenderAliens();
 
 	//ASTRONAUT
-	modelStack.PushMatrix();
-	modelStack.Translate(a.GetAstronautPos().x, a.GetAstronautPos().y, a.GetAstronautPos().z);
-	modelStack.Scale(0.3f, 0.3f, 0.3f);
-	RenderMesh(meshList[GEO_ASTRONAUT], true);
-	modelStack.PopMatrix();
+	RenderAstronaut();
 
 	if (gameState == GS_ASTRONAUT_INTERACTION)
 	{
@@ -1007,27 +815,6 @@ void Assignment3::Render()
 		RenderTextOnScreen(meshList[GEO_TEXT], "Upgrade Weapon?", Color(1, 0, 1), 5, 6, 5.7f);
 		modelStack.PopMatrix();
 	}
-
-	//ALIEN
-	for (size_t i = 0; i < Aliens.size(); ++i)
-	{
-		modelStack.PushMatrix();
-		modelStack.Translate(Aliens[i].position.x, Aliens[i].position.y, Aliens[i].position.z);
-		modelStack.Rotate(Aliens[i].findDirection(), 0, 1, 0);
-		modelStack.Scale(Aliens[i].EnemySize, 1, Aliens[i].EnemySize);
-		RenderAlien(Aliens[i].armRotate);
-		modelStack.PopMatrix();
-
-		if (Aliens[i].GetShooting() == true)
-		{
-			modelStack.PushMatrix();
-			modelStack.Translate(Aliens[i].bulletPos.x, Aliens[i].bulletPos.y, Aliens[i].bulletPos.z);
-			modelStack.Scale(0.1f, 0.1f, 0.1f);
-			RenderMesh(meshList[GEO_BULLET], true);
-			modelStack.PopMatrix();
-		}
-	}
-
 
 	// ROCKS
 	for (size_t i = 0; i < Rocks.size(); i++)
@@ -1179,29 +966,6 @@ void Assignment3::Render()
 		RenderModelOnScreen(meshList[GEO_FADE], false, Vector3(ship.fadesize, 150.f, 0), 0, 0, 12, Vector3(90, 0, 0));
 		modelStack.PopMatrix();
 	}
-}
-
-void Assignment3::RenderAlien(float armRotate)
-{
-	modelStack.PushMatrix();
-	modelStack.Translate(0.f, -3.2f, 0.f);
-	RenderMesh(meshList[GEO_ALIENHEAD], true);
-	RenderMesh(meshList[GEO_ALIENBODY], true);
-	modelStack.PushMatrix();
-	modelStack.Translate(0.f, 2.9f, 0.f);
-	modelStack.Rotate(armRotate, 1, 0, 0);
-	modelStack.Translate(0.f, -2.9f, 0.f);
-	modelStack.PushMatrix(); // arms
-	modelStack.Translate(-0.3f, 2.7f, 0.f);
-	modelStack.Scale(0.2f, 0.4f, 0.4f);
-	RenderMesh(meshList[GEO_ALIENPART], true);
-	modelStack.PushMatrix();
-	modelStack.Translate(3, 0, 0);
-	RenderMesh(meshList[GEO_ALIENPART], true);
-	modelStack.PopMatrix();
-	modelStack.PopMatrix();
-	modelStack.PopMatrix();
-	modelStack.PopMatrix();
 }
 
 void Assignment3::Exit()
