@@ -7,9 +7,10 @@ Flag::Flag() : isEnemyflag(false)
 	flagheight = 2.5;
 }
 
-Flag::Flag(const Vector3 &coords) : isEnemyflag(false)
+Flag::Flag(const Vector3 &pos, const Vector3 &rangexyz) : isEnemyflag(false)
 {
-	FLAGPOLE = coords;
+	position = pos;
+	this->rangexyz = rangexyz;
 	flagheight = 2.5;
 }
 Flag::~Flag()
@@ -18,7 +19,7 @@ Flag::~Flag()
 
 float Flag::getMagnitude(const Vector3 &target)
 {
-	Vector3 view = target - FLAGPOLE;
+	Vector3 view = target - position;
 	return sqrt(pow(view.x, 2) + pow(view.y, 2) + pow(view.z, 2));
 }
 

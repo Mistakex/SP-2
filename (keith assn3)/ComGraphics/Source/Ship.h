@@ -13,6 +13,7 @@ public:
 	void cutscene(const double &dt);
 private:
 	Camera3 *Camera;
+	float cutsceneTimer;
 };
 
 

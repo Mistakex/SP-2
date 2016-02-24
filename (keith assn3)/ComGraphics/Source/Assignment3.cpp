@@ -30,9 +30,13 @@ extern GLFWwindow* m_window;
 using std::cout;
 using std::endl;
 
+
 vector<Rock> Rocks;
 vector<Turret> Turrets;
 Weapon pistol(20, 30, 100, 5, false);
+Flag f(Vector3(0, 0.75f, 0), Vector3(1, 1, 1));
+Astronaut a(Vector3(5, -1, 0));
+Ship ship(Vector3(0,0,-50),Vector3(5,5,5));
 
 Assignment3::Assignment3()
 {
@@ -57,6 +61,7 @@ void Assignment3::Init()
 	CameraMouseUpdate = true;
 	player.WeaponState = 1;
 	pistol.init(&camera);
+	ship.init(&camera);
 	//srand
 	KillMessage.TimeCountDown(0.3);
 	srand(time_t(NULL));
@@ -289,9 +294,6 @@ static float ROT_LIMIT = 45.f;
 static float SCALE_LIMIT = 5.f;
 
 static float LSPEED = 10.f; // LIGHT SPEED
-
-Flag f(Vector3(0, 0.75f, 0));
-Astronaut a(Vector3(5, -1, 0));
 
 static float skyBoxRotate = 0.f; // rotation of skybox
 
@@ -895,7 +897,7 @@ void Assignment3::Render()
 	modelStack.Scale(1.5, 2, 1.5);
 	modelStack.PushMatrix();
 	modelStack.Scale(2, 2, 2);
-	modelStack.Translate(0, f.FLAGPOLE.y - 1, f.FLAGPOLE.z);
+	modelStack.Translate(0, f.position.y - 1, f.position.z);
 	modelStack.Rotate(90, 0, 1, 0);
 	RenderMesh(meshList[GEO_FLAGPOLE], true);
 	modelStack.PopMatrix();
@@ -905,14 +907,14 @@ void Assignment3::Render()
 	{
 		modelStack.PushMatrix();
 		modelStack.Scale(2, 2, 2);
-		modelStack.Translate(1.5, f.flagheight, f.FLAGPOLE.z);
+		modelStack.Translate(1.5, f.flagheight, f.position.z);
 		modelStack.Rotate(90, 0, 1, 0);
 		RenderMesh(meshList[GEO_ENEMYFLAG], true);
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
 		modelStack.Scale(5, 2, 5);
-		modelStack.Translate(0, f.FLAGPOLE.y - 1, f.FLAGPOLE.z);
+		modelStack.Translate(0, f.position.y - 1, f.position.z);
 		RenderMesh(meshList[GEO_UNCAPTURED], true);
 		modelStack.PopMatrix();
 	}
@@ -920,14 +922,14 @@ void Assignment3::Render()
 	{
 		modelStack.PushMatrix();
 		modelStack.Scale(2, 2, 2);
-		modelStack.Translate(1.5, f.flagheight, f.FLAGPOLE.z);
+		modelStack.Translate(1.5, f.flagheight, f.position.z);
 		modelStack.Rotate(90, 0, 1, 0);
 		RenderMesh(meshList[GEO_ALLYFLAG], true);
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
 		modelStack.Scale(5, 2, 5);
-		modelStack.Translate(0, f.FLAGPOLE.y - 1, f.FLAGPOLE.z);
+		modelStack.Translate(0, f.position.y - 1, f.position.z);
 		RenderMesh(meshList[GEO_CAPTURED], true);
 		modelStack.PopMatrix();
 	}
@@ -1027,16 +1029,6 @@ void Assignment3::Render()
 		}
 	}
 
-	//Aliens HP
-	for (int i = 0; i < Aliens.size(); i++)
-	{
-		modelStack.PushMatrix();
-		modelStack.Translate(Aliens[i].position.x - 0.25, Aliens[i].position.y + 0.5, Aliens[i].position.z);
-		modelStack.Rotate(Aliens[i].findDirection() - 180, 0, 1, 0);
-		modelStack.Scale(0.5, 0.5, 0.5);
-		RenderText(meshList[GEO_TEXT], std::to_string(Aliens[i].GetEnemyHp()), Color(0, 1, 0));
-		modelStack.PopMatrix();
-	}
 
 	// ROCKS
 	for (size_t i = 0; i < Rocks.size(); i++)
@@ -1061,8 +1053,20 @@ void Assignment3::Render()
 	if (f.flagIsBlue)
 	{
 		modelStack.PushMatrix();
-		modelStack.Translate(0, -1, 50);
+		modelStack.Translate(ship.position.x, -1 + ship.position.y, ship.position.z);
 		RenderMesh(meshList[GEO_SPACESHIP], true);
+		modelStack.PopMatrix();
+	}
+
+
+	//Aliens HP
+	for (int i = 0; i < Aliens.size(); i++)
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(Aliens[i].position.x - 0.25, Aliens[i].position.y + 0.5, Aliens[i].position.z);
+		modelStack.Rotate(Aliens[i].findDirection() - 180, 0, 1, 0);
+		modelStack.Scale(0.5, 0.5, 0.5);
+		RenderText(meshList[GEO_TEXT], std::to_string(Aliens[i].GetEnemyHp()), Color(0, 1, 0));
 		modelStack.PopMatrix();
 	}
 

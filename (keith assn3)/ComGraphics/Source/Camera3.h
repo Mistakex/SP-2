@@ -6,6 +6,7 @@
 #include "Application.h"
 #include <vector>
 #include "Rock.h"
+#include "Flag.h"
 
 using std::vector;
 
@@ -34,7 +35,9 @@ public:
 	bool isFlyingOn;
 	bool OnControls;
 
+	//For collisions
 	vector<Rock> *Rocks;
+	Flag *flag;
 };
 
 #endif
