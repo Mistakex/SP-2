@@ -371,10 +371,10 @@ void Assignment3::Update(double dt)
 			player.WeaponState = 3;
 			isSniper = true;
 		}
-		if (Application::IsKeyPressed('6') && debounce.GetTimeNow() < 0)
+		if (Application::IsKeyPressed('4') && debounce.GetTimeNow() < 0)
 		{
 			debounce.resetTime();
-			player.WeaponState = 6;
+			player.WeaponState = 4;
 		}
 		// updating 2nd light
 		light[1].position.Set(camera.position.x + camera.target.x / 15,
@@ -447,7 +447,7 @@ void Assignment3::Update(double dt)
 				SniperRifle.FireSR(&Aliens);
 				CountdownSniperRifle.resetTime();
 			}
-			else if (player.WeaponState == 6 && countdownTurretSpawn.GetTimeNow() <= 0 && player.getResources() >= 50)
+			else if (player.WeaponState == 4 && countdownTurretSpawn.GetTimeNow() <= 0 && player.getResources() >= 50)
 			{
 				TurretSpawn();
 			}
@@ -457,7 +457,7 @@ void Assignment3::Update(double dt)
 			if (player.WeaponState == 3 && isZoom == false)
 			{
 				Mtx44 projection;
-				projection.SetToPerspective(30.0f, 4.0f / 3.0f, 0.1f, 5000.0f);
+				projection.SetToPerspective(10.0f, 4.0f / 3.0f, 0.1f, 5000.0f);
 				projectionStack.LoadMatrix(projection);
 				camera.MouseSensitivity = 0.05f;
 				isZoom = true;
