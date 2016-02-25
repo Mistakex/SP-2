@@ -132,7 +132,7 @@ void Assignment3::Init()
 	glUseProgram(m_programID);
 
 	light[0].type = Light::LIGHT_DIRECTIONAL;
-	light[0].position.Set(0.f, 10.f, 20.f);
+	light[0].position.Set(0.f, 5.f, 20.f);
 	light[0].color.Set(1, 1, 1);
 	light[0].power = 1;
 	light[0].kC = 1.f;
@@ -314,12 +314,19 @@ void Assignment3::Update(double dt)
 	}
 	if (gameState == GS_SCENE2)
 	{
-
+		Scene2Updates();
+	}
+	if (Application::IsKeyPressed('Z'))
+	{
+		std::cout << camera.position.x << std::endl;
+		std::cout << camera.position.z << std::endl;
 	}
 	ship.cutscene(dt);
 	if (ship.changeScene)
 	{
 		gameState = GS_SCENE2;
+		camera.Reset();
+		camera.position.Set(0, 0, 70);
 	}
 
 	//************************************Will change this function to a pause function//
@@ -368,8 +375,6 @@ void Assignment3::Update(double dt)
 			camera.position.y + camera.target.y / 15,
 			camera.position.z + camera.target.z / 15);
 		light[1].spotDirection.Set(-(camera.target.x - camera.position.x), -(camera.target.y - camera.position.y), -(camera.target.z - camera.position.z));
-		//first light
-		light[0].position.Set(0.f, 5.f, 20.f);
 		
 		if (gameState == GS_MAIN || gameState ==GS_ASTRONAUT_INTERACTION || gameState == GS_SCENE2)
 		{
@@ -470,13 +475,16 @@ void Assignment3::Update(double dt)
 		resources << "Resources: " << player.getResources();
 
 		//rotation of skybox
-		if (skyBoxRotate < 360.f)
+		if (gameState != GS_SCENE3)
 		{
-			skyBoxRotate += (float)dt;
-		}
-		else
-		{
-			skyBoxRotate = 0.f;
+			if (skyBoxRotate < 360.f)
+			{
+				skyBoxRotate += (float)dt;
+			}
+			else
+			{
+				skyBoxRotate = 0.f;
+			}
 		}
 		if (Application::IsKeyPressed('T'))
 		{
@@ -744,7 +752,10 @@ void Assignment3::Render()
 	}
 
 	//skybox
-	RenderSkybox();
+	if (gameState != GS_SCENE3)
+	{
+		RenderSkybox();
+	}
 
 	//axes
 	RenderMesh(meshList[GEO_AXES], false);
@@ -817,7 +828,10 @@ void Assignment3::Render()
 	{
 		RenderDome(10, 0, -1, 0);
 	}
-
+	if (gameState == GS_SCENE3)
+	{
+		RenderDome(40, 0, -1, 0);
+	}
 
 	//Aliens HP
 	for (int i = 0; i < Aliens.size(); i++)
