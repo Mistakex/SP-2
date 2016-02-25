@@ -128,7 +128,6 @@ public:
 	virtual void Render();
 	virtual void Exit();
 
-	Enemy Boss;
 	vector<Enemy> Aliens;
 	vector<GameObject*> Collisions;
 	vector<Rock> Rocks;
@@ -137,7 +136,7 @@ public:
 	Flag f = Flag(Vector3(0, 0.75f, 0), Vector3(1, 1, 1));
 	Astronaut a = Astronaut(Vector3(5, -1, 0));
 	Ship ship = Ship(Vector3(0, 0, -50), Vector3(5, 5, 5));
-	Weapon SniperRifle = Weapon(150, 10, 100, 100, true);	
+	Weapon SniperRifle = Weapon(80, 10, 100, 100, true);
 
 private:
 	void RenderText(Mesh* mesh, std::string text, Color color);
@@ -172,7 +171,6 @@ private:
 	void RenderScene1UI();
 	void Scene2Updates();
 	void Scene2Render();
-	void Scene3Render();
 	//Remove alien
 	void EmptyVector();
 
@@ -218,7 +216,7 @@ private:
 
 	string AstronautOpt[NUM_OPTIONS];
 	int AstroCursor = 0;
-	Countdown debounceUI = Countdown(0.2f);
+	Countdown debounceUI = Countdown(0.1f);
 
 	unsigned m_vertexArrayID;
 	Mesh *meshList[NUM_GEOMETRY];
