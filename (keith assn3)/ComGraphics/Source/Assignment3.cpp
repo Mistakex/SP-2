@@ -406,6 +406,7 @@ void Assignment3::Update(double dt)
 		{
 			if (getMagnitude(ship.position, camera.position) < 8.f && isCaptured == true)
 			{
+				EmptyVector();
 				camera.Reset();
 				ship.updateCutscene = true;
 			}
@@ -453,7 +454,8 @@ void Assignment3::Update(double dt)
 				TurretSpawn();
 			}
 		}
-		if (Application::IsKeyPressed(VK_RBUTTON) && !ship.updateCutscene && rightClick.TimeCountDown(dt) < 0)
+		rightClick.TimeCountDown(dt);
+		if (Application::IsKeyPressed(VK_RBUTTON) && !ship.updateCutscene && rightClick.GetTimeNow() < 0)
 		{
 			if (player.WeaponState == 3 && isZoom == false)
 			{

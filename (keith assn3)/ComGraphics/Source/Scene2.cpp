@@ -1,6 +1,16 @@
 #include "Assignment3.h"
 
-
+void Assignment3::EmptyVector()
+{
+	while (Aliens.empty() == false)
+	{
+		Aliens.pop_back();
+	}
+	while (Rocks.empty() == false)
+	{
+		Rocks.pop_back();
+	}
+}
 void Assignment3::RenderDome(float scale, float x, float y, float z)
 {
 	modelStack.PushMatrix();
@@ -18,13 +28,6 @@ void Assignment3::Scene2Updates()
 		light[0].type = Light::LIGHT_POINT;
 		light[0].position.Set(0,30.0f, 0);
 		light[0].power = 10.0f;
-		while(Aliens.empty() == false)
-		{
-			Aliens.pop_back();
-		}
-		while(Rocks.empty() == false)
-		{
-			Rocks.pop_back();
-		}
+		EmptyVector();
 	}
 }

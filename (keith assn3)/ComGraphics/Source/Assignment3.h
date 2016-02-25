@@ -170,6 +170,9 @@ private:
 	void RenderScene1UI();
 	void Scene2Updates();
 	void Scene2Render();
+	//Remove alien
+	void EmptyVector();
+
 	// countdown
 	Countdown countdownRock = Countdown(10.0f);
 	Countdown countdownMining = Countdown(0.5f);
