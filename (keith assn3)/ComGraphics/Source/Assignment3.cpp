@@ -50,14 +50,14 @@ float Assignment3::getMagnitude(const Vector3 object, const Vector3 target)
 
 void Assignment3::Init()
 {
-	//ship.updateCutscene = true;
-
 	gameState = GS_MAIN;
 	CameraMouseUpdate = true;
 	player.WeaponState = 3;
 	pistol.init(&camera);
 	ship.init(&camera);
 	SniperRifle.init(&camera);
+
+	Boss = Enemy(Vector3(0, 0, 0), camera.position, Vector3(10, 10, 10), 3000, 10, 0, 1000, 10);
 
 	//srand
 	KillMessage.TimeCountDown(0.3);
@@ -346,7 +346,7 @@ void Assignment3::Update(double dt)
 	}
 	if (CameraMouseUpdate == true)
 	{
-		camera.Update(dt);
+		camera.Update(dt,static_cast<int>(gameState));
 		framerate.str("");
 		resources.str("");
 		////*********************************************////
@@ -814,6 +814,11 @@ void Assignment3::Render()
 	RenderTurret();
 	//ALIEN
 	RenderAliens();
+	
+	if (gameState == GS_SCENE3)
+	{
+		Scene3Render();
+	}
 
 
 	if (gameState == GS_ASTRONAUT_INTERACTION)

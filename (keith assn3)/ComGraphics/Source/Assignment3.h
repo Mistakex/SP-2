@@ -128,6 +128,7 @@ public:
 	virtual void Render();
 	virtual void Exit();
 
+	Enemy Boss;
 	vector<Enemy> Aliens;
 	vector<GameObject*> Collisions;
 	vector<Rock> Rocks;
@@ -171,6 +172,7 @@ private:
 	void RenderScene1UI();
 	void Scene2Updates();
 	void Scene2Render();
+	void Scene3Render();
 	//Remove alien
 	void EmptyVector();
 

@@ -24,11 +24,12 @@ public:
 	Camera3();
 	~Camera3();
 	virtual void Init(const Vector3& pos, const Vector3& target, const Vector3& up,vector<Rock> *Rocks,Flag *flag);
-	virtual void Update(double dt);
+	virtual void Update(double dt,int gameState);
 	virtual void Reset();
 	void CameraRotation(float CAMERASPEED);
 	bool checkCollision(const Vector3 &center, const Vector3 &range, float moveX, float moveY);
 	bool checkCircleCollision(Vector3 center, float range, float moveX, float moveY);
+	bool checkReverseCircleCollision(Vector3 center, float range, float moveX, float moveY);
 	bool checkAllCollision(float moveX, float moveZ);
 	Countdown debounce = Countdown(0.5f);
 	bool isFlying;

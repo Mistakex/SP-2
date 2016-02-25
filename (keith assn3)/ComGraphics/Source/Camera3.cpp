@@ -93,6 +93,18 @@ bool Camera3::checkCircleCollision(Vector3 center,float range,float moveX, float
 	}
 }
 
+bool Camera3::checkReverseCircleCollision(Vector3 center, float range, float moveX, float moveZ) // used to check collision for objects
+{
+	if (sqrt(pow(moveX - center.x, 2) + pow(moveZ - center.z, 2)) > range)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 bool Camera3::checkAllCollision(float moveX, float moveZ) // used to check collision for objects
 {
 	for (vector<Rock>::iterator it = Rocks->begin(); it != Rocks->end(); ++it)
@@ -105,7 +117,9 @@ bool Camera3::checkAllCollision(float moveX, float moveZ) // used to check colli
 	return false;
 }
 
-void Camera3::Update(double dt)
+
+
+void Camera3::Update(double dt,int gameState)
 {
 	if (OnControls)
 	{
@@ -230,13 +244,38 @@ void Camera3::Update(double dt)
 				moveZ += -view.z*(WALKSPEED / 2.f);
 
 			}
-			if (!checkAllCollision(moveX + position.x, position.z) && !checkCircleCollision(flag->position,1.f,moveX + position.x, position.z))
+			if (gameState == 0 || gameState == 1)
 			{
-				position.x += moveX;
+				if (!checkAllCollision(moveX + position.x, position.z) && !checkCircleCollision(flag->position, 1.f, moveX + position.x, position.z))
+				{
+					position.x += moveX;
+				}
+				if (!checkAllCollision(position.x, moveZ + position.z) && !checkCircleCollision(flag->position, 1.f, position.x, moveZ + position.z))
+				{
+					position.z += moveZ;
+				}
 			}
-			if (!checkAllCollision(position.x, moveZ + position.z) && !checkCircleCollision(flag->position, 1.f, position.x, moveZ + position.z))
+			else if (gameState == 2)
 			{
-				position.z += moveZ;
+				if (!checkAllCollision(moveX + position.x, position.z) && !checkCircleCollision(Vector3(0,0,0), 18.5f, moveX + position.x, position.z))
+				{
+					position.x += moveX;
+				}
+				if (!checkAllCollision(position.x, moveZ + position.z) && !checkCircleCollision(Vector3(0, 0, 0), 18.5f, position.x, moveZ + position.z))
+				{
+					position.z += moveZ;
+				}
+			}
+			else if (gameState == 3)
+			{
+				if (!checkAllCollision(moveX + position.x, position.z) && !checkReverseCircleCollision(Vector3(0, 0, 0), 69.f, moveX + position.x, position.z))
+				{
+					position.x += moveX;
+				}
+				if (!checkAllCollision(position.x, moveZ + position.z) && !checkReverseCircleCollision(Vector3(0, 0, 0), 69.f, position.x, moveZ + position.z))
+				{
+					position.z += moveZ;
+				}
 			}
 		}
 		if (Application::IsKeyPressed(' '))
