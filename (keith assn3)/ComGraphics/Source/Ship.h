@@ -14,6 +14,7 @@ public:
 	float fadesize;
 	bool displayFade;
 	bool updateCutscene;
+	bool changeScene;
 private:
 	Camera3 *Camera;
 	float cutsceneTimer;

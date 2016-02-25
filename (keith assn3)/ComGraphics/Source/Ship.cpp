@@ -37,8 +37,8 @@ void Ship::cutscene(const double &dt)
 		}
 		else if (cutsceneTimer < 8.f)
 		{
-			Camera->position = position - Vector3(10, 3, 0);
-			position += Vector3(100, 0, 0)*dt;
+			Camera->position = position + Vector3(10, -3, 0);
+			position -= Vector3(100, 0, 0)*dt;
 			if (cutsceneTimer > 6.f)
 			{
 				displayFade = true;
@@ -48,6 +48,7 @@ void Ship::cutscene(const double &dt)
 		else if (cutsceneTimer > 9.f)
 		{
 			Camera->OnControls = true;
+			changeScene = true;
 			Camera->position = Vector3(0, 0, 10);
 			if (fadesize - 10.f*dt > 0.f)
 				fadesize -= 100.f * dt;

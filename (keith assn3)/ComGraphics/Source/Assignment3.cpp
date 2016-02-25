@@ -50,7 +50,7 @@ float Assignment3::getMagnitude(const Vector3 object, const Vector3 target)
 
 void Assignment3::Init()
 {
-	ship.updateCutscene = true;
+	//ship.updateCutscene = true;
 
 	gameState = GS_SCENE2;
 	CameraMouseUpdate = true;
@@ -304,11 +304,11 @@ static std::stringstream resources;
 
 void Assignment3::Update(double dt)
 {
-	if (gameState == GS_MAIN)
+	if (gameState == GS_MAIN || gameState == GS_ASTRONAUT_INTERACTION)
 	{
 		camera.OnControls = true;
 	}
-	if (gameState == GS_MAIN || gameState ==GS_ASTRONAUT_INTERACTION)
+	if (gameState == GS_MAIN || gameState == GS_ASTRONAUT_INTERACTION)
 	{
 		Scene1Updates(dt);
 	}
@@ -317,6 +317,10 @@ void Assignment3::Update(double dt)
 
 	}
 	ship.cutscene(dt);
+	if (ship.changeScene)
+	{
+		gameState = GS_SCENE2;
+	}
 
 	//************************************Will change this function to a pause function//
 	//countdown for camera lock
@@ -364,7 +368,6 @@ void Assignment3::Update(double dt)
 			camera.position.y + camera.target.y / 15,
 			camera.position.z + camera.target.z / 15);
 		light[1].spotDirection.Set(-(camera.target.x - camera.position.x), -(camera.target.y - camera.position.y), -(camera.target.z - camera.position.z));
-
 		//first light
 		light[0].position.Set(0.f, 5.f, 20.f);
 		
@@ -387,7 +390,9 @@ void Assignment3::Update(double dt)
 		countdownTurretSpawn.TimeCountDown(dt);
 		countdownPistol.TimeCountDown(dt);
 		CountdownSniperRifle.TimeCountDown(dt);
-		if (Application::IsKeyPressed(VK_LBUTTON)) //check for keypress and weapon holding
+
+
+		if (Application::IsKeyPressed(VK_LBUTTON) && !ship.updateCutscene) //check for keypress and weapon holding
 		{
 
 			if (player.WeaponState == 1 && (Rocks.empty() == 0) && (countdownMining.GetTimeNow() <= 0))
@@ -430,9 +435,9 @@ void Assignment3::Update(double dt)
 				TurretSpawn();
 			}
 		}
-		if (Application::IsKeyPressed(VK_RBUTTON) && isZoom == false && rightClick.TimeCountDown(dt) < 0)
+		if (Application::IsKeyPressed(VK_RBUTTON) && !ship.updateCutscene && rightClick.TimeCountDown(dt) < 0)
 		{
-			if (player.WeaponState == 2)
+			if (player.WeaponState == 2 && isZoom == false)
 			{
 				Mtx44 projection;
 				projection.SetToPerspective(30.0f, 4.0f / 3.0f, 0.1f, 5000.0f);
@@ -440,12 +445,7 @@ void Assignment3::Update(double dt)
 				camera.MouseSensitivity = 0.1f;
 				isZoom = true;
 			}
-			rightClick.resetTime();
-		}
-
-		if (Application::IsKeyPressed(VK_RBUTTON) && isZoom == true && rightClick.TimeCountDown(dt) < 0)
-		{
-			if (player.WeaponState == 2)
+			else if (player.WeaponState == 2 && isZoom == true)
 			{
 				Mtx44 projection;
 				projection.SetToPerspective(70.0f, 4.0f / 3.0f, 0.1f, 5000.0f);
@@ -454,6 +454,7 @@ void Assignment3::Update(double dt)
 				camera.MouseSensitivity = 0.2f;
 			}
 			rightClick.resetTime();
+			
 		}
 
 		//framerate
@@ -805,9 +806,6 @@ void Assignment3::Render()
 		modelStack.PopMatrix();
 	}
 
-
-
-
 	//DOME
 	if (gameState == GS_SCENE2)
 	{
@@ -827,12 +825,15 @@ void Assignment3::Render()
 	}
 
 	// Weapons
-	if (player.WeaponState == 1)
-		RenderModelOnScreen(meshList[GEO_PICKAXE], true, Vector3(10.f,10.f,10.f), 70.f, 0.f, 5, Vector3(0, -45.f, player.getMiningAction()));
-	else if (player.WeaponState == 2)
-		RenderModelOnScreen(meshList[GEO_GUN], true, Vector3(25.f, 25.f, 25.f), 60.f, 5.f, -1, Vector3(10.f, 15.f, 0.f));
-	else if (player.WeaponState == 3)
-		RenderModelOnScreen(meshList[GEO_SNIPERRIFLE], true, Vector3(10.f,10.f,10.f), 65.f, 2.f, -1, Vector3(10.f, -70.f, 0.f));
+	if (!ship.updateCutscene)
+	{
+		if (player.WeaponState == 1)
+			RenderModelOnScreen(meshList[GEO_PICKAXE], true, Vector3(10.f, 10.f, 10.f), 70.f, 0.f, 5, Vector3(0, -45.f, player.getMiningAction()));
+		else if (player.WeaponState == 2)
+			RenderModelOnScreen(meshList[GEO_GUN], true, Vector3(25.f, 25.f, 25.f), 60.f, 5.f, -1, Vector3(10.f, 15.f, 0.f));
+		else if (player.WeaponState == 3)
+			RenderModelOnScreen(meshList[GEO_SNIPERRIFLE], true, Vector3(10.f, 10.f, 10.f), 65.f, 2.f, -1, Vector3(10.f, -70.f, 0.f));
+	}
 
 	// Message appears when u mine rocks
 	if (player.isMining)
@@ -864,7 +865,7 @@ void Assignment3::Render()
 	//UI Screen & Player Health
 	modelStack.PushMatrix();
 	glBlendFunc(1.5, 1);
-	RenderModelOnScreen(meshList[GEO_UI], false, Vector3(82, 10, 50), 40, 5, 6, Vector3(90, 0, 0));
+	RenderModelOnScreen(meshList[GEO_UI], false, Vector3(82, 10, 50), 40, 5, 5, Vector3(90, 0, 0));
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	modelStack.PushMatrix();
 	RenderModelOnScreen(meshList[GEO_HEALTH], false, Vector3(player.GetHp() * 0.2, 2, 0), 22 - (100 - player.GetHp())*0.1, 7, 7, Vector3(90, 0, 0));
@@ -873,7 +874,15 @@ void Assignment3::Render()
 	modelStack.PopMatrix();
 	modelStack.PopMatrix();
 
+	// FRAMERATE
+	modelStack.PushMatrix();
+	RenderTextOnScreen(meshList[GEO_TEXT], framerate.str(), Color(1, 0, 1), 2, 4, 1);
 
+	modelStack.PopMatrix();
+	//RESOURCES
+	modelStack.PushMatrix();
+	RenderTextOnScreen(meshList[GEO_TEXT], resources.str(), Color(1, 0, 1), 2, 4, 2);
+	modelStack.PopMatrix();
 
 	// INFO
 	if (isShown == true)
@@ -896,15 +905,7 @@ void Assignment3::Render()
 		infoscreen.resetTime();
 	}
 	
-	// FRAMERATE
-	modelStack.PushMatrix();
-	RenderTextOnScreen(meshList[GEO_TEXT], framerate.str(), Color(1, 0, 1), 2, 4, 1);
 
-	modelStack.PopMatrix();
-	//RESOURCES
-	modelStack.PushMatrix();
-	RenderTextOnScreen(meshList[GEO_TEXT], resources.str(), Color(1, 0, 1), 2, 4, 2);
-	modelStack.PopMatrix();
 
 	if (f.getMagnitude(camera.position) <= 7.5f)
 	{
