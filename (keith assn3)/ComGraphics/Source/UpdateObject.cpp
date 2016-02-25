@@ -5,10 +5,23 @@ void Assignment3::TurretUpdate(double dt)
 {
 	for (size_t i = 0; i < Turrets.size(); i++)
 	{
-		if (Aliens.empty() == true){ Turrets[i].bulletPos = (0, -10, 0); }
-		short s = 0;
+		if (Aliens.empty() == true && Boss.isDead() ==false)
+		{
+			Turrets[i].LookAtEnemy(Boss);
+			Turrets[i].TargetEnemy(Boss.position);
+			Turrets[i].ShootAtEnemy(dt);
+			if (Turrets[i].shooting == true)
+			{
+				if (getMagnitude(Turrets[i].bulletPos, Turrets[i].Target) <= 1.0f && Turrets[i].hit == false)
+				{
+					Turrets[i].hit = true;
+					Boss.EnemyTakeDmg(Turrets[i].GetDamage());
+				}
+			}
+		}
 		if (Aliens.empty() == false)
 		{
+			short s = 0;
 			while (s < Aliens.size())
 			{
 				if (getMagnitude(Turrets[i].GetPosition(), Aliens[s].position) <= 15.f)
@@ -21,7 +34,6 @@ void Assignment3::TurretUpdate(double dt)
 						if (getMagnitude(Turrets[i].bulletPos, Turrets[i].Target) <= 1.0f && Turrets[i].hit == false)
 						{
 							Turrets[i].hit = true;
-							Turrets[i].bulletPos = (0, -10, 0);
 							Aliens[s].EnemyTakeDmg(Turrets[i].GetDamage());
 						}
 					}
