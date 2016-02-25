@@ -146,6 +146,7 @@ private:
 	float getMagnitude(const Vector3 user, const Vector3 target);	//find the magnitude between 2 points
 	float randomx, randomz;											//random locations for the rock spawn
 
+
 	//Spawn functions
 	void AlienSpawn(double dt);
 	void RockSpawn(double dt);

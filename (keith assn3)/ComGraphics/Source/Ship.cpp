@@ -49,7 +49,7 @@ void Ship::cutscene(const double &dt)
 		{
 			Camera->OnControls = true;
 			changeScene = true;
-			Camera->position = Vector3(0, 0, 10);
+			Camera->position = Vector3(0, 0, 70);
 			if (fadesize - 10.f*dt > 0.f)
 				fadesize -= 100.f * dt;
 			else

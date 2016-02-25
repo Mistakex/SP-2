@@ -304,6 +304,12 @@ static std::stringstream resources;
 
 void Assignment3::Update(double dt)
 {
+	if (Application::IsKeyPressed('Z'))
+	{
+		std::cout << camera.position.x << std::endl;
+		std::cout << camera.position.z << std::endl;
+		dt = dt * 20;
+	}
 	if (gameState == GS_MAIN || gameState == GS_ASTRONAUT_INTERACTION)
 	{
 		camera.OnControls = true;
@@ -316,17 +322,10 @@ void Assignment3::Update(double dt)
 	{
 		Scene2Updates();
 	}
-	if (Application::IsKeyPressed('Z'))
-	{
-		std::cout << camera.position.x << std::endl;
-		std::cout << camera.position.z << std::endl;
-	}
 	ship.cutscene(dt);
-	if (ship.changeScene)
+	if (ship.changeScene && gameState == GS_MAIN)
 	{
 		gameState = GS_SCENE2;
-		camera.Reset();
-		camera.position.Set(0, 0, 70);
 	}
 
 	//************************************Will change this function to a pause function//
