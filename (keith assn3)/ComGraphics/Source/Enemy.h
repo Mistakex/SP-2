@@ -5,6 +5,7 @@
 #include"GameObject.h"
 #include "Camera3.h"
 #include "Player.h"
+#include "Bullet.h"
 
 using std::vector;
 
@@ -27,6 +28,7 @@ public:
 	void EnemyMove(double dt,Player *p);				//move to find
 	void EnemyTakeDmg(int Dmg);
 	void EnemyShootAt(const double &dt,const float &bulletSpeed,Player *p);			//shooting of the enemy
+	void BossShootAt(const double &dt, const float &bulletSpeed, Player *p);			//shooting of the enemy
 	float findDirection();
 	void update(Camera3 camera,const double &dt,Player *p);
 	bool checkBulletCollision(Player *p);
@@ -34,12 +36,12 @@ public:
 	bool InRangeOfPlayer();		// dist away from player
 	bool isDead();					//dead or not
 	Vector3 target;
-	Vector3 bulletPos;
-	Vector3 bulletTarget;
+	Bullet projectile;
 	float armRotate;
 	float EnemySize;
-
+	short spawnerCounter;
 private:
+	
 	int range;
 	int Hp;
 	int AttackDamage;
@@ -50,7 +52,6 @@ private:
 	bool moveRight;
 	bool Shooting;
 	float fireDelay;
-	Vector3 bulletView;
 	vector<Vector3> renderedBulletsDirection;
 	vector<Vector3> renderedBulletsPosition;
 

@@ -141,7 +141,7 @@ void Assignment3::RenderAliens()
 		if (Aliens[i].GetShooting() == true)
 		{
 			modelStack.PushMatrix();
-			modelStack.Translate(Aliens[i].bulletPos.x, Aliens[i].bulletPos.y, Aliens[i].bulletPos.z);
+			modelStack.Translate(Aliens[i].projectile.getPosition().x, Aliens[i].projectile.getPosition().y, Aliens[i].projectile.getPosition().z);
 			modelStack.Scale(0.1f, 0.1f, 0.1f);
 			RenderMesh(meshList[GEO_BULLET], true);
 			modelStack.PopMatrix();

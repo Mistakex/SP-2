@@ -12,12 +12,12 @@ Enemy::Enemy(Vector3 pos,Vector3 tar, Vector3 range, int hp, int attack, int mov
 	this->range = range2;
 	KiteTimer = 0;
 	Shooting = false;
-	bulletPos = Vector3(0, 0, 0);
-	bulletTarget = Vector3(0, 0, 0);
+	projectile.setView(Vector3(0, 0, 0));
 	fireDelay = 0;
 	armRotate = 0;
 	EnemySize = size;
 	isBoss = Boss;
+	spawnerCounter = 0;
 }
 
 Enemy::~Enemy()
@@ -72,7 +72,7 @@ void Enemy::EnemyMove(double dt,Player *p)
 			{
 				if (armRotate > 0)
 					armRotate -= 90 * dt;
-				bulletPos += bulletView*10*dt;
+				projectile.moveBullet(dt, 70.f);
 				checkBulletCollision(p);
 			}
 		}
@@ -101,7 +101,7 @@ void Enemy::EnemyMove(double dt,Player *p)
 	}
 	else
 	{
-		EnemyShootAt(dt, 10, p);
+		BossShootAt(dt, 5, p);
 	}
 }
 
@@ -121,15 +121,15 @@ void Enemy::EnemyShootAt(const double &dt,const float &bulletSpeed, Player *p)
 		{
 			if (armRotate > 0)
 				armRotate -= 90 * dt;
-			bulletPos += bulletView*bulletSpeed*dt;
+			projectile.moveBullet(dt, 70.f);
 			checkBulletCollision(p);
 		}
 		else
 		{
 			Shooting = true;
-			bulletPos = position;
-			bulletTarget = target + Vector3((rand() % 2)/2.f, (rand() % 2)/2.f, (rand() % 2)/2.f);
-			bulletView = bulletTarget - position;
+			projectile.updatePosition(Vector3(position));
+			Vector3 bulletTarget = target + Vector3((rand() % 2)/4.f, (rand() % 2)/4.f, (rand() % 2)/4.f);
+			projectile.setView((bulletTarget - position).Normalized());
 		}
 	}
 	else if (fireDelay >= 5)
@@ -146,6 +146,39 @@ void Enemy::EnemyShootAt(const double &dt,const float &bulletSpeed, Player *p)
 	}
 }
 
+void Enemy::BossShootAt(const double &dt, const float &bulletSpeed, Player *p)
+{
+	if (fireDelay < 1)
+	{
+		if (Shooting == true)
+		{
+			if (armRotate > 0)
+				armRotate -= 90 * dt;
+			projectile.moveBullet(dt, 70.f);
+			checkBulletCollision(p);
+		}
+		else
+		{
+			spawnerCounter++;
+			Shooting = true;
+			projectile.updatePosition(Vector3(position));
+			Vector3 bulletTarget = target + Vector3((rand() % 2) / 4.f, (rand() % 2) / 4.f, (rand() % 2) / 4.f);
+			projectile.setView((bulletTarget - position).Normalized());
+		}
+	}
+	else if (fireDelay >= 3)
+	{
+		fireDelay = 0;
+	}
+	else
+	{
+		if (armRotate < 90)
+		{
+			armRotate += 90 * dt;
+		}
+		Shooting = false;
+	}
+}
 
 float Enemy::findDirection()
 {
@@ -201,9 +234,9 @@ void Enemy::update(Camera3 camera,const double &dt, Player *p)
 bool Enemy::checkBulletCollision(Player *p)
 {
 	float x = 0.5f, y = 1.f, z = 0.5f;
-	if (bulletPos.x > target.x - x && bulletPos.x < target.x + x
-		&& bulletPos.y > target.y - y && bulletPos.x < target.y + y
-		&& bulletPos.z > target.z - z && bulletPos.z < target.z + z)
+	if (projectile.getPosition().x > target.x - x && projectile.getPosition().x < target.x + x
+		&& projectile.getPosition().y > target.y - y && projectile.getPosition().x < target.y + y
+		&& projectile.getPosition().z > target.z - z && projectile.getPosition().z < target.z + z)
 	{
 		(*p).TakeDmg(AttackDamage);
 		std::cout << (*p).GetHp() << std::endl;

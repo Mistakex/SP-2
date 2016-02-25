@@ -9,4 +9,20 @@ void Assignment3::Scene3Render()
 	modelStack.Scale(Boss.EnemySize, Boss.EnemySize, Boss.EnemySize);
 	RenderAlien(Boss.armRotate);
 	modelStack.PopMatrix();
+
+	if (Boss.GetShooting() == true)
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(Boss.projectile.getPosition().x, Boss.projectile.getPosition().y, Boss.projectile.getPosition().z);
+		modelStack.Scale(0.5f, 0.5f, 0.5f);
+		RenderMesh(meshList[GEO_BULLET], true);
+		modelStack.PopMatrix();
+	}
+
+	if (Boss.spawnerCounter == 5)
+	{
+		Boss.spawnerCounter = 0;
+		AlienSpawnByBoss(10, 0);
+	}
+
 }

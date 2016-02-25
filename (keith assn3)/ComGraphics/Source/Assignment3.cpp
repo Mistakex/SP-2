@@ -57,7 +57,7 @@ void Assignment3::Init()
 	ship.init(&camera);
 	SniperRifle.init(&camera);
 
-	Boss = Enemy(Vector3(0, 0, 0), camera.position, Vector3(10, 10, 10), 3000, 10, 0, 1000, 10);
+	Boss = Enemy(Vector3(0, 0, 0), camera.position, Vector3(10, 10, 10), 3000, 10, 0, 1000, 10,true);
 
 	//srand
 	KillMessage.TimeCountDown(0.3);
@@ -393,6 +393,8 @@ void Assignment3::Update(double dt)
 		}
 		else if (gameState == GS_SCENE3)
 		{
+			KillMessage.TimeCountDown(dt);
+			AlienUpdate(dt);
 			Boss.update(camera, dt, &player);
 		}
 		//Turrets Aim and Shoot
@@ -901,10 +903,20 @@ void Assignment3::Render()
 	for (int i = 0; i < Aliens.size(); i++)
 	{
 		modelStack.PushMatrix();
-		modelStack.Translate(Aliens[i].position.x - 0.25, Aliens[i].position.y + 0.5, Aliens[i].position.z);
+		modelStack.Translate(Aliens[i].position.x, Aliens[i].position.y + 0.5, Aliens[i].position.z);
 		modelStack.Rotate(Aliens[i].findDirection() - 180, 0, 1, 0);
 		modelStack.Scale(0.5, 0.5, 0.5);
 		RenderText(meshList[GEO_TEXT], std::to_string(Aliens[i].GetEnemyHp()), Color(0, 1, 0));
+		modelStack.PopMatrix();
+	}
+	
+	if (gameState == GS_SCENE3)
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(Boss.position.x, Boss.position.y + 12.f, Boss.position.z);
+		modelStack.Rotate(Boss.findDirection() - 180, 0, 1, 0);
+		modelStack.Scale(5, 5, 5);
+		RenderText(meshList[GEO_TEXT], std::to_string(Boss.GetEnemyHp()), Color(0, 1, 0));
 		modelStack.PopMatrix();
 	}
 

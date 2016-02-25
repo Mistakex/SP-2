@@ -57,7 +57,7 @@ void Turret::TargetEnemy(Vector3 alien)
 	}
 	else if (shooting == false)
 	{
-		DoneTargeting == false;
+		DoneTargeting = false;
 	}
 }
 void Turret::ReduceHp(int dmg)

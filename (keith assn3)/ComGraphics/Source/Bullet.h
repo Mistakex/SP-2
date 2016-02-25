@@ -12,7 +12,7 @@ public:
 	Vector3 getView();
 	void updatePosition(const Vector3 &pos);
 	void setView(const Vector3 &view);
-	void moveBullet(double dt);
+	void moveBullet(double dt,const float &speed = 100);
 private:
 	Vector3 position;
 	Vector3 view;
