@@ -286,6 +286,9 @@ void Assignment3::Init()
 	meshList[GEO_DOME] = MeshBuilder::GenerateOBJ("Dome", "OBJ//dome.obj");
 	meshList[GEO_DOME]->textureID = LoadTGA("Image//domeUV.tga");
 
+	meshList[GEO_ZOOM] = MeshBuilder::GenerateQuad("Zoom", Color(1, 1, 1));
+	meshList[GEO_ZOOM]->textureID = LoadTGA("Image//scope.tga");
+
 	Mtx44 projection;
 	projection.SetToPerspective(70.0f, 4.0f / 3.0f, 0.1f, 5000.0f);
 	projectionStack.LoadMatrix(projection);
@@ -363,6 +366,7 @@ void Assignment3::Update(double dt)
 		{
 			debounce.resetTime();
 			player.WeaponState = 3;
+			isSniper = true;
 		}
 		if (Application::IsKeyPressed('6') && debounce.GetTimeNow() < 0)
 		{
@@ -447,15 +451,15 @@ void Assignment3::Update(double dt)
 		}
 		if (Application::IsKeyPressed(VK_RBUTTON) && !ship.updateCutscene && rightClick.TimeCountDown(dt) < 0)
 		{
-			if (player.WeaponState == 2 && isZoom == false)
+			if (player.WeaponState == 3 && isZoom == false)
 			{
 				Mtx44 projection;
 				projection.SetToPerspective(30.0f, 4.0f / 3.0f, 0.1f, 5000.0f);
 				projectionStack.LoadMatrix(projection);
-				camera.MouseSensitivity = 0.1f;
+				camera.MouseSensitivity = 0.05f;
 				isZoom = true;
 			}
-			else if (player.WeaponState == 2 && isZoom == true)
+			else if (player.WeaponState == 3 && isZoom == true)
 			{
 				Mtx44 projection;
 				projection.SetToPerspective(70.0f, 4.0f / 3.0f, 0.1f, 5000.0f);
@@ -465,6 +469,18 @@ void Assignment3::Update(double dt)
 			}
 			rightClick.resetTime();
 			
+		}
+
+		if (isZoom == true && isSniper == true)
+		{
+			if (player.WeaponState == 1 || player.WeaponState == 2 || player.WeaponState == 4)
+			{
+				Mtx44 projection;
+				projection.SetToPerspective(70.0f, 4.0f / 3.0f, 0.1f, 5000.0f);
+				projectionStack.LoadMatrix(projection);
+				isZoom = false;
+				camera.MouseSensitivity = 0.2f;
+			}
 		}
 
 		//framerate
@@ -844,7 +860,7 @@ void Assignment3::Render()
 	}
 
 	// Weapons
-	if (!ship.updateCutscene)
+	if (!ship.updateCutscene && isZoom == false)
 	{
 		if (player.WeaponState == 1)
 			RenderModelOnScreen(meshList[GEO_PICKAXE], true, Vector3(10.f, 10.f, 10.f), 70.f, 0.f, 5, Vector3(0, -45.f, player.getMiningAction()));
@@ -884,21 +900,27 @@ void Assignment3::Render()
 	}
 
 	// crosshair
-	modelStack.PushMatrix();
-	RenderTextOnScreen(meshList[GEO_CROSSHAIR], "+", Color(0, 1, 0), 3.f, 13.1f, 9.5f);
-	modelStack.PopMatrix();
+	if (isZoom == false)
+	{
+		modelStack.PushMatrix();
+		RenderTextOnScreen(meshList[GEO_CROSSHAIR], "+", Color(0, 1, 0), 3.f, 13.1f, 9.5f);
+		modelStack.PopMatrix();
+	}
 
 	//UI Screen & Player Health
-	modelStack.PushMatrix();
-	glBlendFunc(1.5, 1);
-	RenderModelOnScreen(meshList[GEO_UI], false, Vector3(82, 10, 50), 40, 5, 5, Vector3(90, 0, 0));
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	modelStack.PushMatrix();
-	RenderModelOnScreen(meshList[GEO_HEALTH], false, Vector3(player.GetHp() * 0.2, 2, 0), 22 - (100 - player.GetHp())*0.1, 7, 7, Vector3(90, 0, 0));
-	RenderTextOnScreen(meshList[GEO_TEXT], "HP: ", Color(1, 0, 1), 2, 4, 3);
-	RenderTextOnScreen(meshList[GEO_TEXT], std::to_string(player.GetHp()), Color(1, 0, 1), 2, 5, 3);
-	modelStack.PopMatrix();
-	modelStack.PopMatrix();
+	if (isZoom == false)
+	{
+		modelStack.PushMatrix();
+		glBlendFunc(1.5, 1);
+		RenderModelOnScreen(meshList[GEO_UI], false, Vector3(82, 10, 50), 40, 5, 5, Vector3(90, 0, 0));
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		modelStack.PushMatrix();
+		RenderModelOnScreen(meshList[GEO_HEALTH], false, Vector3(player.GetHp() * 0.2, 2, 0), 22 - (100 - player.GetHp())*0.1, 7, 7, Vector3(90, 0, 0));
+		RenderTextOnScreen(meshList[GEO_TEXT], "HP: ", Color(1, 0, 1), 2, 4, 3);
+		RenderTextOnScreen(meshList[GEO_TEXT], std::to_string(player.GetHp()), Color(1, 0, 1), 2, 5, 3);
+		modelStack.PopMatrix();
+		modelStack.PopMatrix();
+	}
 
 	// FRAMERATE
 	modelStack.PushMatrix();
@@ -953,6 +975,13 @@ void Assignment3::Render()
 	{
 		modelStack.PushMatrix();
 		RenderModelOnScreen(meshList[GEO_FADE], false, Vector3(ship.fadesize, 150.f, 0), 0, 0, 12, Vector3(90, 0, 0));
+		modelStack.PopMatrix();
+	}
+
+	if (isZoom == true)
+	{
+		modelStack.PushMatrix();
+		RenderModelOnScreen(meshList[GEO_ZOOM], false, Vector3(82, 100, 0), 41, 30, 13, Vector3(90, 0, 0));
 		modelStack.PopMatrix();
 	}
 }

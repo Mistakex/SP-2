@@ -62,6 +62,7 @@ class Assignment3 : public Scene
 		//SniperRifle
 		GEO_SNIPERRIFLE,
 		GEO_FADE,
+		GEO_ZOOM,
 		//Dome
 		GEO_DOME,
 		NUM_GEOMETRY,
@@ -187,6 +188,7 @@ private:
 	int resourceOfRock;
 	//Gun
 	bool isZoom = false;
+	bool isSniper = false;
 	//Flag
 	bool isCapturing = false;
 	bool isCaptured = false;
