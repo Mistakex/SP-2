@@ -64,7 +64,7 @@ void Assignment3::Init()
 	srand(time_t(NULL));
 	for (float i = 0; i < 3; ++i)
 	{
-		Aliens.push_back(Enemy(Vector3(i*2, 0, i*2), Vector3(0, 0, 0), Vector3(0.5, 1, 0.5)));
+		Aliens.push_back(Enemy(Vector3(i * 2, 0, i * 2), Vector3(0, 0, 0), Vector3(0.5, 1, 0.5)));
 	}
 	// Init VBO here
 
@@ -144,7 +144,7 @@ void Assignment3::Init()
 	light[0].spotDirection.Set(0.0f, 1.0f, 0.0f);
 
 	light[1].type = Light::LIGHT_SPOT;
-	
+
 	light[1].color.Set(1, 1, 1);
 	light[1].power = 0.5;
 	light[1].kC = 1.f;
@@ -155,7 +155,6 @@ void Assignment3::Init()
 	light[1].exponent = 3.f;
 	light[1].position.Set(camera.position.x, camera.position.y, camera.position.z);
 	light[1].spotDirection.Set(camera.target.x, camera.target.y, camera.target.z);
-
 
 	// Pass information
 	glUniform1i(m_parameters[U_NUMLIGHTS], 2);
@@ -180,9 +179,8 @@ void Assignment3::Init()
 	glUniform1f(m_parameters[U_LIGHT1_COSINNER], light[1].cosInner);
 	glUniform1f(m_parameters[U_LIGHT1_EXPONENT], light[1].exponent);
 
-
 	//Initialize camera settings
-	camera.Init(Vector3(0, 0, 30), Vector3(10,0,0), Vector3(0, 1, 0),&Rocks,&f);
+	camera.Init(Vector3(0, 0, 30), Vector3(10, 0, 0), Vector3(0, 1, 0), &Rocks, &f);
 
 	meshList[GEO_AXES] = MeshBuilder::GenerateAxes("reference", 1000, 1000, 1000);
 
@@ -267,7 +265,7 @@ void Assignment3::Init()
 
 	meshList[GEO_PLAYERHP] = MeshBuilder::GenerateQuad("PlayerHP", Color(1, 0, 0));
 
-	meshList[GEO_UI] = MeshBuilder::GenerateQuad("UI Screen", Color(1,1,1));
+	meshList[GEO_UI] = MeshBuilder::GenerateQuad("UI Screen", Color(1, 1, 1));
 	meshList[GEO_UI]->textureID = LoadTGA("Image//UI_Frame.tga");
 
 	meshList[GEO_INFO] = MeshBuilder::GenerateQuad("Info", Color(1, 1, 1));
@@ -294,9 +292,8 @@ void Assignment3::Init()
 	projectionStack.LoadMatrix(projection);
 
 	// Sets the words for Astronaut Options
-	AstronautOpt[OPT_UP_PISTOL] = "Upgrade Pistol?";
-	AstronautOpt[OPT_UP_RIFLE] = "Upgrade S. Rifle?";
-	AstronautOpt[OPT_BACK_TO_MAIN] = "Back to Game?";
+	AstronautOpt[0] = "Upgrade Pistol?";
+	AstronautOpt[1] = "Upgrade Rifle?";
 }
 
 static float ROT_LIMIT = 45.f;
@@ -382,8 +379,8 @@ void Assignment3::Update(double dt)
 			camera.position.y + camera.target.y / 15,
 			camera.position.z + camera.target.z / 15);
 		light[1].spotDirection.Set(-(camera.target.x - camera.position.x), -(camera.target.y - camera.position.y), -(camera.target.z - camera.position.z));
-		
-		if (gameState == GS_MAIN || gameState ==GS_ASTRONAUT_INTERACTION || gameState == GS_SCENE2)
+
+		if (gameState == GS_MAIN || gameState == GS_ASTRONAUT_INTERACTION || gameState == GS_SCENE2)
 		{
 			//Alien Spawn
 			AlienSpawn(dt);
@@ -445,7 +442,7 @@ void Assignment3::Update(double dt)
 				pistol.Fire(&Aliens);
 				countdownPistol.resetTime();
 			}
-			if (player.WeaponState == 3 && CountdownSniperRifle.GetTimeNow() <=0)
+			if (player.WeaponState == 3 && CountdownSniperRifle.GetTimeNow() <= 0)
 			{
 				SniperRifle.FireSR(&Aliens);
 				CountdownSniperRifle.resetTime();
@@ -475,7 +472,7 @@ void Assignment3::Update(double dt)
 				camera.MouseSensitivity = 0.2f;
 			}
 			rightClick.resetTime();
-			
+
 		}
 
 		if (isZoom == true && isSniper == true)
@@ -574,7 +571,7 @@ void Assignment3::RenderMesh(Mesh*mesh, bool enableLight) // rendering of meshes
 void Assignment3::RenderSkybox() // rendering of skybox
 {
 	modelStack.PushMatrix();
-	modelStack.Rotate(skyBoxRotate*2, 1, 1, 0);
+	modelStack.Rotate(skyBoxRotate * 2, 1, 1, 0);
 	modelStack.PushMatrix();
 	modelStack.Translate(0, -499, 0);
 	modelStack.Scale(1001, 1001, 1001);
@@ -698,7 +695,7 @@ void Assignment3::RenderModelOnScreen(Mesh *mesh, bool enableLight, Vector3 size
 {
 
 	Mtx44 ortho;
-	ortho.SetToOrtho(0, 80, 0, 60, -60, 60); //size of screen UI
+	ortho.SetToOrtho(0, 80, 0, 60, -100, 70); //size of screen UI
 	projectionStack.PushMatrix();
 	projectionStack.LoadMatrix(ortho);
 
@@ -711,7 +708,7 @@ void Assignment3::RenderModelOnScreen(Mesh *mesh, bool enableLight, Vector3 size
 	modelStack.Rotate(rotation.x, 1, 0, 0);
 	modelStack.Rotate(rotation.y, 0, 1, 0);
 	modelStack.Rotate(rotation.z, 0, 0, 1);
-	
+
 	RenderMesh(mesh, enableLight);
 
 	projectionStack.PopMatrix();
@@ -773,6 +770,25 @@ void Assignment3::Render()
 		glUniform3fv(m_parameters[U_LIGHT1_POSITION], 1, &lightPosition_cameraspace.x);
 	}
 
+	if (light[2].type == Light::LIGHT_DIRECTIONAL)
+	{
+		Vector3 lightDir(light[2].position.x, light[2].position.y, light[2].position.z);
+		Vector3 lightDirection_cameraspace = viewStack.Top() * lightDir;
+		glUniform3fv(m_parameters[U_LIGHT1_POSITION], 1, &lightDirection_cameraspace.x);
+	}
+	else if (light[2].type == Light::LIGHT_SPOT)
+	{
+		Position lightPosition_cameraspace = viewStack.Top() * light[2].position;
+		glUniform3fv(m_parameters[U_LIGHT1_POSITION], 1, &lightPosition_cameraspace.x);
+		Vector3 spotDirection_cameraspace = viewStack.Top() * light[2].spotDirection;
+		glUniform3fv(m_parameters[U_LIGHT1_SPOTDIRECTION], 1, &spotDirection_cameraspace.x);
+	}
+	else
+	{
+		Position lightPosition_cameraspace = viewStack.Top() * light[0].position;
+		glUniform3fv(m_parameters[U_LIGHT1_POSITION], 1, &lightPosition_cameraspace.x);
+	}
+
 	//skybox
 	if (gameState != GS_SCENE3)
 	{
@@ -800,27 +816,11 @@ void Assignment3::Render()
 	RenderAliens();
 
 
-	if (gameState == GS_ASTRONAUT_INTERACTION && !a.errorWindow)
+	if (gameState == GS_ASTRONAUT_INTERACTION)
 	{
 		modelStack.PushMatrix();
 		RenderModelOnScreen(meshList[GEO_UI], false, Vector3(50, 10, 1), 40, 30, 2, Vector3(90, 0, 0));
 		RenderTextOnScreen(meshList[GEO_TEXT], AstronautOpt[AstroCursor], Color(1, 0, 1), 5, 6, 5.7f);
-		modelStack.PopMatrix();
-	}
-
-	if (!a.upgradeSuccess && a.errorWindow)
-	{
-		modelStack.PushMatrix();
-		RenderModelOnScreen(meshList[GEO_UI], false, Vector3(50, 10, 1), 40, 30, 2, Vector3(90, 0, 0));
-		RenderTextOnScreen(meshList[GEO_TEXT], "Not Enough Resources...", Color(1, 0, 1), 5, 5, 5.7f);
-		modelStack.PopMatrix();
-	}
-
-	if (a.upgradeSuccess && a.errorWindow)
-	{
-		modelStack.PushMatrix();
-		RenderModelOnScreen(meshList[GEO_UI], false, Vector3(50, 10, 1), 40, 30, 2, Vector3(90, 0, 0));
-		RenderTextOnScreen(meshList[GEO_TEXT], "Upgrade Success!", Color(1, 0, 1), 5, 6, 5.7f);
 		modelStack.PopMatrix();
 	}
 
@@ -886,11 +886,11 @@ void Assignment3::Render()
 	if (!ship.updateCutscene && isZoom == false)
 	{
 		if (player.WeaponState == 1)
-			RenderModelOnScreen(meshList[GEO_PICKAXE], true, Vector3(10.f, 10.f, 10.f), 70.f, 0.f, 5, Vector3(0, -45.f, player.getMiningAction()));
+			RenderModelOnScreen(meshList[GEO_PICKAXE], true, Vector3(10.f, 10.f, 10.f), 70.f, 0.f, -10, Vector3(0, -45.f, player.getMiningAction()));
 		else if (player.WeaponState == 2)
-			RenderModelOnScreen(meshList[GEO_GUN], true, Vector3(25.f, 25.f, 25.f), 60.f, 5.f, -1, Vector3(10.f, 15.f, 0.f));
+			RenderModelOnScreen(meshList[GEO_GUN], true, Vector3(22.f, 22.f, 22.f), 57.f, 3.f, -1, Vector3(12.f, 15.f, 0.f));
 		else if (player.WeaponState == 3)
-			RenderModelOnScreen(meshList[GEO_SNIPERRIFLE], true, Vector3(10.f, 10.f, 10.f), 65.f, 2.f, -1, Vector3(10.f, -70.f, 0.f));
+			RenderModelOnScreen(meshList[GEO_SNIPERRIFLE], true, Vector3(10.f, 10.f, 10.f), 57.f, 0.f, 39, Vector3(10.f, -79.f, 0.f));
 	}
 	// SHIP DISPLAY
 	if (getMagnitude(camera.position, ship.position) < 8.f && isCaptured && gameState == GS_MAIN)
@@ -904,7 +904,7 @@ void Assignment3::Render()
 	if (player.isMining)
 	{
 		modelStack.PushMatrix();
-		RenderTextOnScreen(meshList[GEO_TEXT],"+" + std::to_string(resourceOfRock)+" Resources", Color(0, 1, 0), 3, 11.5, 15);
+		RenderTextOnScreen(meshList[GEO_TEXT], "+" + std::to_string(resourceOfRock) + " Resources", Color(0, 1, 0), 3, 11.5, 15);
 		modelStack.PopMatrix();
 	}
 	if (KillMessage.GetTimeNow() >0)
@@ -918,7 +918,7 @@ void Assignment3::Render()
 	if (player.isMining || pistol.hit || SniperRifle.hit)
 	{
 		modelStack.PushMatrix();
-		RenderModelOnScreen(meshList[GEO_HITORNOT], false, Vector3(3.f,3.f,3.f), 39.9f, 29.9f, 6, Vector3(90, 0, 0));
+		RenderModelOnScreen(meshList[GEO_HITORNOT], false, Vector3(3.f, 3.f, 3.f), 39.9f, 29.9f, 6, Vector3(90, 0, 0));
 		modelStack.PopMatrix();
 	}
 
@@ -935,24 +935,24 @@ void Assignment3::Render()
 	{
 		modelStack.PushMatrix();
 		glBlendFunc(1.5, 1);
-		RenderModelOnScreen(meshList[GEO_UI], false, Vector3(82, 10, 50), 40, 5, 5, Vector3(90, 0, 0));
+		RenderModelOnScreen(meshList[GEO_UI], false, Vector3(30, 10, 10), 14.5, 55, 5, Vector3(90, 0, 0));
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		modelStack.PushMatrix();
-		RenderModelOnScreen(meshList[GEO_HEALTH], false, Vector3(player.GetHp() * 0.2, 2, 0), 22 - (100 - player.GetHp())*0.1, 7, 7, Vector3(90, 0, 0));
-		RenderTextOnScreen(meshList[GEO_TEXT], "HP: ", Color(1, 0, 1), 2, 4, 3);
-		RenderTextOnScreen(meshList[GEO_TEXT], std::to_string(player.GetHp()), Color(1, 0, 1), 2, 5, 3);
+		RenderModelOnScreen(meshList[GEO_HEALTH], false, Vector3(player.GetHp() * 0.2, 2, 0), 22 - (158 - player.GetHp())*0.1, 57.7, 7, Vector3(90, 0, 0));
+		RenderTextOnScreen(meshList[GEO_TEXT], "HP: ", Color(1, 0, 1), 2, 1.3, 28.3);
+		RenderTextOnScreen(meshList[GEO_TEXT], std::to_string(player.GetHp()), Color(1, 0, 1), 2, 2.2, 28.3);
 		modelStack.PopMatrix();
 		modelStack.PopMatrix();
 	}
 
 	// FRAMERATE
 	modelStack.PushMatrix();
-	RenderTextOnScreen(meshList[GEO_TEXT], framerate.str(), Color(1, 0, 1), 2, 4, 1);
+	RenderTextOnScreen(meshList[GEO_TEXT], framerate.str(), Color(1, 0, 1), 2, 1.3, 25.7);
 
 	modelStack.PopMatrix();
 	//RESOURCES
 	modelStack.PushMatrix();
-	RenderTextOnScreen(meshList[GEO_TEXT], resources.str(), Color(1, 0, 1), 2, 4, 2);
+	RenderTextOnScreen(meshList[GEO_TEXT], resources.str(), Color(1, 0, 1), 2, 1.3, 27.0);
 	modelStack.PopMatrix();
 
 	// INFO
