@@ -4,7 +4,7 @@ Enemy::Enemy()
 {
 }
 
-Enemy::Enemy(Vector3 pos,Vector3 tar, Vector3 range, int hp, int attack, int movespeed,int range2,float size) : Hp(hp), AttackDamage(attack), MoveSpeed(movespeed)
+Enemy::Enemy(Vector3 pos,Vector3 tar, Vector3 range, int hp, int attack, int movespeed,int range2,float size,bool Boss) : Hp(hp), AttackDamage(attack), MoveSpeed(movespeed)
 {
 	position = pos;
 	target = tar;
@@ -17,6 +17,7 @@ Enemy::Enemy(Vector3 pos,Vector3 tar, Vector3 range, int hp, int attack, int mov
 	fireDelay = 0;
 	armRotate = 0;
 	EnemySize = size;
+	isBoss = Boss;
 }
 
 Enemy::~Enemy()
@@ -57,42 +58,50 @@ bool Enemy::GetShooting()
 void Enemy::EnemyMove(double dt,Player *p)
 {
 	fireDelay += dt;
+
 	Vector3 view = Vector3(0, 0, 0);
 	if (target != position)
 		view = (target - position).Normalized();
 		
-	if (GetDistance() > range + KiteTimer)
+	if (!isBoss)
 	{
-		position += Vector3(view.x,0,view.z)*MoveSpeed*dt;
-		if (Shooting == true)
+		if (GetDistance() > range + KiteTimer)
 		{
-			if (armRotate > 0)
-				armRotate -= 90 * dt;
-			bulletPos += bulletView*10*dt;
-			checkBulletCollision(p);
+			position += Vector3(view.x,0,view.z)*MoveSpeed*dt;
+			if (Shooting == true)
+			{
+				if (armRotate > 0)
+					armRotate -= 90 * dt;
+				bulletPos += bulletView*10*dt;
+				checkBulletCollision(p);
+			}
 		}
-	}
-	else if (KiteTimer < 7)
-	{
-		EnemyKite(dt);
-		EnemyShootAt(dt, 10,p);
-	}
-	else if (KiteTimer >= 7)
-	{
-		EnemyShootAt(dt, 10,p);
-		KiteTimer = 0;
-		if (rand() % 2 == 0)
+		else if (KiteTimer < 7)
 		{
-			moveRight = true;
+			EnemyKite(dt);
+			EnemyShootAt(dt, 10,p);
+		}
+		else if (KiteTimer >= 7)
+		{
+			EnemyShootAt(dt, 10,p);
+			KiteTimer = 0;
+			if (rand() % 2 == 0)
+			{
+				moveRight = true;
+			}
+			else
+			{
+				moveRight = false;
+			}
 		}
 		else
 		{
-			moveRight = false;
+			EnemyShootAt(dt, 10,p);
 		}
 	}
 	else
 	{
-		EnemyShootAt(dt, 10,p);
+		EnemyShootAt(dt, 10, p);
 	}
 }
 

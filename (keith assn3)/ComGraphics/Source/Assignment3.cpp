@@ -391,6 +391,10 @@ void Assignment3::Update(double dt)
 			//Rocks spawn
 			RockSpawn(dt);
 		}
+		else if (gameState == GS_SCENE3)
+		{
+			Boss.update(camera, dt, &player);
+		}
 		//Turrets Aim and Shoot
 		TurretUpdate(dt);
 		//Rock mining

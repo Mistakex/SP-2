@@ -12,7 +12,7 @@ class Enemy: public GameObject
 {
 public:
 	Enemy();
-	Enemy(Vector3 pos, Vector3 tar, Vector3 range, int hp = 100, int attack = 5, int movespeed = 10, int range2 = 10, float size = 1);
+	Enemy(Vector3 pos, Vector3 tar, Vector3 range, int hp = 100, int attack = 5, int movespeed = 10, int range2 = 10, float size = 1,bool Boss = false);
 	~Enemy();
 	int GetEnemyHp();
 	int GetEnemyAtt();
@@ -54,6 +54,7 @@ private:
 	vector<Vector3> renderedBulletsDirection;
 	vector<Vector3> renderedBulletsPosition;
 
+	bool isBoss;
 };
 
 
