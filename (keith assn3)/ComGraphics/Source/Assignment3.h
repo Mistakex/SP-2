@@ -132,11 +132,12 @@ public:
 	vector<GameObject*> Collisions;
 	vector<Rock> Rocks;
 	vector<Turret> Turrets;
-	Weapon pistol = Weapon(20, 30, 100, 5, false);
+	Weapon pistol = Weapon(20, 30, 100, 10, false);
 	Flag f = Flag(Vector3(0, 0.75f, 0), Vector3(1, 1, 1));
 	Astronaut a = Astronaut(Vector3(5, -1, 0));
 	Ship ship = Ship(Vector3(0, 0, -50), Vector3(5, 5, 5));
-	Weapon SniperRifle = Weapon(80, 10, 100, 100, true);
+	Weapon SniperRifle = Weapon(150, 10, 100, 100, true);
+
 private:
 	void RenderText(Mesh* mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
@@ -187,7 +188,7 @@ private:
 	Countdown CountdownSniperRifle = Countdown(1.0f);
 	Player player = Player(100);
 	
-
+	
 	//Turret Position
 	Vector3 TurretPos;
 	//Rock resource
@@ -200,6 +201,7 @@ private:
 	bool isCaptured = false;
 	//After killing aliens
 	int Alienresources;
+
 	//info screen
 	bool isShown = false;
 
@@ -208,11 +210,13 @@ private:
 	{
 		OPT_UP_PISTOL,
 		OPT_UP_RIFLE,
+		OPT_BACK_TO_MAIN,
 		NUM_OPTIONS
 	};
 
 	string AstronautOpt[NUM_OPTIONS];
 	int AstroCursor = 0;
+	Countdown debounceUI = Countdown(0.1f);
 
 	unsigned m_vertexArrayID;
 	Mesh *meshList[NUM_GEOMETRY];

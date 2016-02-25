@@ -8,7 +8,8 @@ void Assignment3::Scene1Updates(double dt)
 	if (gameState == GS_ASTRONAUT_INTERACTION)
 	{
 		camera.OnControls = false;
-		if (Application::IsKeyPressed(VK_DOWN))
+		debounceUI.TimeCountDown(dt);
+		if (Application::IsKeyPressed(VK_DOWN) && debounceUI.GetTimeNow() <=0)
 		{
 			if (AstroCursor != (NUM_OPTIONS -1))
 			{
@@ -18,8 +19,9 @@ void Assignment3::Scene1Updates(double dt)
 			{
 				AstroCursor = 0;
 			}
+			debounceUI.resetTime();
 		}
-		if (Application::IsKeyPressed(VK_UP))
+		if (Application::IsKeyPressed(VK_UP) && debounceUI.GetTimeNow() <= 0)
 		{
 			if (AstroCursor != 0)
 			{
@@ -29,23 +31,37 @@ void Assignment3::Scene1Updates(double dt)
 			{
 				AstroCursor = NUM_OPTIONS - 1;
 			}
+			debounceUI.resetTime();
 		}
-		if (Application::IsKeyPressed(VK_RETURN))
+		if (Application::IsKeyPressed(VK_RETURN) && debounceUI.GetTimeNow() <= 0)
 		{
-			switch (AstroCursor)
+			if (!a.errorWindow)
 			{
-			case(OPT_UP_PISTOL) :
-				a.UpgradeWeapon(pistol, player);
-				gameState = GS_MAIN;
-				break;
-			case(OPT_UP_RIFLE) :
-				a.UpgradeWeapon(SniperRifle, player);
-				gameState = GS_MAIN;
-				break;
+				switch (AstroCursor)
+				{
+				case(OPT_BACK_TO_MAIN) :
+					gameState = GS_MAIN;
+					debounceUI.resetTime();
+					break;
+				case(OPT_UP_PISTOL) :
+					a.UpgradeWeapon(pistol, player);
+					debounceUI.resetTime();
+					a.errorWindow = true;
+					break;
+				case(OPT_UP_RIFLE) :
+					a.UpgradeWeapon(SniperRifle, player);
+					debounceUI.resetTime();
+					a.errorWindow = true;
+					break;
+				}
+			}
+			else
+			{
+				a.errorWindow = false;
+				debounceUI.resetTime();
 			}
 		}
 	}
-
 	//Astronaut initiate talking
 	if (Application::IsKeyPressed('E') && ((getMagnitude(a.GetAstronautPos(), camera.position)) < 3))
 	{

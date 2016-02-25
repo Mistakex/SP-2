@@ -11,14 +11,17 @@ public:
 	~Astronaut();
 	Vector3 GetAstronautPos();
 	void AstronautMoveAround();						//The astronaut move around the spaceship in a random amount of steps
-	void UpgradeWeapon(Weapon& weap, Player p);							//int Damage is from Weapon class		
+	void UpgradeWeapon(Weapon& weap, Player& p);							//int Damage is from Weapon class		
 	int GetWeaponPrice(int Price);							//Get the Price from Weapon class
 	void BulletRefill(int BulletsInMagzine, int TotalBullets);//Get the 2 Values from Weapon class
+	bool upgradeSuccess = false;
+	bool errorWindow = false;
 
 private:
 	short BulletPrice;
 	Vector3 Position;
 	int upgradeCost;
+	
 };
 
 

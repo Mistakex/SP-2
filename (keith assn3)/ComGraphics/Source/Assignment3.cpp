@@ -294,8 +294,9 @@ void Assignment3::Init()
 	projectionStack.LoadMatrix(projection);
 
 	// Sets the words for Astronaut Options
-	AstronautOpt[0] = "Upgrade Pistol?";
-	AstronautOpt[1] = "Upgrade Rifle?";
+	AstronautOpt[OPT_UP_PISTOL] = "Upgrade Pistol?";
+	AstronautOpt[OPT_UP_RIFLE] = "Upgrade S. Rifle?";
+	AstronautOpt[OPT_BACK_TO_MAIN] = "Back to Game?";
 }
 
 static float ROT_LIMIT = 45.f;
@@ -799,11 +800,27 @@ void Assignment3::Render()
 	RenderAliens();
 
 
-	if (gameState == GS_ASTRONAUT_INTERACTION)
+	if (gameState == GS_ASTRONAUT_INTERACTION && !a.errorWindow)
 	{
 		modelStack.PushMatrix();
 		RenderModelOnScreen(meshList[GEO_UI], false, Vector3(50, 10, 1), 40, 30, 2, Vector3(90, 0, 0));
 		RenderTextOnScreen(meshList[GEO_TEXT], AstronautOpt[AstroCursor], Color(1, 0, 1), 5, 6, 5.7f);
+		modelStack.PopMatrix();
+	}
+
+	if (!a.upgradeSuccess && a.errorWindow)
+	{
+		modelStack.PushMatrix();
+		RenderModelOnScreen(meshList[GEO_UI], false, Vector3(50, 10, 1), 40, 30, 2, Vector3(90, 0, 0));
+		RenderTextOnScreen(meshList[GEO_TEXT], "Not Enough Resources...", Color(1, 0, 1), 5, 5, 5.7f);
+		modelStack.PopMatrix();
+	}
+
+	if (a.upgradeSuccess && a.errorWindow)
+	{
+		modelStack.PushMatrix();
+		RenderModelOnScreen(meshList[GEO_UI], false, Vector3(50, 10, 1), 40, 30, 2, Vector3(90, 0, 0));
+		RenderTextOnScreen(meshList[GEO_TEXT], "Upgrade Success!", Color(1, 0, 1), 5, 6, 5.7f);
 		modelStack.PopMatrix();
 	}
 
