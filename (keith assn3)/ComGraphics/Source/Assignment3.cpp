@@ -52,7 +52,7 @@ void Assignment3::Init()
 {
 	//ship.updateCutscene = true;
 
-	gameState = GS_SCENE2;
+	gameState = GS_MAIN;
 	CameraMouseUpdate = true;
 	player.WeaponState = 3;
 	pistol.init(&camera);
@@ -391,10 +391,16 @@ void Assignment3::Update(double dt)
 		countdownPistol.TimeCountDown(dt);
 		CountdownSniperRifle.TimeCountDown(dt);
 
+		if (Application::IsKeyPressed('E'))
+		{
+			if (getMagnitude(ship.position, camera.position) < 8.f && isCaptured == true)
+			{
+				ship.updateCutscene = true;
+			}
+		}
 
 		if (Application::IsKeyPressed(VK_LBUTTON) && !ship.updateCutscene) //check for keypress and weapon holding
 		{
-
 			if (player.WeaponState == 1 && (Rocks.empty() == 0) && (countdownMining.GetTimeNow() <= 0))
 			{
 				vector<Rock>::iterator i = Rocks.begin();
@@ -833,6 +839,13 @@ void Assignment3::Render()
 			RenderModelOnScreen(meshList[GEO_GUN], true, Vector3(25.f, 25.f, 25.f), 60.f, 5.f, -1, Vector3(10.f, 15.f, 0.f));
 		else if (player.WeaponState == 3)
 			RenderModelOnScreen(meshList[GEO_SNIPERRIFLE], true, Vector3(10.f, 10.f, 10.f), 65.f, 2.f, -1, Vector3(10.f, -70.f, 0.f));
+	}
+	// SHIP DISPLAY
+	if (getMagnitude(camera.position, ship.position) < 8.f && isCaptured && gameState == GS_MAIN)
+	{
+		modelStack.PushMatrix();
+		RenderTextOnScreen(meshList[GEO_TEXT], "Press E to fly", Color(0, 1, 0), 3, 11.5, 15);
+		modelStack.PopMatrix();
 	}
 
 	// Message appears when u mine rocks
