@@ -123,7 +123,7 @@ void Camera3::Update(double dt,int gameState)
 {
 	if (OnControls)
 	{
-		static const float WALKSPEED = 0.2f; // walkspeed
+		static const float WALKSPEED = 5.f; // walkspeed
 		static const float CAMERA_SPEED = 50.f;
 
 		debounce.TimeCountDown(dt);
@@ -220,28 +220,28 @@ void Camera3::Update(double dt,int gameState)
 			float moveX = 0, moveZ = 0;
 			if (Application::IsKeyPressed('A'))
 			{
-				moveX += -right.x*(WALKSPEED / 2.f);
-				moveZ += -right.z*(WALKSPEED / 2.f);
+				moveX += -right.x*(WALKSPEED)*dt;
+				moveZ += -right.z*(WALKSPEED)*dt;
 
 			}
 			if (Application::IsKeyPressed('D'))
 			{
-				moveX += right.x*(WALKSPEED / 2.f);
-				moveZ += right.z*(WALKSPEED / 2.f);
+				moveX += right.x*(WALKSPEED)*dt;
+				moveZ += right.z*(WALKSPEED)*dt;
 
 			}
 			if (Application::IsKeyPressed('W'))
 			{
 				view = (Vector3(target.x, 0.f, target.z) - Vector3(position.x, 0.f, position.z)).Normalized();
-				moveX += view.x*(WALKSPEED / 2.f);
-				moveZ += view.z*(WALKSPEED / 2.f);
+				moveX += view.x*(WALKSPEED)*dt;
+				moveZ += view.z*(WALKSPEED)*dt;
 
 			}
 			if (Application::IsKeyPressed('S'))
 			{
 				view = (Vector3(target.x, 0.f, target.z) - Vector3(position.x, 0.f, position.z)).Normalized();
-				moveX += -view.x*(WALKSPEED / 2.f);
-				moveZ += -view.z*(WALKSPEED / 2.f);
+				moveX += -view.x*(WALKSPEED)*dt;
+				moveZ += -view.z*(WALKSPEED)*dt;
 
 			}
 			if (gameState == 0 || gameState == 1)
