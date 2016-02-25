@@ -8,14 +8,41 @@ void Assignment3::Scene1Updates(double dt)
 	if (gameState == GS_ASTRONAUT_INTERACTION)
 	{
 		camera.OnControls = false;
-		if (Application::IsKeyPressed('Y'))
+		if (Application::IsKeyPressed(VK_DOWN))
 		{
-			a.UpgradeWeapon(pistol, player);
-			gameState = GS_MAIN;
+			if (AstroCursor != (NUM_OPTIONS -1))
+			{
+				AstroCursor++;
+			}
+			else
+			{
+				AstroCursor = 0;
+			}
 		}
-		if (Application::IsKeyPressed('N'))
+		if (Application::IsKeyPressed(VK_UP))
 		{
-			gameState = GS_MAIN;
+			if (AstroCursor != 0)
+			{
+				AstroCursor--;
+			}
+			else
+			{
+				AstroCursor = NUM_OPTIONS - 1;
+			}
+		}
+		if (Application::IsKeyPressed(VK_RETURN))
+		{
+			switch (AstroCursor)
+			{
+			case(OPT_UP_PISTOL) :
+				a.UpgradeWeapon(pistol, player);
+				gameState = GS_MAIN;
+				break;
+			case(OPT_UP_RIFLE) :
+				a.UpgradeWeapon(SniperRifle, player);
+				gameState = GS_MAIN;
+				break;
+			}
 		}
 	}
 

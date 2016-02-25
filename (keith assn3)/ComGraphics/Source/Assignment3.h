@@ -6,7 +6,7 @@
 #include "Mesh.h"
 #include "MatrixStack.h"
 #include "Light.h"
-#include"CountDown.h"
+#include "CountDown.h"
 #include "Player.h"
 #include "Turret.h"
 #include "Enemy.h"
@@ -18,7 +18,8 @@
 #include "Bullet.h"
 #include "Enemy.h"
 #include "Ship.h"
-
+#include <string>
+using std::string;
 
 class Assignment3 : public Scene
 {
@@ -117,6 +118,7 @@ class Assignment3 : public Scene
 	};
 
 	GameStates gameState;
+
 public:
 	Assignment3();
 	~Assignment3();
@@ -197,6 +199,17 @@ private:
 
 	//info screen
 	bool isShown = false;
+
+	// Astronaut UI menu stuff
+	enum AstronautOptions
+	{
+		OPT_UP_PISTOL,
+		OPT_UP_RIFLE,
+		NUM_OPTIONS
+	};
+
+	string AstronautOpt[NUM_OPTIONS];
+	int AstroCursor = 0;
 
 	unsigned m_vertexArrayID;
 	Mesh *meshList[NUM_GEOMETRY];

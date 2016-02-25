@@ -293,6 +293,9 @@ void Assignment3::Init()
 	projection.SetToPerspective(70.0f, 4.0f / 3.0f, 0.1f, 5000.0f);
 	projectionStack.LoadMatrix(projection);
 
+	// Sets the words for Astronaut Options
+	AstronautOpt[0] = "Upgrade Pistol?";
+	AstronautOpt[1] = "Upgrade Rifle?";
 }
 
 static float ROT_LIMIT = 45.f;
@@ -797,7 +800,7 @@ void Assignment3::Render()
 	{
 		modelStack.PushMatrix();
 		RenderModelOnScreen(meshList[GEO_UI], false, Vector3(50, 10, 1), 40, 30, 2, Vector3(90, 0, 0));
-		RenderTextOnScreen(meshList[GEO_TEXT], "Upgrade Weapon?", Color(1, 0, 1), 5, 6, 5.7f);
+		RenderTextOnScreen(meshList[GEO_TEXT], AstronautOpt[AstroCursor], Color(1, 0, 1), 5, 6, 5.7f);
 		modelStack.PopMatrix();
 	}
 
