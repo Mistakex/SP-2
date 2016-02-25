@@ -154,6 +154,7 @@ private:
 
 	//Spawn functions
 	void AlienSpawn(double dt);
+	void AlienSpawnByBoss(double dt , short AlienType);				//Boss spawning Alien
 	void RockSpawn(double dt);
 	void TurretSpawn();
 	void TurretUpdate(double dt);
@@ -188,6 +189,7 @@ private:
 	Countdown infoscreen = Countdown(0.5f);
 	Countdown KillMessage = Countdown(0.3f);
 	Countdown CountdownSniperRifle = Countdown(1.0f);
+	Countdown countdownAlienSpawnByBoss = Countdown(0.5f);
 	Player player = Player(100);
 	
 	

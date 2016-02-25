@@ -26,6 +26,31 @@ void Assignment3::AlienSpawn(double dt)
 		}
 	}
 }
+void Assignment3::AlienSpawnByBoss(double dt ,short AlienType)
+{
+	countdownAlienSpawnByBoss.TimeCountDown(dt);
+	if ((Aliens.size()) < 20 && countdownAlienSpawnByBoss.GetTimeNow() <=0)
+	{
+		countdownAlienSpawn.resetTime();
+		float spwanAlienz = (rand()%10)+3;
+		float spwanAlienx = (rand() % 10) + 3;
+		if (AlienType == 0)
+		{
+			Enemy newAlien(Vector3(spwanAlienx, 0.f, spwanAlienz), Vector3(camera.position.x, -1.f, camera.position.z), Vector3(0.5, 1, 0.5), 100, 5, 10, 10);
+			Aliens.push_back(newAlien);
+		}
+		else if (AlienType == 1)
+		{
+			Enemy newAlien(Vector3(spwanAlienx, 0.f, spwanAlienz), Vector3(camera.position.x, -1.f, camera.position.z), Vector3(0.8, 1, 0.8), 200, 5, 5, 10, 2.0f);
+			Aliens.push_back(newAlien);
+		}
+		else
+		{
+			Enemy newAlien(Vector3(spwanAlienx, 0.f, spwanAlienz), Vector3(camera.position.x, -1.f, camera.position.z), Vector3(0.25f, 1, 0.25f), 40, 5, 20, 10, 0.7f);
+			Aliens.push_back(newAlien);
+		}
+	}
+}
 void Assignment3::RockSpawn(double dt)
 {
 	if (countdownRock.TimeCountDown(dt) <= 0 && Rocks.size() < 10)
