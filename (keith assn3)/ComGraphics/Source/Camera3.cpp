@@ -81,9 +81,9 @@ bool Camera3::checkCollision(const Vector3 &center, const Vector3 &range,float m
 	}
 }
 
-bool Camera3::checkFlagCollision(float moveX, float moveZ) // used to check collision for objects
+bool Camera3::checkCircleCollision(Vector3 center,float range,float moveX, float moveZ) // used to check collision for objects
 {
-	if (sqrt(pow(moveX - flag->position.x, 2) + pow(moveZ - flag->position.z, 2)) < 1.f)
+	if (sqrt(pow(moveX - center.x, 2) + pow(moveZ - center.z, 2)) < range)
 	{
 		return true;
 	}
@@ -230,11 +230,11 @@ void Camera3::Update(double dt)
 				moveZ += -view.z*(WALKSPEED / 2.f);
 
 			}
-			if (!checkAllCollision(moveX + position.x, position.z) && !checkFlagCollision(moveX + position.x, position.z))
+			if (!checkAllCollision(moveX + position.x, position.z) && !checkCircleCollision(flag->position,1.f,moveX + position.x, position.z))
 			{
 				position.x += moveX;
 			}
-			if (!checkAllCollision(position.x, moveZ + position.z) && !checkFlagCollision(position.x, moveZ + position.z))
+			if (!checkAllCollision(position.x, moveZ + position.z) && !checkCircleCollision(flag->position, 1.f, position.x, moveZ + position.z))
 			{
 				position.z += moveZ;
 			}
