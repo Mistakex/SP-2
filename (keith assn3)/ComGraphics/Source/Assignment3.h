@@ -136,7 +136,7 @@ public:
 	Flag f = Flag(Vector3(0, 0.75f, 0), Vector3(1, 1, 1));
 	Astronaut a = Astronaut(Vector3(5, -1, 0));
 	Ship ship = Ship(Vector3(0, 0, -50), Vector3(5, 5, 5));
-	Weapon SniperRifle = Weapon(150, 10, 100, 100, true);
+	Weapon SniperRifle = Weapon(80, 10, 100, 100, true);
 private:
 	void RenderText(Mesh* mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
@@ -167,6 +167,7 @@ private:
 	//Scenes
 	void Scene1Updates(double dt);
 	void Scene1Render();
+	void RenderScene1UI();
 	void Scene2Updates();
 	void Scene2Render();
 	// countdown
@@ -196,7 +197,6 @@ private:
 	bool isCaptured = false;
 	//After killing aliens
 	int Alienresources;
-
 	//info screen
 	bool isShown = false;
 

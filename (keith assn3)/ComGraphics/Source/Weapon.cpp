@@ -126,7 +126,7 @@ bool Weapon::checkBulletCollision(vector<Enemy> *aliens,Bullet bullet)
 bool Weapon::checkBulletCollisionSR(vector<Enemy> *aliens, Bullet bullet)
 {
 	bool hitenemy = 0;
-	for (vector<Enemy>::iterator it = aliens->begin(); it != aliens->end(); ++it)
+	for (vector<Enemy>::iterator it = aliens->begin(); it != aliens->end();++it)
 	{
 
 		Vector3 temp = bullet.getPosition();
@@ -139,6 +139,7 @@ bool Weapon::checkBulletCollisionSR(vector<Enemy> *aliens, Bullet bullet)
 			{
 				(*it).EnemyTakeDmg(Damage);
 				hitenemy = 1;
+				break;
 			}
 		}
 	}

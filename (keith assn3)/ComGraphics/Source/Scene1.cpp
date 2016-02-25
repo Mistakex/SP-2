@@ -93,3 +93,22 @@ void Assignment3::Scene1Render()
 	//CRATERS;
 	RenderCraters();
 }
+
+void Assignment3::RenderScene1UI()
+{
+	if (f.getMagnitude(camera.position) <= 7.5f)
+	{
+		if (isCaptured == false)
+		{
+			modelStack.PushMatrix();
+			RenderTextOnScreen(meshList[GEO_TEXT], "Capturing Flag...", Color(0, 1, 0), 5, 6, 10);
+			modelStack.PopMatrix();
+		}
+		else
+		{
+			modelStack.PushMatrix();
+			RenderTextOnScreen(meshList[GEO_TEXT], "Flag Captured!", Color(0, 1, 0), 5, 6, 10);
+			modelStack.PopMatrix();
+		}
+	}
+}

@@ -406,6 +406,7 @@ void Assignment3::Update(double dt)
 		{
 			if (getMagnitude(ship.position, camera.position) < 8.f && isCaptured == true)
 			{
+				camera.Reset();
 				ship.updateCutscene = true;
 			}
 		}
@@ -955,24 +956,10 @@ void Assignment3::Render()
 			isShown = false;
 		infoscreen.resetTime();
 	}
-	
 
+	if (gameState == GS_MAIN)
+		RenderScene1UI();
 
-	if (f.getMagnitude(camera.position) <= 7.5f)
-	{
-		if (isCaptured == false)
-		{
-			modelStack.PushMatrix();
-			RenderTextOnScreen(meshList[GEO_TEXT], "Capturing Flag...", Color(0, 1, 0), 5, 6, 10);
-			modelStack.PopMatrix();
-		}
-		else
-		{
-			modelStack.PushMatrix();
-			RenderTextOnScreen(meshList[GEO_TEXT], "Flag Captured!", Color(0, 1, 0), 5, 6, 10);
-			modelStack.PopMatrix();
-		}
-	}
 	//fadeaway
 	if (ship.displayFade)
 	{
