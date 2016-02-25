@@ -158,6 +158,7 @@ private:
 	void RenderTurret();
 	void RenderAliens();
 	void RenderAstronaut();
+	void RenderDome(float scale,float x,float y,float z);
 	//Scenes
 	void Scene1Updates(double dt);
 	void Scene1Render();

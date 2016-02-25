@@ -52,7 +52,7 @@ void Assignment3::Init()
 {
 	ship.updateCutscene = true;
 
-	gameState = GS_MAIN;
+	gameState = GS_SCENE2;
 	CameraMouseUpdate = true;
 	player.WeaponState = 3;
 	pistol.init(&camera);
@@ -308,11 +308,14 @@ void Assignment3::Update(double dt)
 	{
 		camera.OnControls = true;
 	}
-	if (gameState != GS_SCENE2)
+	if (gameState == GS_MAIN || gameState ==GS_ASTRONAUT_INTERACTION)
 	{
 		Scene1Updates(dt);
 	}
+	if (gameState == GS_SCENE2)
+	{
 
+	}
 	ship.cutscene(dt);
 
 	//************************************Will change this function to a pause function//
@@ -364,14 +367,17 @@ void Assignment3::Update(double dt)
 
 		//first light
 		light[0].position.Set(0.f, 5.f, 20.f);
-		//Alien Spawn
-		AlienSpawn(dt);
-		KillMessage.TimeCountDown(dt);
-		//Alien update
-		AlienUpdate(dt);
-
-		//Rocks spawn
-		RockSpawn(dt);
+		
+		if (gameState == GS_MAIN || gameState ==GS_ASTRONAUT_INTERACTION || gameState == GS_SCENE2)
+		{
+			//Alien Spawn
+			AlienSpawn(dt);
+			KillMessage.TimeCountDown(dt);
+			//Alien update
+			AlienUpdate(dt);
+			//Rocks spawn
+			RockSpawn(dt);
+		}
 		//Turrets Aim and Shoot
 		TurretUpdate(dt);
 		//Rock mining
@@ -743,7 +749,7 @@ void Assignment3::Render()
 	RenderMesh(meshList[GEO_QUAD], true);
 	modelStack.PopMatrix();
 
-	if (gameState != GS_SCENE2)
+	if (gameState == GS_MAIN || gameState == GS_ASTRONAUT_INTERACTION)
 	{
 		Scene1Render();	//flag ,pole ,astronaut,crater render
 	}
@@ -803,11 +809,10 @@ void Assignment3::Render()
 
 
 	//DOME
-	modelStack.PushMatrix();
-	modelStack.Translate(0, -1, 0);
-	modelStack.Scale(10, 10, 10);
-	RenderMesh(meshList[GEO_DOME], true);
-	modelStack.PopMatrix();
+	if (gameState == GS_SCENE2)
+	{
+		RenderDome(10, 0, -1, 0);
+	}
 
 
 	//Aliens HP
