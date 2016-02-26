@@ -121,14 +121,14 @@ void Enemy::EnemyShootAt(const double &dt,const float &bulletSpeed, Player *p)
 		{
 			if (armRotate > 0)
 				armRotate -= 90 * dt;
-			projectile.moveBullet(dt, 70.f);
+			projectile.moveBullet(dt, 60.f);
 			checkBulletCollision(p);
 		}
 		else
 		{
 			Shooting = true;
 			projectile.updatePosition(Vector3(position));
-			Vector3 bulletTarget = target + Vector3((rand() % 2)/4.f, (rand() % 2)/4.f, (rand() % 2)/4.f);
+			Vector3 bulletTarget = target + Vector3((rand() % 2) - 0.5f, (rand() % 2) / 2.f - 0.5f, (rand() % 2) / 2.f) - 0.5f;
 			projectile.setView((bulletTarget - position).Normalized());
 		}
 	}
@@ -154,7 +154,7 @@ void Enemy::BossShootAt(const double &dt, const float &bulletSpeed, Player *p)
 		{
 			if (armRotate > 0)
 				armRotate -= 90 * dt;
-			projectile.moveBullet(dt, 70.f);
+			projectile.moveBullet(dt, 60.f);
 			checkBulletCollision(p);
 		}
 		else
@@ -162,7 +162,7 @@ void Enemy::BossShootAt(const double &dt, const float &bulletSpeed, Player *p)
 			spawnerCounter++;
 			Shooting = true;
 			projectile.updatePosition(Vector3(position));
-			Vector3 bulletTarget = target + Vector3((rand() % 2) / 4.f, (rand() % 2) / 4.f, (rand() % 2) / 4.f);
+			Vector3 bulletTarget = target;
 			projectile.setView((bulletTarget - position).Normalized());
 		}
 	}
@@ -234,9 +234,10 @@ void Enemy::update(Camera3 camera,const double &dt, Player *p)
 bool Enemy::checkBulletCollision(Player *p)
 {
 	float x = 0.5f, y = 1.f, z = 0.5f;
-	if (projectile.getPosition().x > target.x - x && projectile.getPosition().x < target.x + x
+	if ((projectile.getPosition().x > target.x - x && projectile.getPosition().x < target.x + x
 		&& projectile.getPosition().y > target.y - y && projectile.getPosition().x < target.y + y
 		&& projectile.getPosition().z > target.z - z && projectile.getPosition().z < target.z + z)
+		|| (projectile.getPosition() - target).Length() < 0.70f)
 	{
 		(*p).TakeDmg(AttackDamage);
 		std::cout << (*p).GetHp() << std::endl;
