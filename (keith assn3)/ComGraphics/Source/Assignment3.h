@@ -199,7 +199,6 @@ private:
 	Countdown CountdownSniperRifle = Countdown(1.0f);
 	Countdown countdownAlienSpawnByBoss = Countdown(0.5f);
 	Countdown GrenadeThrowDelay = Countdown(0.7f);
-	Countdown throwGrenade = Countdown(3.0f);
 	Player player = Player(100);
 	
 	

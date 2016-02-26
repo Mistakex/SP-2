@@ -9,10 +9,11 @@ class Grenade
 public:
 	Grenade(Vector3 pos , Vector3 target,const int& damage ,const int& Range);
 	~Grenade();
-	void ThrowGrenade(double dt,float time);
+	void ThrowGrenade(double dt);
 	void DealDamage(Enemy& enemy);
 	Vector3 GetPosition();
-
+	Countdown throwGrenade = Countdown(3.0f);
+	Grenade& operator=(const Grenade& nade);
 private:
 	const int Range;
 	const int damage;

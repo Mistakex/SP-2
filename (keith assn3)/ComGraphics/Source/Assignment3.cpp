@@ -427,26 +427,25 @@ void Assignment3::Update(double dt)
 				}
 			}
 		}
-		//if (GrenadesFlying.empty() == false)
-		//{
-		//	for (int i = 0; i < GrenadesFlying.size(); i++)
-		//	{
-		//		GrenadesFlying[i].ThrowGrenade(dt, throwGrenade.GetTimeNow());
-		//	}
-		//	if (throwGrenade.GetTimeNow() <= 0)
-		//	{
-		//		for (int i = 0; i < Aliens.size(); i++)
-		//		{
-		//			GrenadesFlying[0].DealDamage(Aliens[i]);
-		//		}
-		//		if (Boss.isDead() == false)
-		//		{
-		//			GrenadesFlying[0].DealDamage(Boss);
-		//		}
-		//		//vector<Grenade>::iterator i = GrenadesFlying.begin();
-		//		//GrenadesFlying.erase(i);
-		//	}
-		//}
+		if (GrenadesFlying.empty() == false)
+		{
+			for (int i = 0; i < GrenadesFlying.size(); i++)
+			{
+				GrenadesFlying[i].ThrowGrenade(dt);
+			}
+			if (GrenadesFlying[0].throwGrenade.GetTimeNow() <= 0)
+			{
+				for (int i = 0; i < Aliens.size(); i++)
+				{
+					GrenadesFlying[0].DealDamage(Aliens[i]);
+				}
+				if (Boss.isDead() == false)
+				{
+					GrenadesFlying[0].DealDamage(Boss);
+				}
+				GrenadesFlying.erase(GrenadesFlying.begin());
+			}
+		}
 		//Timers
 		countdownMining.TimeCountDown(dt);
 		countdownTurretSpawn.TimeCountDown(dt);
@@ -508,8 +507,7 @@ void Assignment3::Update(double dt)
 			}
 			else if (player.WeaponState == 5 && GrenadeThrowDelay.GetTimeNow() <=0)
 			{
-				Grenade newNade = Grenade(Vector3(camera.position.x, camera.position.y, camera.position.z), Vector3(camera.target.x, camera.target.y, camera.target.z), 100, 30);
-				GrenadesFlying.push_back(newNade);
+				GrenadesFlying.push_back(Grenade(Vector3(camera.position.x, camera.position.y, camera.position.z), Vector3(camera.target.x, camera.target.y, camera.target.z), 100, 30));
 				GrenadeThrowDelay.resetTime();
 			}
 			

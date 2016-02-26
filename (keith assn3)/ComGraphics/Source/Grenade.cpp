@@ -7,11 +7,12 @@ Grenade::Grenade(Vector3 pos, Vector3 target, const int& dmg,const int& range) :
 	View = Target - Position;
 	View.Normalized();
 }
-void Grenade::ThrowGrenade(double dt , float time)
+void Grenade::ThrowGrenade(double dt)
 {
+	throwGrenade.TimeCountDown(dt);
 	if (View.y > 0)
 	{
-		if (time> 2.0f)
+		if (throwGrenade.GetTimeNow()> 2.0f)
 		{
 			Position += View*dt*3;
 		}
@@ -39,9 +40,13 @@ void Grenade::DealDamage(Enemy& enemy)
 {
 	if (sqrt(pow((enemy.position.x - Position.x), 2) + pow((enemy.position.z - Position.z), 2)) < Range)
 	{
-		std::cout <<"yes" << std::endl;
 		enemy.EnemyTakeDmg(damage);
 	}
+}
+Grenade&Grenade::operator=(const Grenade& nade)
+{
+	Grenade a = nade;
+	return a;
 }
 Vector3 Grenade::GetPosition()
 {
