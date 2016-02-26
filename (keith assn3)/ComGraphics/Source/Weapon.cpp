@@ -122,7 +122,7 @@ bool Weapon::checkBulletCollision(vector<Enemy> *aliens,Enemy *Boss,Bullet bulle
 			}
 
 			if (temp.x >(*Boss).position.x - (*Boss).rangexyz.x && temp.x < (*Boss).position.x + (*Boss).rangexyz.x
-				&& temp.y >(*Boss).position.y - (*Boss).rangexyz.y && temp.y < (*Boss).position.y + (*Boss).rangexyz.y
+				&& temp.y >(*Boss).position.y && temp.y < (*Boss).position.y + (*Boss).rangexyz.y
 				&& temp.z >(*Boss).position.z - (*Boss).rangexyz.z && temp.z < (*Boss).position.z + (*Boss).rangexyz.z
 				&& Boss->bossIsSpawned)
 			{
@@ -143,7 +143,7 @@ bool Weapon::checkBulletCollisionSR(vector<Enemy> *aliens, Enemy *Boss, Bullet b
 	{
 		temp += bullet.getView().Normalized();
 		if (temp.x >(*Boss).position.x - (*Boss).rangexyz.x && temp.x < (*Boss).position.x + (*Boss).rangexyz.x
-			&& temp.y >(*Boss).position.y - (*Boss).rangexyz.y && temp.y < (*Boss).position.y + (*Boss).rangexyz.y
+			&& temp.y >(*Boss).position.y && temp.y < (*Boss).position.y + (*Boss).rangexyz.y
 			&& temp.z >(*Boss).position.z - (*Boss).rangexyz.z && temp.z < (*Boss).position.z + (*Boss).rangexyz.z
 			&& Boss->bossIsSpawned)
 		{
