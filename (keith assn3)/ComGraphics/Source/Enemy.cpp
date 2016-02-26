@@ -18,6 +18,7 @@ Enemy::Enemy(Vector3 pos,Vector3 tar, Vector3 range, int hp, int attack, int mov
 	EnemySize = size;
 	isBoss = Boss;
 	spawnerCounter = 0;
+	bossIsSpawned = false;
 }
 
 Enemy::~Enemy()
