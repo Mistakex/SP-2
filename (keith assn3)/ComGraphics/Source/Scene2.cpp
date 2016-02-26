@@ -10,6 +10,10 @@ void Assignment3::EmptyVector()
 	{
 		Rocks.pop_back();
 	}
+	while (Turrets.empty() == false)
+	{
+		Turrets.pop_back();
+	}
 }
 void Assignment3::RenderDome(float scale, float x, float y, float z)
 {
