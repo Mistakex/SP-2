@@ -427,12 +427,32 @@ void Assignment3::Update(double dt)
 				}
 			}
 		}
+		//if (GrenadesFlying.empty() == false)
+		//{
+		//	for (int i = 0; i < GrenadesFlying.size(); i++)
+		//	{
+		//		GrenadesFlying[i].ThrowGrenade(dt, throwGrenade.GetTimeNow());
+		//	}
+		//	if (throwGrenade.GetTimeNow() <= 0)
+		//	{
+		//		for (int i = 0; i < Aliens.size(); i++)
+		//		{
+		//			GrenadesFlying[0].DealDamage(Aliens[i]);
+		//		}
+		//		if (Boss.isDead() == false)
+		//		{
+		//			GrenadesFlying[0].DealDamage(Boss);
+		//		}
+		//		//vector<Grenade>::iterator i = GrenadesFlying.begin();
+		//		//GrenadesFlying.erase(i);
+		//	}
+		//}
 		//Timers
 		countdownMining.TimeCountDown(dt);
 		countdownTurretSpawn.TimeCountDown(dt);
 		countdownPistol.TimeCountDown(dt);
 		CountdownSniperRifle.TimeCountDown(dt);
-
+		GrenadeThrowDelay.TimeCountDown(dt);
 		if (Application::IsKeyPressed('E'))
 		{
 			if (getMagnitude(ship.position, camera.position) < 8.f && isCaptured == true)
@@ -486,12 +506,13 @@ void Assignment3::Update(double dt)
 			{
 				TurretSpawn();
 			}
-			//***********************************Move to Astronaut later***************************//
-			else if (player.WeaponState == 5)
+			else if (player.WeaponState == 5 && GrenadeThrowDelay.GetTimeNow() <=0)
 			{
-				
+				Grenade newNade = Grenade(Vector3(camera.position.x, camera.position.y, camera.position.z), Vector3(camera.target.x, camera.target.y, camera.target.z), 100, 30);
+				GrenadesFlying.push_back(newNade);
+				GrenadeThrowDelay.resetTime();
 			}
-			//*************************************************************************************//
+			
 		}
 		rightClick.TimeCountDown(dt);
 		if (Application::IsKeyPressed(VK_RBUTTON) && !ship.updateCutscene && rightClick.GetTimeNow() < 0)
@@ -858,6 +879,15 @@ void Assignment3::Render()
 		modelStack.PushMatrix();
 		modelStack.Translate(a.Harvestor[i].Position.x, 0, a.Harvestor[i].Position.z);
 		modelStack.Rotate(a.Harvestor[i].GetHarvestorRotation(), 0, 1, 0);
+		modelStack.Scale(1, 1, 1);
+		RenderMesh(meshList[GEO_LIGHTBALL], true);
+		modelStack.PopMatrix();
+	}
+	//GRENADES
+	for (int i = 0; i < GrenadesFlying.size(); i++)
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(GrenadesFlying[i].GetPosition().x, GrenadesFlying[i].GetPosition().y, GrenadesFlying[i].GetPosition().z);
 		modelStack.Scale(1, 1, 1);
 		RenderMesh(meshList[GEO_LIGHTBALL], true);
 		modelStack.PopMatrix();

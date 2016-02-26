@@ -19,6 +19,7 @@
 #include "Enemy.h"
 #include "Ship.h"
 #include "Harvestors.h"
+#include "Grenade.h"
 #include <string>
 using std::string;
 
@@ -137,7 +138,8 @@ public:
 	vector<GameObject*> Collisions;
 	vector<Rock> Rocks;
 	vector<Turret> Turrets;
-	
+	vector<Grenade> GrenadesFlying;
+
 	Weapon pistol = Weapon(20, 30, 100, 10, false);
 	Flag f = Flag(Vector3(0, 0.75f, 0), Vector3(1, 1, 1));
 	Astronaut a = Astronaut(Vector3(5, -1, 0));
@@ -196,6 +198,8 @@ private:
 	Countdown KillMessage = Countdown(0.3f);
 	Countdown CountdownSniperRifle = Countdown(1.0f);
 	Countdown countdownAlienSpawnByBoss = Countdown(0.5f);
+	Countdown GrenadeThrowDelay = Countdown(0.7f);
+	Countdown throwGrenade = Countdown(3.0f);
 	Player player = Player(100);
 	
 	

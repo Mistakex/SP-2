@@ -1,6 +1,5 @@
 #include "CountDown.h"
 
-
 Countdown::Countdown(const float & time) :Time(time)
 {
 	countdown = Time;
