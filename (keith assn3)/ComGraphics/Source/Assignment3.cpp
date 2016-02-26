@@ -57,7 +57,7 @@ void Assignment3::Init()
 	ship.init(&camera);
 	SniperRifle.init(&camera);
 
-	Boss = Enemy(Vector3(0, 0, 0), camera.position, Vector3(10, 10, 10), 3000, 10, 0, 1000, 10,true);
+	Boss = Enemy(Vector3(0, 0, 0), camera.position, Vector3(5, 10, 5), 3000, 10, 0, 1000, 10,true);
 
 	//srand
 	KillMessage.TimeCountDown(0.3);
@@ -446,12 +446,12 @@ void Assignment3::Update(double dt)
 			}
 			if (player.WeaponState == 2 && countdownPistol.GetTimeNow() <= 0)
 			{
-				pistol.Fire(&Aliens);
+				pistol.Fire(&Aliens,&Boss);
 				countdownPistol.resetTime();
 			}
 			if (player.WeaponState == 3 && CountdownSniperRifle.GetTimeNow() <= 0)
 			{
-				SniperRifle.FireSR(&Aliens);
+				SniperRifle.FireSR(&Aliens,&Boss);
 				CountdownSniperRifle.resetTime();
 			}
 			else if (player.WeaponState == 4 && countdownTurretSpawn.GetTimeNow() <= 0 && player.getResources() >= 50)

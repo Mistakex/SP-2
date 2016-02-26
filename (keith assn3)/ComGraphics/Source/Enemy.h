@@ -27,8 +27,8 @@ public:
 	void EnemyKite(double dt);
 	void EnemyMove(double dt,Player *p);				//move to find
 	void EnemyTakeDmg(int Dmg);
-	void EnemyShootAt(const double &dt,const float &bulletSpeed,Player *p);			//shooting of the enemy
-	void BossShootAt(const double &dt, const float &bulletSpeed, Player *p);			//shooting of the enemy
+	void EnemyShootAt(const double &dt,const float &startShooting,const float &endShooting,const float &bulletSpeed,Player *p);			//shooting of the enemy
+	void BossShootAt(const double &dt, const float &startShooting, const float &endShooting, const float &bulletSpeed, Player *p);			//shooting of the enemy
 	float findDirection();
 	void update(Camera3 camera,const double &dt,Player *p);
 	bool checkBulletCollision(Player *p);
@@ -40,6 +40,7 @@ public:
 	float armRotate;
 	float EnemySize;
 	short spawnerCounter;
+	bool bossIsSpawned;
 private:
 	
 	int range;
@@ -47,7 +48,6 @@ private:
 	int AttackDamage;
 	int MoveSpeed;
 	short Resources;
-	bool dead;
 	double KiteTimer;
 	bool moveRight;
 	bool Shooting;

@@ -79,11 +79,11 @@ void Enemy::EnemyMove(double dt,Player *p)
 		else if (KiteTimer < 7)
 		{
 			EnemyKite(dt);
-			EnemyShootAt(dt, 10,p);
+			EnemyShootAt(dt,2.f,4.f, 10.f,p);
 		}
 		else if (KiteTimer >= 7)
 		{
-			EnemyShootAt(dt, 10,p);
+			EnemyShootAt(dt,2.f,4.f, 10.f,p);
 			KiteTimer = 0;
 			if (rand() % 2 == 0)
 			{
@@ -96,12 +96,12 @@ void Enemy::EnemyMove(double dt,Player *p)
 		}
 		else
 		{
-			EnemyShootAt(dt, 10,p);
+			EnemyShootAt(dt, 2.f, 4.f, 10.f, p);
 		}
 	}
 	else
 	{
-		BossShootAt(dt, 5, p);
+		BossShootAt(dt,1.f,3.f, 5.f, p);
 	}
 }
 
@@ -113,9 +113,9 @@ void Enemy::EnemyTakeDmg(int Dmg)
 		Hp = 0;
 }
 
-void Enemy::EnemyShootAt(const double &dt,const float &bulletSpeed, Player *p)
+void Enemy::EnemyShootAt(const double &dt, const float &startShooting, const float &endShooting, const float &bulletSpeed, Player *p)
 {
-	if (fireDelay < 3)
+	if (fireDelay < startShooting)
 	{
 		if (Shooting == true)
 		{
@@ -132,7 +132,7 @@ void Enemy::EnemyShootAt(const double &dt,const float &bulletSpeed, Player *p)
 			projectile.setView((bulletTarget - position).Normalized());
 		}
 	}
-	else if (fireDelay >= 5)
+	else if (fireDelay >= endShooting)
 	{
 		fireDelay = 0;
 	}
@@ -146,9 +146,9 @@ void Enemy::EnemyShootAt(const double &dt,const float &bulletSpeed, Player *p)
 	}
 }
 
-void Enemy::BossShootAt(const double &dt, const float &bulletSpeed, Player *p)
+void Enemy::BossShootAt(const double &dt, const float &startShooting, const float &endShooting, const float &bulletSpeed, Player *p)
 {
-	if (fireDelay < 1)
+	if (fireDelay < startShooting)
 	{
 		if (Shooting == true)
 		{
@@ -166,7 +166,7 @@ void Enemy::BossShootAt(const double &dt, const float &bulletSpeed, Player *p)
 			projectile.setView((bulletTarget - position).Normalized());
 		}
 	}
-	else if (fireDelay >= 3)
+	else if (fireDelay >= endShooting)
 	{
 		fireDelay = 0;
 	}

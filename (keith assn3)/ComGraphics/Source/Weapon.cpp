@@ -25,13 +25,13 @@ void Weapon::init(Camera3 *camera)
 	this->camera = camera;
 }
 
-void Weapon::Fire(vector<Enemy> *aliens)
+void Weapon::Fire(vector<Enemy> *aliens,Enemy *Boss)
 {
 	if (bulletCount < AmmoInClip)
 	{
 		Magazine[bulletCount].updatePosition(camera->target);
 		Magazine[bulletCount].setView(camera->view);
-		if (checkBulletCollision(aliens, Magazine[bulletCount]) == true)
+		if (checkBulletCollision(aliens,Boss, Magazine[bulletCount]) == true)
 		{
 			hit = true;
 		}
@@ -42,13 +42,13 @@ void Weapon::Fire(vector<Enemy> *aliens)
 		bulletCount = 0;
 	}
 }
-void Weapon::FireSR(vector<Enemy> *aliens)
+void Weapon::FireSR(vector<Enemy> *aliens,Enemy *Boss)
 {
 	if (bulletCount < AmmoInClip)
 	{
 		Magazine[bulletCount].updatePosition(camera->target);
 		Magazine[bulletCount].setView(camera->view);
-		if (checkBulletCollisionSR(aliens, Magazine[bulletCount]) == true)
+		if (checkBulletCollisionSR(aliens,Boss, Magazine[bulletCount]) == true)
 		{
 			hit = true;
 		}
@@ -103,36 +103,52 @@ void Weapon::update(double dt)
 	}
 }
 
-bool Weapon::checkBulletCollision(vector<Enemy> *aliens,Bullet bullet)
+bool Weapon::checkBulletCollision(vector<Enemy> *aliens,Enemy *Boss,Bullet bullet)
 {
-	for (vector<Enemy>::iterator it = aliens->begin(); it != aliens->end(); ++it)
-	{
-		
-		Vector3 temp = bullet.getPosition();
-		for (int i = 0; i < 100; ++i)
-		{
-			temp += bullet.getView().Normalized();
-			if (temp.x >(*it).position.x - (*it).rangexyz.x && temp.x < (*it).position.x + (*it).rangexyz.x
-				&& temp.y >(*it).position.y - (*it).rangexyz.y && temp.y < (*it).position.y + (*it).rangexyz.y
-				&& temp.z >(*it).position.z - (*it).rangexyz.z && temp.z < (*it).position.z + (*it).rangexyz.z)
-			{
-				(*it).EnemyTakeDmg(Damage);
-				return true;
-			}
-		}
-	}
-	return false;
-}
-bool Weapon::checkBulletCollisionSR(vector<Enemy> *aliens, Bullet bullet)
-{
-	bool hitenemy = 0;
-	for (vector<Enemy>::iterator it = aliens->begin(); it != aliens->end();++it)
-	{
-
 		Vector3 temp = bullet.getPosition();
 		for (int i = 0; i < 50; ++i)
 		{
 			temp += bullet.getView().Normalized();
+			for (vector<Enemy>::iterator it = aliens->begin(); it != aliens->end(); ++it)
+			{
+				if (temp.x >(*it).position.x - (*it).rangexyz.x && temp.x < (*it).position.x + (*it).rangexyz.x
+					&& temp.y >(*it).position.y - (*it).rangexyz.y && temp.y < (*it).position.y + (*it).rangexyz.y
+					&& temp.z >(*it).position.z - (*it).rangexyz.z && temp.z < (*it).position.z + (*it).rangexyz.z)
+				{
+					(*it).EnemyTakeDmg(Damage);
+					return true;
+				}
+			}
+
+			if (temp.x >(*Boss).position.x - (*Boss).rangexyz.x && temp.x < (*Boss).position.x + (*Boss).rangexyz.x
+				&& temp.y >(*Boss).position.y - (*Boss).rangexyz.y && temp.y < (*Boss).position.y + (*Boss).rangexyz.y
+				&& temp.z >(*Boss).position.z - (*Boss).rangexyz.z && temp.z < (*Boss).position.z + (*Boss).rangexyz.z
+				&& Boss->bossIsSpawned)
+			{
+				(*Boss).EnemyTakeDmg(Damage);
+				return true;
+			}
+	}
+	return false;
+}
+bool Weapon::checkBulletCollisionSR(vector<Enemy> *aliens, Enemy *Boss, Bullet bullet)
+{
+	bool hitenemy = 0;
+	bool hitboss = 0;
+
+	Vector3 temp = bullet.getPosition();
+	for (int i = 0; i < 100; ++i)
+	{
+		temp += bullet.getView().Normalized();
+		if (temp.x >(*Boss).position.x - (*Boss).rangexyz.x && temp.x < (*Boss).position.x + (*Boss).rangexyz.x
+			&& temp.y >(*Boss).position.y - (*Boss).rangexyz.y && temp.y < (*Boss).position.y + (*Boss).rangexyz.y
+			&& temp.z >(*Boss).position.z - (*Boss).rangexyz.z && temp.z < (*Boss).position.z + (*Boss).rangexyz.z
+			&& Boss->bossIsSpawned)
+		{
+			hitboss = 1;
+		}
+		for (vector<Enemy>::iterator it = aliens->begin(); it != aliens->end(); ++it)
+		{
 			if (temp.x >(*it).position.x - (*it).rangexyz.x && temp.x < (*it).position.x + (*it).rangexyz.x
 				&& temp.y >(*it).position.y - (*it).rangexyz.y && temp.y < (*it).position.y + (*it).rangexyz.y
 				&& temp.z >(*it).position.z - (*it).rangexyz.z && temp.z < (*it).position.z + (*it).rangexyz.z)
@@ -142,6 +158,11 @@ bool Weapon::checkBulletCollisionSR(vector<Enemy> *aliens, Bullet bullet)
 				break;
 			}
 		}
+	}
+	if (hitboss == 1)
+	{
+		(*Boss).EnemyTakeDmg(Damage);
+		return hitboss;
 	}
 	return hitenemy;
 }

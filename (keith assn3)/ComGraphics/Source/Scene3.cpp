@@ -2,6 +2,8 @@
 
 void Assignment3::Scene3Render()
 {
+	Boss.bossIsSpawned = true;
+
 	modelStack.PushMatrix();
 	modelStack.Translate(Boss.position.x, Boss.position.y, Boss.position.z);
 	modelStack.Rotate(Boss.findDirection(), 0, 1, 0);
