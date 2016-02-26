@@ -478,7 +478,7 @@ void Assignment3::Update(double dt)
 			if (player.WeaponState == 3 && CountdownSniperRifle.GetTimeNow() <= 0)
 			{
 				SniperRifle.FireSR(&Aliens,&Boss);
-				sound.playSoundThreaded("Music/pew.mp3");
+				sound.playSoundThreaded("Music/sniper.mp3");
 				CountdownSniperRifle.resetTime();
 			}
 			else if (player.WeaponState == 4 && countdownTurretSpawn.GetTimeNow() <= 0/* && player.getResources() >= 50*/)

@@ -47,7 +47,7 @@ Music::Music(string soundFile)
 Music::~Music()
 {
 	soundEngine->drop();
-	currentSound->drop();
+	//currentSound->drop();
 }
 
 void Music::playSound()
