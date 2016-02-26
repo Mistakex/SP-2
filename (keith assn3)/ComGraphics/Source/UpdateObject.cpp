@@ -51,6 +51,11 @@ void Assignment3::TurretUpdate(double dt)
 				s++;
 			}
 		}
+		else
+		{
+			Turrets[i].bulletPos = Turrets[i].GetPosition();
+			Turrets[i].bulletPos.y = -0.5f;
+		}
 	}
 }
 void Assignment3::AlienUpdate(double dt)

@@ -900,16 +900,8 @@ void Assignment3::Render()
 		modelStack.PopMatrix();
 	}
 
-	//SPACESHIP
-	if (f.flagIsBlue || ship.updateCutscene)
-	{
-		modelStack.PushMatrix();
-		modelStack.Translate(ship.position.x, -1 + ship.position.y, ship.position.z);
-		RenderMesh(meshList[GEO_SPACESHIP], true);
-		modelStack.PopMatrix();
-	}
-	
-	RenderAstronautInteractions();
+
+
 	//DOME
 	if (gameState == GS_SCENE2)
 	{

@@ -119,6 +119,15 @@ void Assignment3::Scene1Render()
 	RenderAstronaut();
 	//CRATERS;
 	RenderCraters();
+
+	//SPACESHIP
+	if (f.flagIsBlue || ship.updateCutscene)
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(ship.position.x, -1 + ship.position.y, ship.position.z);
+		RenderMesh(meshList[GEO_SPACESHIP], true);
+		modelStack.PopMatrix();
+	}
 }
 
 void Assignment3::RenderScene1UI()
