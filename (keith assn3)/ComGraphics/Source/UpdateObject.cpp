@@ -9,7 +9,7 @@ void Assignment3::TurretUpdate(double dt)
 		{
 			Turrets[i].bulletPos = (0, -10, 0);
 		}
-		if (Aliens.empty() == true && Boss.isDead() ==false)
+		if (Aliens.empty() == true && Boss.isDead() ==false && gameState == GS_SCENE3)
 		{
 			Turrets[i].LookAtEnemy(Boss);
 			Turrets[i].TargetEnemy(Boss.position);
