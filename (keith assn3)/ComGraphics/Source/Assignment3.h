@@ -71,6 +71,8 @@ class Assignment3 : public Scene
 		GEO_ZOOM,
 		//Dome
 		GEO_DOME,
+		//Grenade
+		GEO_GRENADE,
 		NUM_GEOMETRY,
 	};
 	enum UNIFORM_TYPE

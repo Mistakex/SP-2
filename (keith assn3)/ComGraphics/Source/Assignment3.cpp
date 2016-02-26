@@ -295,6 +295,8 @@ void Assignment3::Init()
 	meshList[GEO_ZOOM] = MeshBuilder::GenerateQuad("Zoom", Color(1, 1, 1));
 	meshList[GEO_ZOOM]->textureID = LoadTGA("Image//scope.tga");
 
+	meshList[GEO_GRENADE] = MeshBuilder::GenerateOBJ("Grenade", "OBJ//Grenade.obj");
+	meshList[GEO_GRENADE]->textureID = LoadTGA("Image//Grenade.tga");
 	Mtx44 projection;
 	projection.SetToPerspective(70.0f, 4.0f / 3.0f, 0.1f, 5000.0f);
 	projectionStack.LoadMatrix(projection);
@@ -886,8 +888,10 @@ void Assignment3::Render()
 	{
 		modelStack.PushMatrix();
 		modelStack.Translate(GrenadesFlying[i].GetPosition().x, GrenadesFlying[i].GetPosition().y, GrenadesFlying[i].GetPosition().z);
+		modelStack.Rotate(GrenadesFlying[i].GrenadeRotation, 1, 0, 0);
+		modelStack.Rotate(GrenadesFlying[i].LookAtDirection, 0, 0, 1);
 		modelStack.Scale(1, 1, 1);
-		RenderMesh(meshList[GEO_LIGHTBALL], true);
+		RenderMesh(meshList[GEO_GRENADE], true);
 		modelStack.PopMatrix();
 	}
 	//TURRETS

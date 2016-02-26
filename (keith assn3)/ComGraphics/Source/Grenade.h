@@ -14,6 +14,9 @@ public:
 	Vector3 GetPosition();
 	Countdown throwGrenade = Countdown(3.0f);
 	Grenade& operator=(const Grenade& nade);
+	float LookAt();
+	float LookAtDirection;
+	float GrenadeRotation;
 private:
 	const int Range;
 	const int damage;

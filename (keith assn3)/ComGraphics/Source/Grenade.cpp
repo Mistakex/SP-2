@@ -2,10 +2,12 @@
 
 Grenade::Grenade(Vector3 pos, Vector3 target, const int& dmg,const int& range) :damage(dmg), Range(range)
 {
+	GrenadeRotation = 0;
 	Position = pos;
 	Target = target;
 	View = Target - Position;
 	View.Normalized();
+	LookAt();
 }
 void Grenade::ThrowGrenade(double dt)
 {
@@ -14,15 +16,15 @@ void Grenade::ThrowGrenade(double dt)
 	{
 		if (throwGrenade.GetTimeNow()> 2.0f)
 		{
-			Position += View*dt*3;
+			Position += View*dt*10;
 		}
 		else
 		{
-			Position.x += View.x*dt * 3;
-			Position.z += View.z*dt * 3;
+			Position.x += View.x*dt * 10;
+			Position.z += View.z*dt * 10;
 			if (Position.y >= -1)
 			{
-				Position.y -= View.y*dt*3;
+				Position.y -= View.y*dt*10;
 			}
 		}
 	}
@@ -30,11 +32,19 @@ void Grenade::ThrowGrenade(double dt)
 	{
 		if (Position.y >= -1)
 		{
-			Position.x += View.x*dt * 3;
-			Position.z += View.z*dt * 3;
-			Position.y += View.y*dt * 3;
+			Position.x += View.x*dt *10;
+			Position.z += View.z*dt *10;
+			Position.y += View.y*dt *10;
 		}
 	}
+	GrenadeRotation+=180*dt;
+}
+float Grenade::LookAt()
+{
+	if (Target.z > Position.z)
+	LookAtDirection	= Math::RadianToDegree(atan(View.x / View.z)) - 180;
+	else
+	LookAtDirection = Math::RadianToDegree(atan(View.x / View.z));
 }
 void Grenade::DealDamage(Enemy& enemy)
 {
