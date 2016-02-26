@@ -5,6 +5,10 @@ void Assignment3::TurretUpdate(double dt)
 {
 	for (size_t i = 0; i < Turrets.size(); i++)
 	{
+		if (Aliens.empty() == true && Boss.isDead() == true)
+		{
+			Turrets[i].bulletPos = (0, -10, 0);
+		}
 		if (Aliens.empty() == true && Boss.isDead() ==false)
 		{
 			Turrets[i].LookAtEnemy(Boss);
@@ -19,7 +23,7 @@ void Assignment3::TurretUpdate(double dt)
 				}
 			}
 		}
-		if (Aliens.empty() == false)
+		else if (Aliens.empty() == false)
 		{
 			short s = 0;
 			while (s < Aliens.size())
