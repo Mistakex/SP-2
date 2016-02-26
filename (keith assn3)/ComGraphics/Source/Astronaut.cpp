@@ -36,3 +36,17 @@ void Astronaut::UpgradeWeapon(Weapon& weap,Player& p)
 	}
 }
 
+void Astronaut::UpgradeTurret(Player& p)
+{
+	if (p.getResources() < TurretNewDmg)
+	{
+		upgradeSuccess = false;
+		return;
+	}
+	else
+	{
+		p.ObtainResources(-TurretNewDmg);
+		TurretNewDmg *= 1.5;
+		upgradeSuccess = true;
+	}
+}

@@ -53,6 +53,12 @@ void Assignment3::Scene1Updates(double dt)
 					debounceUI.resetTime();
 					a.errorWindow = true;
 					break;
+
+				case(OPT_UP_TURRET) :
+					a.UpgradeTurret(player);
+					debounceUI.resetTime();
+					a.errorWindow = true;
+					break;
 				}
 			}
 			else
@@ -66,6 +72,7 @@ void Assignment3::Scene1Updates(double dt)
 	if (Application::IsKeyPressed('E') && ((getMagnitude(a.GetAstronautPos(), camera.position)) < 3))
 	{
 		gameState = GS_ASTRONAUT_INTERACTION;
+		AstroCursor = 0;
 	}
 	////////////////////////////////////////////
 

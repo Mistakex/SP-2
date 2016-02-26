@@ -7,21 +7,21 @@ void Assignment3::AlienSpawn(double dt)
 	if ((countdownAlienSpawn.TimeCountDown(dt) <= 0) && (Aliens.size()) < 20 && (f.flagIsBlue == true))
 	{
 		countdownAlienSpawn.resetTime();
-		float spwanAlienz = (rand() % 100 - 50.f);
+		float spawnAlienz = (rand() % 100 - 50.f);
 		short s = rand() % 3;
 		if (s == 0)
 		{
-			Enemy newAlien(Vector3(55.f, 0.f, spwanAlienz), Vector3(camera.position.x, -1.f, camera.position.z), Vector3(0.5, 1, 0.5), 100, 5, 10, 10);
+			Enemy newAlien(Vector3(55.f, 0.f, spawnAlienz), Vector3(camera.position.x, -1.f, camera.position.z), Vector3(0.5, 1, 0.5), 100, 5, 10, 10);
 			Aliens.push_back(newAlien);
 		}
 		else if (s == 1)
 		{
-			Enemy newAlien(Vector3(55.f, 0.f, spwanAlienz), Vector3(camera.position.x, -1.f, camera.position.z), Vector3(0.8, 1, 0.8), 200, 5, 5, 10, 2.0f);
+			Enemy newAlien(Vector3(55.f, 0.f, spawnAlienz), Vector3(camera.position.x, -1.f, camera.position.z), Vector3(0.8, 1, 0.8), 200, 5, 5, 10, 2.0f);
 			Aliens.push_back(newAlien);
 		}
 		else
 		{
-			Enemy newAlien(Vector3(55.f, 0.f, spwanAlienz), Vector3(camera.position.x, -1.f, camera.position.z), Vector3(0.25f, 1, 0.25f), 40, 5, 20, 10, 0.7f);
+			Enemy newAlien(Vector3(55.f, 0.f, spawnAlienz), Vector3(camera.position.x, -1.f, camera.position.z), Vector3(0.25f, 1, 0.25f), 40, 5, 20, 10, 0.7f);
 			Aliens.push_back(newAlien);
 		}
 	}
@@ -69,16 +69,16 @@ void Assignment3::RockSpawn(double dt)
 
 void Assignment3::TurretSpawn()
 {
-	float a = 1; //used to mutiply camera view to get intersection with 0
+	float cutOff = 1; //used to mutiply camera view to get intersection with 0
 	if (camera.target.y <= 0)
 	{
 		while (TurretPos.y >= -1)
 		{
-			TurretPos = camera.view*a;
-			a += 0.1;
+			TurretPos = camera.view * cutOff;
+			cutOff += 0.1;
 		}
 		player.ObtainResources(-50);
-		Turret newTurret(100, 50, Vector3(TurretPos.x + camera.position.x, 0, TurretPos.z + camera.position.z));
+		Turret newTurret(100, a.TurretNewDmg, Vector3(TurretPos.x + camera.position.x, 0, TurretPos.z + camera.position.z));
 		Turrets.push_back(newTurret);
 		countdownTurretSpawn.resetTime();
 		TurretPos = (0.f, 0.f, 0.f);//reset the value of the variable

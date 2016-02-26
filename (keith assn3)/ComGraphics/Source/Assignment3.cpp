@@ -294,6 +294,7 @@ void Assignment3::Init()
 	// Sets the words for Astronaut Options
 	AstronautOpt[OPT_UP_PISTOL] = "Upgrade Pistol?";
 	AstronautOpt[OPT_UP_RIFLE] = "Upgrade S. Rifle?";
+	AstronautOpt[OPT_UP_TURRET] = "Upgrade Turret?";
 	AstronautOpt[OPT_BACK_TO_MAIN] = "Back to Game?";
 }
 
@@ -844,6 +845,9 @@ void Assignment3::Render()
 			break;
 		case(OPT_UP_RIFLE):
 			RenderTextOnScreen(meshList[GEO_TEXT], "Resources Needed: " + std::to_string(SniperRifle.getUpgradeCost()), Color(1, 0, 1), 4.5f, 5, 6);
+			break;
+		case(OPT_UP_TURRET):
+			RenderTextOnScreen(meshList[GEO_TEXT], "Resources Needed: " + std::to_string(a.TurretNewDmg), Color(1, 0, 1), 4.5f, 5, 6);
 			break;
 		default:
 			break;

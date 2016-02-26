@@ -214,6 +214,7 @@ private:
 	{
 		OPT_UP_PISTOL,
 		OPT_UP_RIFLE,
+		OPT_UP_TURRET,
 		OPT_BACK_TO_MAIN,
 		NUM_OPTIONS
 	};
