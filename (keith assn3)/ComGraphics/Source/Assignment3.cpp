@@ -451,13 +451,13 @@ void Assignment3::Update(double dt)
 			if (player.WeaponState == 2 && countdownPistol.GetTimeNow() <= 0)
 			{
 				pistol.Fire(&Aliens,&Boss);
-				sound.playSoundThreaded("Music/pistol.mp3");
+				sound.playSoundThreaded("Music/pew.mp3");
 				countdownPistol.resetTime();
 			}
 			if (player.WeaponState == 3 && CountdownSniperRifle.GetTimeNow() <= 0)
 			{
 				SniperRifle.FireSR(&Aliens,&Boss);
-				sound.playSoundThreaded("Music/sniper.mp3");
+				sound.playSoundThreaded("Music/pew.mp3");
 				CountdownSniperRifle.resetTime();
 			}
 			else if (player.WeaponState == 4 && countdownTurretSpawn.GetTimeNow() <= 0 && player.getResources() >= 50)
@@ -470,6 +470,7 @@ void Assignment3::Update(double dt)
 		{
 			if (player.WeaponState == 3 && isZoom == false)
 			{
+				sound.playSoundThreaded("Music/zoom.mp3");
 				Mtx44 projection;
 				projection.SetToPerspective(10.0f, 4.0f / 3.0f, 0.1f, 5000.0f);
 				projectionStack.LoadMatrix(projection);
@@ -478,6 +479,7 @@ void Assignment3::Update(double dt)
 			}
 			else if (player.WeaponState == 3 && isZoom == true)
 			{
+				sound.playSoundThreaded("Music/zoom.mp3");
 				Mtx44 projection;
 				projection.SetToPerspective(70.0f, 4.0f / 3.0f, 0.1f, 5000.0f);
 				projectionStack.LoadMatrix(projection);
