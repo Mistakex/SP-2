@@ -54,7 +54,7 @@ void Assignment3::Init()
 {
 	gameState = GS_MAIN;
 	CameraMouseUpdate = true;
-	player.WeaponState = 3;
+	player.WeaponState = 5;
 	pistol.init(&camera);
 	ship.init(&camera);
 	SniperRifle.init(&camera);
@@ -410,6 +410,22 @@ void Assignment3::Update(double dt)
 		TurretUpdate(dt);
 		//Rock mining
 		player.WhileMining(dt);
+		if (Harvestor.empty() == false && Rocks.empty() == false)
+		{
+			for (int i = 0; i < Harvestor.size(); i++)
+			{
+				Harvestor[i].MoveTowards(Rocks[0].position,dt);
+				if (getMagnitude(Harvestor[i].Position, Rocks[0].position) <= 4)
+				{
+					Harvestor[i].MineRocks(Rocks[0], player);
+					if (Rocks[0].Size <= 0)
+					{
+						Rocks.erase(Rocks.begin());
+						break;
+					}
+				}
+			}
+		}
 		//Timers
 		countdownMining.TimeCountDown(dt);
 		countdownTurretSpawn.TimeCountDown(dt);
@@ -425,7 +441,6 @@ void Assignment3::Update(double dt)
 				ship.updateCutscene = true;
 			}
 		}
-
 		if (Application::IsKeyPressed(VK_LBUTTON) && !ship.updateCutscene) //check for keypress and weapon holding
 		{
 			if (player.WeaponState == 1 && (Rocks.empty() == 0) && (countdownMining.GetTimeNow() <= 0))
@@ -466,10 +481,17 @@ void Assignment3::Update(double dt)
 				sound.playSoundThreaded("Music/pew.mp3");
 				CountdownSniperRifle.resetTime();
 			}
-			else if (player.WeaponState == 4 && countdownTurretSpawn.GetTimeNow() <= 0 && player.getResources() >= 50)
+			else if (player.WeaponState == 4 && countdownTurretSpawn.GetTimeNow() <= 0/* && player.getResources() >= 50*/)
 			{
 				TurretSpawn();
 			}
+			//***********************************Move to Astronaut later***************************//
+			else if (player.WeaponState == 5)
+			{
+				Harvestors newHarvestor((0,0,0),1 );
+				Harvestor.push_back(newHarvestor);
+			}
+			//*************************************************************************************//
 		}
 		rightClick.TimeCountDown(dt);
 		if (Application::IsKeyPressed(VK_RBUTTON) && !ship.updateCutscene && rightClick.GetTimeNow() < 0)
@@ -830,7 +852,16 @@ void Assignment3::Render()
 	{
 		Scene1Render();	//flag ,pole ,astronaut,crater render
 	}
-
+	//Harvestors
+	for (int i = 0; i < Harvestor.size(); i++)
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(Harvestor[i].Position.x, 0, Harvestor[i].Position.z);
+		modelStack.Rotate(Harvestor[i].GetHarvestorRotation(), 0, 1, 0);
+		modelStack.Scale(1, 1, 1);
+		RenderMesh(meshList[GEO_LIGHTBALL], true);
+		modelStack.PopMatrix();
+	}
 	//TURRETS
 	RenderTurret();
 	//ALIEN

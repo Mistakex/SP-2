@@ -18,6 +18,7 @@
 #include "Bullet.h"
 #include "Enemy.h"
 #include "Ship.h"
+#include "Harvestors.h"
 #include <string>
 using std::string;
 
@@ -136,6 +137,7 @@ public:
 	vector<GameObject*> Collisions;
 	vector<Rock> Rocks;
 	vector<Turret> Turrets;
+	vector<Harvestors> Harvestor;
 	Weapon pistol = Weapon(20, 30, 100, 10, false);
 	Flag f = Flag(Vector3(0, 0.75f, 0), Vector3(1, 1, 1));
 	Astronaut a = Astronaut(Vector3(5, -1, 0));
