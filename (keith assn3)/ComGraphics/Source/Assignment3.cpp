@@ -25,6 +25,8 @@
 
 #include "Music.h"
 
+Music sound;
+
 extern GLFWwindow* m_window;
 
 using std::cout;
@@ -431,6 +433,7 @@ void Assignment3::Update(double dt)
 						if (player.isMining == false)
 						{
 							player.isMining = true;
+							sound.playSoundThreaded("Music/mining.wav");
 							resourceOfRock = (*i).GetResources();
 							player.ObtainResources(resourceOfRock);
 							(*i).ReduceSize();
@@ -448,11 +451,13 @@ void Assignment3::Update(double dt)
 			if (player.WeaponState == 2 && countdownPistol.GetTimeNow() <= 0)
 			{
 				pistol.Fire(&Aliens,&Boss);
+				sound.playSoundThreaded("Music/pistol.mp3");
 				countdownPistol.resetTime();
 			}
 			if (player.WeaponState == 3 && CountdownSniperRifle.GetTimeNow() <= 0)
 			{
 				SniperRifle.FireSR(&Aliens,&Boss);
+				sound.playSoundThreaded("Music/sniper.mp3");
 				CountdownSniperRifle.resetTime();
 			}
 			else if (player.WeaponState == 4 && countdownTurretSpawn.GetTimeNow() <= 0 && player.getResources() >= 50)
