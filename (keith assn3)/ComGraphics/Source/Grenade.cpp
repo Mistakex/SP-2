@@ -39,7 +39,7 @@ void Grenade::ThrowGrenade(double dt)
 	}
 	GrenadeRotation+=180*dt;
 }
-float Grenade::LookAt()
+void Grenade::LookAt()
 {
 	if (Target.z > Position.z)
 	LookAtDirection	= Math::RadianToDegree(atan(View.x / View.z)) - 180;

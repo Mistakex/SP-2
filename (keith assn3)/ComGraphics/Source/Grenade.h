@@ -14,7 +14,7 @@ public:
 	Vector3 GetPosition();
 	Countdown throwGrenade = Countdown(3.0f);
 	Grenade& operator=(const Grenade& nade);
-	float LookAt();
+	void LookAt();
 	float LookAtDirection;
 	float GrenadeRotation;
 private:

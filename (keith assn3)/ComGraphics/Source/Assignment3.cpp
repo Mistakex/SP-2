@@ -888,9 +888,9 @@ void Assignment3::Render()
 	{
 		modelStack.PushMatrix();
 		modelStack.Translate(GrenadesFlying[i].GetPosition().x, GrenadesFlying[i].GetPosition().y, GrenadesFlying[i].GetPosition().z);
-		modelStack.Rotate(GrenadesFlying[i].GrenadeRotation, 1, 0, 0);
 		modelStack.Rotate(GrenadesFlying[i].LookAtDirection, 0, 0, 1);
-		modelStack.Scale(1, 1, 1);
+		modelStack.Rotate(GrenadesFlying[i].GrenadeRotation, 1, 0, 0);
+		modelStack.Scale(0.1, 0.1 ,0.1);
 		RenderMesh(meshList[GEO_GRENADE], true);
 		modelStack.PopMatrix();
 	}
