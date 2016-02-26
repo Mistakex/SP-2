@@ -826,30 +826,38 @@ void Assignment3::Render()
 	{
 		Scene3Render();
 	}
-
+	
+	if (gameState == GS_ASTRONAUT_INTERACTION)
+	{
+		modelStack.PushMatrix();
+		RenderModelOnScreen(meshList[GEO_UI], false, Vector3(45, 15, 1), 40, 30, 2, Vector3(90, 0, 0));
+		modelStack.PopMatrix();
+	}
 
 	if (gameState == GS_ASTRONAUT_INTERACTION && !a.errorWindow)
 	{
-		modelStack.PushMatrix();
-		RenderModelOnScreen(meshList[GEO_UI], false, Vector3(50, 10, 1), 40, 30, 2, Vector3(90, 0, 0));
-		RenderTextOnScreen(meshList[GEO_TEXT], AstronautOpt[AstroCursor], Color(1, 0, 1), 5, 6, 5.7f);
-		modelStack.PopMatrix();
+		RenderTextOnScreen(meshList[GEO_TEXT], AstronautOpt[AstroCursor], Color(1, 0, 1), 4.5f, 5, 7);
+		switch (AstroCursor)
+		{
+		case(OPT_UP_PISTOL) :
+			RenderTextOnScreen(meshList[GEO_TEXT], "Resources Needed: " + std::to_string(pistol.getUpgradeCost()), Color(1, 0, 1), 4.5f, 5, 6);
+			break;
+		case(OPT_UP_RIFLE):
+			RenderTextOnScreen(meshList[GEO_TEXT], "Resources Needed: " + std::to_string(SniperRifle.getUpgradeCost()), Color(1, 0, 1), 4.5f, 5, 6);
+			break;
+		default:
+			break;
+		}
 	}
 
 	if (!a.upgradeSuccess && a.errorWindow)
 	{
-		modelStack.PushMatrix();
-		RenderModelOnScreen(meshList[GEO_UI], false, Vector3(50, 10, 1), 40, 30, 2, Vector3(90, 0, 0));
-		RenderTextOnScreen(meshList[GEO_TEXT], "Not Enough Resources...", Color(1, 0, 1), 5, 5, 5.7f);
-		modelStack.PopMatrix();
+		RenderTextOnScreen(meshList[GEO_TEXT], "Not Enough Resources...", Color(1, 0, 1), 5, 4.5f, 5.7f);
 	}
 
 	if (a.upgradeSuccess && a.errorWindow)
 	{
-		modelStack.PushMatrix();
-		RenderModelOnScreen(meshList[GEO_UI], false, Vector3(50, 10, 1), 40, 30, 2, Vector3(90, 0, 0));
-		RenderTextOnScreen(meshList[GEO_TEXT], "Upgrade Success!", Color(1, 0, 1), 5, 6, 5.7f);
-		modelStack.PopMatrix();
+		RenderTextOnScreen(meshList[GEO_TEXT], "Upgrade Success!", Color(1, 0, 1), 5, 5.5f, 5.7f);
 	}
 
 	// ROCKS
