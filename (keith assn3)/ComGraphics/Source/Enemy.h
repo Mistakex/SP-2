@@ -41,8 +41,8 @@ public:
 	float EnemySize;
 	short spawnerCounter;
 	bool bossIsSpawned;
+	bool redAlien;
 private:
-	
 	int range;
 	int Hp;
 	int AttackDamage;
@@ -52,6 +52,7 @@ private:
 	bool moveRight;
 	bool Shooting;
 	float fireDelay;
+	float redTimer;
 	vector<Vector3> renderedBulletsDirection;
 	vector<Vector3> renderedBulletsPosition;
 

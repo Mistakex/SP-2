@@ -45,6 +45,9 @@ class Assignment3 : public Scene
 		GEO_ALIENHEAD,
 		GEO_ALIENBODY,
 		GEO_ALIENPART,
+		GEO_ALIENHEADred,
+		GEO_ALIENBODYred,
+		GEO_ALIENPARTred,
 		GEO_ROCK,
 		GEO_PICKAXE,
 		GEO_GUN,
@@ -145,7 +148,7 @@ private:
 	void RenderModelOnScreen(Mesh *mesh, bool enableLight, Vector3 size, float x, float y, float z, Vector3 rotation);
 	void RenderMesh(Mesh *mesh, bool enableLight);
 	void RenderSkybox();
-	void RenderAlien(float armRotate = 0);
+	void RenderAlien(float armRotate = 0,bool isRed = false);
 
 	void checkCollision(const Vector3 &center, float x1, float z1, float y1);
 	float getMagnitude(const Vector3 user, const Vector3 target);	//find the magnitude between 2 points

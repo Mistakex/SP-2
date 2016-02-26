@@ -9,7 +9,7 @@ void Assignment3::Scene3Render()
 	modelStack.Rotate(Boss.findDirection(), 0, 1, 0);
 	modelStack.Translate(0, Boss.EnemySize * 0.85, 0);
 	modelStack.Scale(Boss.EnemySize, Boss.EnemySize, Boss.EnemySize);
-	RenderAlien(Boss.armRotate);
+	RenderAlien(Boss.armRotate,Boss.redAlien);
 	modelStack.PopMatrix();
 
 	if (Boss.GetShooting() == true)

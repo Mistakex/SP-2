@@ -19,6 +19,8 @@ Enemy::Enemy(Vector3 pos,Vector3 tar, Vector3 range, int hp, int attack, int mov
 	isBoss = Boss;
 	spawnerCounter = 0;
 	bossIsSpawned = false;
+	redAlien = false;
+	redTimer = 0;
 }
 
 Enemy::~Enemy()
@@ -228,6 +230,15 @@ bool Enemy::isDead()
 
 void Enemy::update(Camera3 camera,const double &dt, Player *p)
 {
+	if (redAlien)
+	{
+		redTimer += dt;
+		if (redTimer > 0.3f)
+		{
+			redAlien = false;
+			redTimer = 0.f;
+		}
+	}
 	target = camera.position;
 	EnemyMove(dt,p);
 }

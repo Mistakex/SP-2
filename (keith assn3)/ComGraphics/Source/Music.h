@@ -9,7 +9,6 @@
 #include "../include/irrKlang.h"
 using namespace irrklang;
 using std::string;
-#pragma comment(lib, "../lib/Win32-visualStudio/irrKlang.lib")
 
 class Music
 {

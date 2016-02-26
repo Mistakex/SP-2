@@ -45,12 +45,20 @@ void Assignment3::RenderFlag()
 	}
 	modelStack.PopMatrix();
 }
-void Assignment3::RenderAlien(float armRotate)
+void Assignment3::RenderAlien(float armRotate,bool isRed)
 {
 	modelStack.PushMatrix();
 	modelStack.Translate(0.f, -3.2f, 0.f);
-	RenderMesh(meshList[GEO_ALIENHEAD], true);
-	RenderMesh(meshList[GEO_ALIENBODY], true);
+	if (isRed)
+	{
+		RenderMesh(meshList[GEO_ALIENHEADred], true);
+		RenderMesh(meshList[GEO_ALIENBODYred], true);
+	}
+	else
+	{
+		RenderMesh(meshList[GEO_ALIENHEAD], true);
+		RenderMesh(meshList[GEO_ALIENBODY], true);
+	}
 	modelStack.PushMatrix();
 	modelStack.Translate(0.f, 2.9f, 0.f);
 	modelStack.Rotate(armRotate, 1, 0, 0);
@@ -58,10 +66,24 @@ void Assignment3::RenderAlien(float armRotate)
 	modelStack.PushMatrix(); // arms
 	modelStack.Translate(-0.3f, 2.7f, 0.f);
 	modelStack.Scale(0.2f, 0.4f, 0.4f);
-	RenderMesh(meshList[GEO_ALIENPART], true);
+	if (isRed)
+	{
+		RenderMesh(meshList[GEO_ALIENPARTred], true);
+	}
+	else
+	{
+		RenderMesh(meshList[GEO_ALIENPART], true);
+	}
 	modelStack.PushMatrix();
 	modelStack.Translate(3, 0, 0);
-	RenderMesh(meshList[GEO_ALIENPART], true);
+	if (isRed)
+	{
+		RenderMesh(meshList[GEO_ALIENPARTred], true);
+	}
+	else
+	{
+		RenderMesh(meshList[GEO_ALIENPART], true);
+	}
 	modelStack.PopMatrix();
 	modelStack.PopMatrix();
 	modelStack.PopMatrix();
@@ -135,7 +157,7 @@ void Assignment3::RenderAliens()
 		modelStack.Translate(Aliens[i].position.x, Aliens[i].position.y, Aliens[i].position.z);
 		modelStack.Rotate(Aliens[i].findDirection(), 0, 1, 0);
 		modelStack.Scale(Aliens[i].EnemySize, 1, Aliens[i].EnemySize);
-		RenderAlien(Aliens[i].armRotate);
+		RenderAlien(Aliens[i].armRotate,Aliens[i].redAlien);
 		modelStack.PopMatrix();
 
 		if (Aliens[i].GetShooting() == true)

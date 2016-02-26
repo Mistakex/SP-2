@@ -116,6 +116,7 @@ bool Weapon::checkBulletCollision(vector<Enemy> *aliens,Enemy *Boss,Bullet bulle
 					&& temp.z >(*it).position.z - (*it).rangexyz.z && temp.z < (*it).position.z + (*it).rangexyz.z)
 				{
 					(*it).EnemyTakeDmg(Damage);
+					(*it).redAlien = true;
 					return true;
 				}
 			}
@@ -126,6 +127,7 @@ bool Weapon::checkBulletCollision(vector<Enemy> *aliens,Enemy *Boss,Bullet bulle
 				&& Boss->bossIsSpawned)
 			{
 				(*Boss).EnemyTakeDmg(Damage);
+				(*Boss).redAlien = true;
 				return true;
 			}
 	}
@@ -146,6 +148,7 @@ bool Weapon::checkBulletCollisionSR(vector<Enemy> *aliens, Enemy *Boss, Bullet b
 			&& Boss->bossIsSpawned)
 		{
 			hitboss = 1;
+			(*Boss).redAlien = true;
 		}
 		for (vector<Enemy>::iterator it = aliens->begin(); it != aliens->end(); ++it)
 		{
@@ -154,6 +157,7 @@ bool Weapon::checkBulletCollisionSR(vector<Enemy> *aliens, Enemy *Boss, Bullet b
 				&& temp.z >(*it).position.z - (*it).rangexyz.z && temp.z < (*it).position.z + (*it).rangexyz.z)
 			{
 				(*it).EnemyTakeDmg(Damage);
+				(*it).redAlien = true;
 				hitenemy = 1;
 				break;
 			}

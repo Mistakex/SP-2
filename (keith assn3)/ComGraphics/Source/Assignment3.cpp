@@ -226,6 +226,15 @@ void Assignment3::Init()
 	meshList[GEO_ALIENBODY] = MeshBuilder::GenerateOBJ("alienbody", "OBJ//alienbody.obj");
 	meshList[GEO_ALIENBODY]->textureID = LoadTGA("Image//ALIENBODY.tga");
 
+	meshList[GEO_ALIENHEADred] = MeshBuilder::GenerateOBJ("alienhead", "OBJ//alienhead.obj");
+	meshList[GEO_ALIENHEADred]->textureID = LoadTGA("Image//ALIENHEADred.tga");
+
+	meshList[GEO_ALIENPARTred] = MeshBuilder::GenerateOBJ("alienpart", "OBJ//alienpart.obj");
+	meshList[GEO_ALIENPARTred]->textureID = LoadTGA("Image//ALIENBODYred.tga");
+
+	meshList[GEO_ALIENBODYred] = MeshBuilder::GenerateOBJ("alienbody", "OBJ//alienbody.obj");
+	meshList[GEO_ALIENBODYred]->textureID = LoadTGA("Image//ALIENBODYred.tga");
+
 	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text", 16, 16);
 	meshList[GEO_TEXT]->textureID = LoadTGA("Image//grisaiaCustom.tga");
 
@@ -240,9 +249,6 @@ void Assignment3::Init()
 
 	meshList[GEO_UNCAPTURED] = MeshBuilder::GenerateTorus("UncapturedZone", Color(1, 0, 0), 18, 18, 1.f, 0.05f);
 	meshList[GEO_CAPTURED] = MeshBuilder::GenerateTorus("CapturedZone", Color(0, 0, 1), 18, 18, 1.f, 0.05f);
-
-	meshList[GEO_ALLYFLAG] = MeshBuilder::GenerateOBJ("enemyFlag", "OBJ//flag.obj");
-	meshList[GEO_ALLYFLAG]->textureID = LoadTGA("Image//OurFlag.tga");
 
 	meshList[GEO_PICKAXE] = MeshBuilder::GenerateOBJ("pickaxe", "OBJ//pickaxe.obj");
 	meshList[GEO_PICKAXE]->textureID = LoadTGA("Image//pickaxeUV.tga");
@@ -336,7 +342,7 @@ void Assignment3::Update(double dt)
 		gameState = GS_SCENE2;
 	}
 
-	//************************************Will change this function to a pause function//
+	// Alien feedback bool
 	//countdown for camera lock
 	countdownCameraLock.TimeCountDown(dt);
 	infoscreen.TimeCountDown(dt);
@@ -451,7 +457,7 @@ void Assignment3::Update(double dt)
 			if (player.WeaponState == 2 && countdownPistol.GetTimeNow() <= 0)
 			{
 				pistol.Fire(&Aliens,&Boss);
-				sound.playSoundThreaded("Music/pew.mp3");
+				sound.playSoundThreaded("Music/pistol.mp3");
 				countdownPistol.resetTime();
 			}
 			if (player.WeaponState == 3 && CountdownSniperRifle.GetTimeNow() <= 0)
@@ -1050,6 +1056,7 @@ void Assignment3::Render()
 		RenderModelOnScreen(meshList[GEO_ZOOM], false, Vector3(82, 100, 0), 41, 30, 13, Vector3(90, 0, 0));
 		modelStack.PopMatrix();
 	}
+
 }
 
 void Assignment3::Exit()
