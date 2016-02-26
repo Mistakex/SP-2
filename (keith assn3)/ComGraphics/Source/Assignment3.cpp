@@ -303,6 +303,7 @@ void Assignment3::Init()
 	AstronautOpt[OPT_UP_PISTOL] = "Upgrade Pistol?";
 	AstronautOpt[OPT_UP_RIFLE] = "Upgrade S. Rifle?";
 	AstronautOpt[OPT_UP_TURRET] = "Upgrade Turret?";
+	AstronautOpt[OPT_BUY_HARVESTOR] = "Purchase Harvestor?";
 	AstronautOpt[OPT_BACK_TO_MAIN] = "Back to Game?";
 }
 
@@ -410,14 +411,14 @@ void Assignment3::Update(double dt)
 		TurretUpdate(dt);
 		//Rock mining
 		player.WhileMining(dt);
-		if (Harvestor.empty() == false && Rocks.empty() == false)
+		if (a.Harvestor.empty() == false && Rocks.empty() == false)
 		{
-			for (int i = 0; i < Harvestor.size(); i++)
+			for (int i = 0; i < a.Harvestor.size(); i++)
 			{
-				Harvestor[i].MoveTowards(Rocks[0].position,dt);
-				if (getMagnitude(Harvestor[i].Position, Rocks[0].position) <= 4)
+				a.Harvestor[i].MoveTowards(Rocks[0].position,dt);
+				if (getMagnitude(a.Harvestor[i].Position, Rocks[0].position) <= 4)
 				{
-					Harvestor[i].MineRocks(Rocks[0], player);
+					a.Harvestor[i].MineRocks(Rocks[0], player);
 					if (Rocks[0].Size <= 0)
 					{
 						Rocks.erase(Rocks.begin());
@@ -488,8 +489,7 @@ void Assignment3::Update(double dt)
 			//***********************************Move to Astronaut later***************************//
 			else if (player.WeaponState == 5)
 			{
-				Harvestors newHarvestor((0,0,0),1 );
-				Harvestor.push_back(newHarvestor);
+				
 			}
 			//*************************************************************************************//
 		}
@@ -850,14 +850,14 @@ void Assignment3::Render()
 
 	if (gameState == GS_MAIN || gameState == GS_ASTRONAUT_INTERACTION)
 	{
-		Scene1Render();	//flag ,pole ,astronaut,crater render
+		Scene1Render();	//flag ,pole , astronaut, crater render
 	}
 	//Harvestors
-	for (int i = 0; i < Harvestor.size(); i++)
+	for (int i = 0; i < a.Harvestor.size(); i++)
 	{
 		modelStack.PushMatrix();
-		modelStack.Translate(Harvestor[i].Position.x, 0, Harvestor[i].Position.z);
-		modelStack.Rotate(Harvestor[i].GetHarvestorRotation(), 0, 1, 0);
+		modelStack.Translate(a.Harvestor[i].Position.x, 0, a.Harvestor[i].Position.z);
+		modelStack.Rotate(a.Harvestor[i].GetHarvestorRotation(), 0, 1, 0);
 		modelStack.Scale(1, 1, 1);
 		RenderMesh(meshList[GEO_LIGHTBALL], true);
 		modelStack.PopMatrix();
@@ -870,42 +870,6 @@ void Assignment3::Render()
 	if (gameState == GS_SCENE3)
 	{
 		Scene3Render();
-	}
-	
-	if (gameState == GS_ASTRONAUT_INTERACTION)
-	{
-		modelStack.PushMatrix();
-		RenderModelOnScreen(meshList[GEO_UI], false, Vector3(45, 15, 1), 40, 30, 2, Vector3(90, 0, 0));
-		modelStack.PopMatrix();
-	}
-
-	if (gameState == GS_ASTRONAUT_INTERACTION && !a.errorWindow)
-	{
-		RenderTextOnScreen(meshList[GEO_TEXT], AstronautOpt[AstroCursor], Color(1, 0, 1), 4.5f, 5, 7);
-		switch (AstroCursor)
-		{
-		case(OPT_UP_PISTOL) :
-			RenderTextOnScreen(meshList[GEO_TEXT], "Resources Needed: " + std::to_string(pistol.getUpgradeCost()), Color(1, 0, 1), 4.5f, 5, 6);
-			break;
-		case(OPT_UP_RIFLE):
-			RenderTextOnScreen(meshList[GEO_TEXT], "Resources Needed: " + std::to_string(SniperRifle.getUpgradeCost()), Color(1, 0, 1), 4.5f, 5, 6);
-			break;
-		case(OPT_UP_TURRET):
-			RenderTextOnScreen(meshList[GEO_TEXT], "Resources Needed: " + std::to_string(a.TurretNewDmg), Color(1, 0, 1), 4.5f, 5, 6);
-			break;
-		default:
-			break;
-		}
-	}
-
-	if (!a.upgradeSuccess && a.errorWindow)
-	{
-		RenderTextOnScreen(meshList[GEO_TEXT], "Not Enough Resources...", Color(1, 0, 1), 5, 4.5f, 5.7f);
-	}
-
-	if (a.upgradeSuccess && a.errorWindow)
-	{
-		RenderTextOnScreen(meshList[GEO_TEXT], "Upgrade Success!", Color(1, 0, 1), 5, 5.5f, 5.7f);
 	}
 
 	// ROCKS
@@ -944,7 +908,8 @@ void Assignment3::Render()
 		RenderMesh(meshList[GEO_SPACESHIP], true);
 		modelStack.PopMatrix();
 	}
-
+	
+	RenderAstronautInteractions();
 	//DOME
 	if (gameState == GS_SCENE2)
 	{

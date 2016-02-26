@@ -137,7 +137,7 @@ public:
 	vector<GameObject*> Collisions;
 	vector<Rock> Rocks;
 	vector<Turret> Turrets;
-	vector<Harvestors> Harvestor;
+	
 	Weapon pistol = Weapon(20, 30, 100, 10, false);
 	Flag f = Flag(Vector3(0, 0.75f, 0), Vector3(1, 1, 1));
 	Astronaut a = Astronaut(Vector3(5, -1, 0));
@@ -172,6 +172,7 @@ private:
 	void RenderAliens();
 	void RenderAstronaut();
 	void RenderDome(float scale,float x,float y,float z);
+	void RenderAstronautInteractions();
 	//Scenes
 	void Scene1Updates(double dt);
 	void Scene1Render();
@@ -220,6 +221,7 @@ private:
 		OPT_UP_PISTOL,
 		OPT_UP_RIFLE,
 		OPT_UP_TURRET,
+		OPT_BUY_HARVESTOR,
 		OPT_BACK_TO_MAIN,
 		NUM_OPTIONS
 	};
