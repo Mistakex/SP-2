@@ -2,6 +2,8 @@
 
 Grenade::Grenade(Vector3 pos, Vector3 target, const int& dmg,const int& range) :damage(dmg), Range(range)
 {
+	Explode = false;
+	size = 0;
 	GrenadeRotation = 0;
 	Position = pos;
 	Target = target;
@@ -61,6 +63,10 @@ Grenade&Grenade::operator=(const Grenade& nade)
 Vector3 Grenade::GetPosition()
 {
 	return Position;
+}
+void Grenade::GetExplosion()
+{
+	size += 0.11*(Range / 2);
 }
 Grenade::~Grenade()
 {

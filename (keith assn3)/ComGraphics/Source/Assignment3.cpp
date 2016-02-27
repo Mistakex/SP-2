@@ -301,7 +301,7 @@ void Assignment3::Init()
 	Mtx44 projection;
 	projection.SetToPerspective(70.0f, 4.0f / 3.0f, 0.1f, 5000.0f);
 	projectionStack.LoadMatrix(projection);
-
+	
 	// Sets the words for Astronaut Options
 	AstronautOpt[OPT_UP_PISTOL] = "Upgrade Pistol?";
 	AstronautOpt[OPT_UP_RIFLE] = "Upgrade S. Rifle?";
@@ -453,6 +453,12 @@ void Assignment3::Update(double dt)
 			for (int i = 0; i < GrenadesFlying.size(); i++)
 			{
 				GrenadesFlying[i].ThrowGrenade(dt);
+				std::cout <<i<<"  :"<< GrenadesFlying[i].throwGrenade.GetTimeNow() << std::endl;
+			}
+			if (GrenadesFlying[0].throwGrenade.GetTimeNow() <= 0.2)
+			{
+				GrenadesFlying[0].Explode = true;
+				GrenadesFlying[0].GetExplosion();
 			}
 			if (GrenadesFlying[0].throwGrenade.GetTimeNow() <= 0)
 			{
@@ -535,7 +541,7 @@ void Assignment3::Update(double dt)
 				}
 				else
 				{
-					GrenadesFlying.push_back(Grenade(Vector3(camera.position.x, camera.position.y, camera.position.z), Vector3(camera.target.x, camera.target.y, camera.target.z), 100, 30));
+					GrenadesFlying.push_back(Grenade(Vector3(camera.position.x, camera.position.y, camera.position.z), Vector3(camera.target.x, camera.target.y, camera.target.z), 100, 20));
 					GrenadeThrowDelay.resetTime();
 					player.noOfGrenadesHeld--;
 				}
@@ -920,6 +926,17 @@ void Assignment3::Render()
 		modelStack.Scale(0.1, 0.1 ,0.1);
 		RenderMesh(meshList[GEO_GRENADE], true);
 		modelStack.PopMatrix();
+	}
+	if (GrenadesFlying.empty() == false)
+	{
+		if (GrenadesFlying[0].Explode == true)
+		{
+			modelStack.PushMatrix();
+			modelStack.Translate(GrenadesFlying[0].GetPosition().x, GrenadesFlying[0].GetPosition().y, GrenadesFlying[0].GetPosition().z);
+			modelStack.Scale(GrenadesFlying[0].size, GrenadesFlying[0].size, GrenadesFlying[0].size);
+			RenderMesh(meshList[GEO_LIGHTBALL], true);
+			modelStack.PopMatrix();
+		}
 	}
 	//TURRETS
 	RenderTurret();

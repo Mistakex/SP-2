@@ -23,6 +23,7 @@
 #include <string>
 using std::string;
 
+
 class Assignment3 : public Scene
 {
 	enum GEOMETRY_TYPE

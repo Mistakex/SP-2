@@ -11,12 +11,15 @@ public:
 	~Grenade();
 	void ThrowGrenade(double dt);
 	void DealDamage(Enemy& enemy);
+	void GetExplosion();
 	Vector3 GetPosition();
 	Countdown throwGrenade = Countdown(3.0f);
 	Grenade& operator=(const Grenade& nade);
 	void LookAt();
 	float LookAtDirection;
 	float GrenadeRotation;
+	float size;
+	bool Explode;
 private:
 	const int Range;
 	const int damage;
