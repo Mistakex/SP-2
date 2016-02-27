@@ -26,7 +26,8 @@ public:
 	bool sprint;			//running or not
 	bool isMining;
 	int WeaponState;		//which weapon u using
-	
+	int noOfGrenadesHeld = 0;
+
 private:
 	int HP;
 	int Resources;

@@ -63,6 +63,11 @@ void Assignment3::Scene1Updates(double dt)
 					debounceUI.resetTime();
 					a.errorWindow = true;
 					break;
+				case(OPT_BUY_GRENADES) :
+					a.PurchaseGrenades(player);
+					debounceUI.resetTime();
+					a.errorWindow = true;
+					break;
 				}
 			}
 			else
@@ -174,6 +179,10 @@ void Assignment3::RenderAstronautInteractions()
 			break;
 		case(OPT_BUY_HARVESTOR) :
 			RenderTextOnScreen(meshList[GEO_TEXT], "Harvestors Owned: " + std::to_string(a.Harvestor.size()), Color(1, 0, 1), 4.5f, 5, 6);
+			break;
+		case(OPT_BUY_GRENADES) :
+			RenderTextOnScreen(meshList[GEO_TEXT], "Grenades Owned: " + std::to_string(player.noOfGrenadesHeld), Color(1, 0, 1), 4.5f, 5, 6);
+			break;
 		default:
 			break;
 		}
@@ -191,7 +200,7 @@ void Assignment3::RenderAstronautInteractions()
 
 	if (!a.purchaseSuccess && a.errorWindow && a.enablePurchaseWindow)
 	{
-		RenderTextOnScreen(meshList[GEO_TEXT], "Reached limit of 3...", Color(1, 0, 1), 5, 5.3f, 5.7f);
+		RenderTextOnScreen(meshList[GEO_TEXT], "Can't hold anymore of this...", Color(1, 0, 1), 4, 5.6f, 7.2f);
 	}
 
 	if (a.purchaseSuccess && a.errorWindow && a.enablePurchaseWindow)

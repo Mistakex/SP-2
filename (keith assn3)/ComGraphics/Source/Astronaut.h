@@ -22,9 +22,11 @@ public:
 
 	// Purchase Functions and variables
 	void PurchaseHarvestor(Player& p);
+	void PurchaseGrenades(Player& p);
 
 	bool purchaseSuccess = false;
 	vector<Harvestors> Harvestor;
+
 
 	int GetWeaponPrice(int Price);							//Get the Price from Weapon class
 	void BulletRefill(int BulletsInMagzine, int TotalBullets);//Get the 2 Values from Weapon class

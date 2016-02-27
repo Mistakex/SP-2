@@ -305,7 +305,8 @@ void Assignment3::Init()
 	AstronautOpt[OPT_UP_PISTOL] = "Upgrade Pistol?";
 	AstronautOpt[OPT_UP_RIFLE] = "Upgrade S. Rifle?";
 	AstronautOpt[OPT_UP_TURRET] = "Upgrade Turret?";
-	AstronautOpt[OPT_BUY_HARVESTOR] = "Purchase Harvestor?";
+	AstronautOpt[OPT_BUY_HARVESTOR] = "Purchase a Harvestor?";
+	AstronautOpt[OPT_BUY_GRENADES] = "Purchase a Grenade?";
 	AstronautOpt[OPT_BACK_TO_MAIN] = "Back to Game?";
 }
 
@@ -326,6 +327,7 @@ void Assignment3::Update(double dt)
 		std::cout << camera.position.x << std::endl;
 		std::cout << camera.position.z << std::endl;
 		dt = dt * 20;
+		player.ObtainResources(30);
 	}
 	if (gameState == GS_MAIN || gameState == GS_ASTRONAUT_INTERACTION)
 	{
@@ -366,27 +368,43 @@ void Assignment3::Update(double dt)
 		pistol.update(dt);
 		SniperRifle.update(dt);
 		debounce.TimeCountDown(dt);
+
+		// Pistol
 		if (Application::IsKeyPressed('1') && debounce.GetTimeNow() < 0)
 		{
 			debounce.resetTime();
 			player.WeaponState = 2;
 		}
+
+		// Pickaxe
 		if (Application::IsKeyPressed('2') && debounce.GetTimeNow() < 0)
 		{
 			debounce.resetTime();
 			player.WeaponState = 1;
 		}
+
+		// Sniper Rifle
 		if (Application::IsKeyPressed('3') && debounce.GetTimeNow() < 0)
 		{
 			debounce.resetTime();
 			player.WeaponState = 3;
 			isSniper = true;
 		}
+
+		// Turrets
 		if (Application::IsKeyPressed('4') && debounce.GetTimeNow() < 0)
 		{
 			debounce.resetTime();
 			player.WeaponState = 4;
 		}
+
+		// Grenades
+		if (Application::IsKeyPressed('5') && debounce.GetTimeNow() < 0)
+		{
+			debounce.resetTime();
+			player.WeaponState = 5;
+		}
+
 		// updating 2nd light
 		light[1].position.Set(camera.position.x + camera.target.x / 15,
 			camera.position.y + camera.target.y / 15,
@@ -507,12 +525,20 @@ void Assignment3::Update(double dt)
 			{
 				TurretSpawn();
 			}
-			else if (player.WeaponState == 5 && GrenadeThrowDelay.GetTimeNow() <=0)
+			else if (player.WeaponState == 5 && GrenadeThrowDelay.GetTimeNow() <= 0)
 			{
-				GrenadesFlying.push_back(Grenade(Vector3(camera.position.x, camera.position.y, camera.position.z), Vector3(camera.target.x, camera.target.y, camera.target.z), 100, 30));
-				GrenadeThrowDelay.resetTime();
+				// If player has no Grenades at all.
+				if (player.noOfGrenadesHeld <= 0)
+				{
+					return;
+				}
+				else
+				{
+					GrenadesFlying.push_back(Grenade(Vector3(camera.position.x, camera.position.y, camera.position.z), Vector3(camera.target.x, camera.target.y, camera.target.z), 100, 30));
+					GrenadeThrowDelay.resetTime();
+					player.noOfGrenadesHeld--;
+				}
 			}
-			
 		}
 		rightClick.TimeCountDown(dt);
 		if (Application::IsKeyPressed(VK_RBUTTON) && !ship.updateCutscene && rightClick.GetTimeNow() < 0)
@@ -1012,6 +1038,9 @@ void Assignment3::Render()
 		RenderTextOnScreen(meshList[GEO_CROSSHAIR], "+", Color(0, 1, 0), 3.f, 13.1f, 9.5f);
 		modelStack.PopMatrix();
 	}
+
+	// Astronaut State interactions (shop etc)
+	RenderAstronautInteractions();
 
 	//UI Screen & Player Health
 	if (isZoom == false)
