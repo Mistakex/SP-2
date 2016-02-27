@@ -55,6 +55,7 @@ void Assignment3::Init()
 	gameState = GS_MAIN;
 	CameraMouseUpdate = true;
 	player.WeaponState = 5;
+	player.noOfGrenadesHeld = 5;
 	pistol.init(&camera);
 	ship.init(&camera);
 	SniperRifle.init(&camera);
