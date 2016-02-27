@@ -13,7 +13,7 @@ public:
 	void DealDamage(Enemy& enemy);
 	void GetExplosion();
 	Vector3 GetPosition();
-	Countdown throwGrenade = Countdown(3.0f);
+	Countdown throwGrenade;
 	Grenade& operator=(const Grenade& nade);
 	void LookAt();
 	float LookAtDirection;

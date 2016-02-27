@@ -1,6 +1,6 @@
 #include "Grenade.h"
 
-Grenade::Grenade(Vector3 pos, Vector3 target, const int& dmg,const int& range) :damage(dmg), Range(range)
+Grenade::Grenade(Vector3 pos, Vector3 target, const int& dmg, const int& range) :damage(dmg), Range(range), throwGrenade(3.0f)
 {
 	Explode = false;
 	size = 0;
