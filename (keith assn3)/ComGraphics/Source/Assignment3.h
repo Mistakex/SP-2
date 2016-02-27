@@ -20,6 +20,7 @@
 #include "Ship.h"
 #include "Harvestors.h"
 #include "Grenade.h"
+#include "MedKit.h"
 #include <string>
 using std::string;
 
@@ -148,7 +149,7 @@ public:
 	Astronaut a = Astronaut(Vector3(5, -1, 0));
 	Ship ship = Ship(Vector3(0, 0, -50), Vector3(5, 5, 5));
 	Weapon SniperRifle = Weapon(80, 10, 100, 100, true);	
-
+	Medkit medKit = Medkit(100, 10, 5, 0.5, 10);
 private:
 	void RenderText(Mesh* mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
@@ -193,7 +194,7 @@ private:
 	Countdown countdownMining = Countdown(0.5f);
 	Countdown countdownPistol = Countdown(0.5f);
 	Countdown countdownAlienSpawn = Countdown(10.f);
-	Countdown debounce = Countdown(0.05f);
+	Countdown debounce = Countdown(0.2f);
 	Countdown rightClick = Countdown(0.2f);
 	Countdown countdownTurretSpawn = Countdown(1.0f);
 	Countdown countdownCameraLock = Countdown(0.5f);

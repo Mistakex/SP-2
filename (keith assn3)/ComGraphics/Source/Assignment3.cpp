@@ -10,15 +10,6 @@
 #include "LoadTGA.h"
 #include "Utility.h"
 
-#include "Enemy.h"
-#include "CountDown.h"
-#include "Rock.h"
-#include "Flag.h"
-#include "Astronaut.h"
-#include "Weapon.h"
-#include "Bullet.h"
-#include "Enemy.h"
-#include "Ship.h"
 
 #include <stdlib.h>
 #include <sstream>
@@ -403,7 +394,15 @@ void Assignment3::Update(double dt)
 		if (Application::IsKeyPressed('5') && debounce.GetTimeNow() < 0)
 		{
 			debounce.resetTime();
-			player.WeaponState = 5;
+			if (player.WeaponState == 5)
+			{
+				player.WeaponState = 6;
+			}
+			else
+			{
+				player.WeaponState = 5;
+			}
+			std::cout << player.WeaponState << std::endl;
 		}
 
 		// updating 2nd light
@@ -432,6 +431,7 @@ void Assignment3::Update(double dt)
 		TurretUpdate(dt);
 		//Rock mining
 		player.WhileMining(dt);
+		//Harvestor
 		if (a.Harvestor.empty() == false && Rocks.empty() == false)
 		{
 			for (int i = 0; i < a.Harvestor.size(); i++)
@@ -448,6 +448,7 @@ void Assignment3::Update(double dt)
 				}
 			}
 		}
+		//Grenades
 		if (GrenadesFlying.empty() == false)
 		{
 			for (int i = 0; i < GrenadesFlying.size(); i++)
@@ -473,6 +474,10 @@ void Assignment3::Update(double dt)
 				GrenadesFlying.erase(GrenadesFlying.begin());
 			}
 		}
+		//Medkits
+		medKit.Activated();
+		medKit.Heal(player);
+		medKit.TimerUpdate(dt);
 		//Timers
 		countdownMining.TimeCountDown(dt);
 		countdownTurretSpawn.TimeCountDown(dt);
@@ -545,6 +550,10 @@ void Assignment3::Update(double dt)
 					GrenadeThrowDelay.resetTime();
 					player.noOfGrenadesHeld--;
 				}
+			}
+			else if (player.WeaponState == 6 && medKit.activated == false)
+			{
+				medKit.activated = true;
 			}
 		}
 		rightClick.TimeCountDown(dt);
