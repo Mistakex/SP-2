@@ -29,19 +29,25 @@ public:
 	void EnemyTakeDmg(int Dmg);
 	void EnemyShootAt(const double &dt,const float &startShooting,const float &endShooting,const float &bulletSpeed,Player *p);			//shooting of the enemy
 	void BossShootAt(const double &dt, const float &startShooting, const float &endShooting, const float &bulletSpeed, Player *p);			//shooting of the enemy
+	void BossSpawnMinions(const double &dt);
 	float findDirection();
 	void update(Camera3 camera,const double &dt,Player *p);
 	bool checkBulletCollision(Player *p);
+	bool checkBulletsCollision(Player *p);
 
 	bool InRangeOfPlayer();		// dist away from player
 	bool isDead();					//dead or not
 	Vector3 target;
 	Bullet projectile;
+	Bullet projectiles[10];
+	int currentBullet;
 	float armRotate;
 	float EnemySize;
 	short spawnerCounter;
 	bool bossIsSpawned;
 	bool redAlien;
+	bool startSpawningMinions;
+	float spawnDelay;
 private:
 	int range;
 	int Hp;

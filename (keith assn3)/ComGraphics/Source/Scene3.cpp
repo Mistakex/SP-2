@@ -12,19 +12,23 @@ void Assignment3::Scene3Render()
 	RenderAlien(Boss.armRotate,Boss.redAlien);
 	modelStack.PopMatrix();
 
-	if (Boss.GetShooting() == true)
+
+	for (int i = 0; i < 10; ++i)
 	{
 		modelStack.PushMatrix();
-		modelStack.Translate(Boss.projectile.getPosition().x, Boss.projectile.getPosition().y, Boss.projectile.getPosition().z);
+		modelStack.Translate(Boss.projectiles[i].getPosition().x, Boss.projectiles[i].getPosition().y, Boss.projectiles[i].getPosition().z);
 		modelStack.Scale(0.5f, 0.5f, 0.5f);
 		RenderMesh(meshList[GEO_BULLET], true);
 		modelStack.PopMatrix();
 	}
 
-	if (Boss.spawnerCounter == 5)
+	if (Boss.spawnerCounter >= 50)
 	{
-		Boss.spawnerCounter = 0;
-		AlienSpawnByBoss(10, 0);
+		if (Boss.spawnDelay > 0.3f && Aliens.size() < 10)
+		{
+			AlienSpawnByBoss(10, 0);
+			Boss.spawnDelay = 0.f;
+		}
 	}
 
 }

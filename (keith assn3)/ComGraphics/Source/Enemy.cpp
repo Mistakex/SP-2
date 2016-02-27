@@ -21,6 +21,9 @@ Enemy::Enemy(Vector3 pos,Vector3 tar, Vector3 range, int hp, int attack, int mov
 	bossIsSpawned = false;
 	redAlien = false;
 	redTimer = 0;
+	currentBullet = 0;
+	spawnDelay = 0;
+	startSpawningMinions = false;
 }
 
 Enemy::~Enemy()
@@ -104,7 +107,22 @@ void Enemy::EnemyMove(double dt,Player *p)
 	}
 	else
 	{
-		BossShootAt(dt,1.f,3.f, 5.f, p);
+		for (int i = 0; i < sizeof(projectiles) / sizeof(projectiles[0]); ++i)
+		{
+			projectiles[i].moveBullet(dt, 60.f);
+		}
+		checkBulletsCollision(p);
+
+		if (spawnerCounter < 50)
+		{
+			BossShootAt(dt, 0.1f, 0.2f, 5.f, p);
+		}
+		else
+		{
+			if (armRotate > 0)
+				armRotate -= 90 * dt;
+			BossSpawnMinions(dt);
+		}
 	}
 }
 
@@ -114,6 +132,26 @@ void Enemy::EnemyTakeDmg(int Dmg)
 		Hp -= Dmg;
 	else
 		Hp = 0;
+}
+
+void Enemy::BossSpawnMinions(const double &dt)
+{
+	spawnDelay += dt;
+	float speed = 5;
+	if (position.y < 10 && startSpawningMinions)
+	{
+		position.y += speed * dt;
+	}
+	else
+	{
+		startSpawningMinions = false;
+		position.y -= speed * dt;
+		if (position.y <= 0)
+		{
+			position.y = 0;
+			spawnerCounter = 0;
+		}
+	}
 }
 
 void Enemy::EnemyShootAt(const double &dt, const float &startShooting, const float &endShooting, const float &bulletSpeed, Player *p)
@@ -131,7 +169,7 @@ void Enemy::EnemyShootAt(const double &dt, const float &startShooting, const flo
 		{
 			Shooting = true;
 			projectile.updatePosition(Vector3(position));
-			Vector3 bulletTarget = target + Vector3((rand() % 2) - 0.5f, (rand() % 2) / 2.f - 0.5f, (rand() % 2) / 2.f) - 0.5f;
+			Vector3 bulletTarget = target + Vector3((rand() % 2) - 0.5f, (rand() % 2) / 2.f - 0.5f, (rand() % 2) / 2.f - 0.5f);
 			projectile.setView((bulletTarget - position).Normalized());
 		}
 	}
@@ -153,20 +191,25 @@ void Enemy::BossShootAt(const double &dt, const float &startShooting, const floa
 {
 	if (fireDelay < startShooting)
 	{
-		if (Shooting == true)
-		{
-			if (armRotate > 0)
-				armRotate -= 90 * dt;
-			projectile.moveBullet(dt, 60.f);
-			checkBulletCollision(p);
-		}
-		else
+		if (Shooting == false)
 		{
 			spawnerCounter++;
+			if (spawnerCounter == 50)
+			{
+				startSpawningMinions = true;
+			}
 			Shooting = true;
-			projectile.updatePosition(Vector3(position));
-			Vector3 bulletTarget = target;
-			projectile.setView((bulletTarget - position).Normalized());
+			projectiles[currentBullet].updatePosition(position);
+			Vector3 bulletTarget = target + Vector3((rand() % 3) - 1.f, (rand() % 3) - 1.f, (rand() % 3) - 1.f);
+			projectiles[currentBullet].setView((bulletTarget - position).Normalized());
+			if (currentBullet + 1 < sizeof(projectiles) / sizeof(projectiles[0]))
+			{
+				currentBullet++;
+			}
+			else
+			{
+				currentBullet = 0;
+			}
 		}
 	}
 	else if (fireDelay >= endShooting)
@@ -256,4 +299,22 @@ bool Enemy::checkBulletCollision(Player *p)
 		return true;
 	}
 	return false;
+}
+
+bool Enemy::checkBulletsCollision(Player *p)
+{
+	float x = 0.5f, y = 1.f, z = 0.5f;
+	bool hit = false;
+	for (int i = 0; i < sizeof(projectiles) / sizeof(projectiles[0]); ++i)
+	{
+		if ((projectiles[i].getPosition().x > target.x - x && projectiles[i].getPosition().x < target.x + x
+			&& projectiles[i].getPosition().y > target.y - y && projectiles[i].getPosition().x < target.y + y
+			&& projectiles[i].getPosition().z > target.z - z && projectiles[i].getPosition().z < target.z + z)
+			|| (projectiles[i].getPosition() - target).Length() < 0.70f)
+		{
+			(*p).TakeDmg(AttackDamage);
+			hit = true;
+		}
+	}
+	return hit;
 }

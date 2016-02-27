@@ -3,6 +3,7 @@
 Bullet::Bullet()
 {
 	position = Vector3(0, -10, 0);
+	view = Vector3(0, 0, 0);
 }
 
 Bullet::~Bullet()

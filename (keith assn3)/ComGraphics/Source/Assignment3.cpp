@@ -906,6 +906,8 @@ void Assignment3::Render()
 	{
 		Scene1Render();	//flag ,pole , astronaut, crater render
 	}
+
+	RenderAstronautInteractions();
 	//Harvestors
 	for (int i = 0; i < a.Harvestor.size(); i++)
 	{
