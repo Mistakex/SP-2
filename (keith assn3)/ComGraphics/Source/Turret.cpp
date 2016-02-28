@@ -36,11 +36,13 @@ void Turret::ShootAtEnemy(double dt)
 			bullet.setView((Target - position).Normalized());
 		}
 	}
-	else if (hit == true)
+	else if (hit == true || fireDelay > 5)
 	{
 		hit = false;
 		shooting = false;
 		fireDelay = 0;
+		bullet.setView(Vector3(0, 0, 0));
+		bullet.updatePosition(position - Vector3(0, 0.5, 0));
 	}
 }
 void Turret::TargetEnemy(Vector3 alien)
