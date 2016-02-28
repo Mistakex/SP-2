@@ -1,16 +1,17 @@
 #ifndef TURRET_H
 #define TURRET_H
 
-#include "Enemy.h"
 #include "Vector3.h"
+#include "GameObject.h"
 
 class Turret
 {
 public:
+	Turret();
 	Turret(const int&hp, const int&dmg, const Vector3 &pos);
 	~Turret();
 
-	void LookAtEnemy(Enemy enemy);//Funtion to get turretRotation
+	void LookAtEnemy(GameObject enemy);//Funtion to get turretRotation
 	void ReduceHp(int dmg);
 	void ShootAtEnemy(double dt);
 	int GetDamage();

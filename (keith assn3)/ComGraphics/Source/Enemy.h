@@ -6,6 +6,7 @@
 #include "Camera3.h"
 #include "Player.h"
 #include "Bullet.h"
+#include "Turret.h"
 
 using std::vector;
 
@@ -25,15 +26,15 @@ public:
 	Vector3 EnemyKiting();			//Shoot ,stop ,move again
 
 	void EnemyKite(double dt);
-	void EnemyMove(double dt,Player *p);				//move to find
+	void EnemyMove(double dt, Player *p, vector<Turret> Turrets);				//move to find
 	void EnemyTakeDmg(int Dmg);
-	void EnemyShootAt(const double &dt,const float &startShooting,const float &endShooting,const float &bulletSpeed,Player *p);			//shooting of the enemy
+	void EnemyShootAt(const double &dt, const float &startShooting, const float &endShooting, const float &bulletSpeed, Player *p, vector<Turret> Turrets);			//shooting of the enemy
 	void BossShootAt(const double &dt, const float &startShooting, const float &endShooting, const float &bulletSpeed, Player *p);			//shooting of the enemy
 	void BossSpawnMinions(const double &dt);
 	float findDirection();
-	void update(Camera3 camera,const double &dt,Player *p);
-	bool checkBulletCollision(Player *p);
-	bool checkBulletsCollision(Player *p);
+	void update(Camera3 camera,const double &dt,Player *p,vector<Turret> Turrets);
+	bool checkBulletCollision(Player *p, vector<Turret> Turrets);
+	bool checkBulletsCollision(Player *p, vector<Turret> Turrets);
 
 	bool InRangeOfPlayer();		// dist away from player
 	bool isDead();					//dead or not
@@ -62,6 +63,7 @@ private:
 	vector<Vector3> renderedBulletsDirection;
 	vector<Vector3> renderedBulletsPosition;
 
+	int turretNumber;
 	bool isBoss;
 };
 

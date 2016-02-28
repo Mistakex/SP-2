@@ -425,7 +425,7 @@ void Assignment3::Update(double dt)
 		{
 			KillMessage.TimeCountDown(dt);
 			AlienUpdate(dt);
-			Boss.update(camera, dt, &player);
+			Boss.update(camera, dt, &player,Turrets);
 		}
 		//Turrets Aim and Shoot
 		TurretUpdate(dt);

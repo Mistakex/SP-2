@@ -62,7 +62,7 @@ void Assignment3::AlienUpdate(double dt)
 {
 	for (vector<Enemy>::iterator it = Aliens.begin(); it != Aliens.end();)
 	{
-		(*it).update(camera, dt, &player);
+		(*it).update(camera, dt, &player,Turrets);
 		if ((*it).isDead())
 		{
 			Alienresources = rand() % 15 + 5;

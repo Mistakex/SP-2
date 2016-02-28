@@ -1,5 +1,15 @@
 #include "Turret.h"
 
+Turret::Turret() :damage(0), position(0)
+{
+	Hp = 0;
+	fireDelay = 0;
+	shooting = 0;
+	BulletSpeed = 5.0f;
+	turretRotation = 0;
+	hit = 0;
+}
+
 Turret::Turret(const int&hp, const int&dmg, const Vector3 &pos) :damage(dmg), position(pos)
 {
 	Hp = hp;
@@ -14,7 +24,7 @@ Turret::~Turret()
 {
 }
 
-void Turret::LookAtEnemy(Enemy enemy)
+void Turret::LookAtEnemy(GameObject enemy)
 {
 	Target = enemy.position;
 	Vector3 view = Target - position;

@@ -61,7 +61,7 @@ bool Enemy::GetShooting()
 	return Shooting;
 }
 
-void Enemy::EnemyMove(double dt,Player *p)
+void Enemy::EnemyMove(double dt, Player *p, vector<Turret> Turrets)
 {
 	fireDelay += dt;
 
@@ -79,17 +79,17 @@ void Enemy::EnemyMove(double dt,Player *p)
 				if (armRotate > 0)
 					armRotate -= 90 * dt;
 				projectile.moveBullet(dt, 70.f);
-				checkBulletCollision(p);
+				checkBulletCollision(p,Turrets);
 			}
 		}
 		else if (KiteTimer < 7)
 		{
 			EnemyKite(dt);
-			EnemyShootAt(dt,2.f,4.f, 10.f,p);
+			EnemyShootAt(dt,2.f,4.f, 10.f,p,Turrets);
 		}
 		else if (KiteTimer >= 7)
 		{
-			EnemyShootAt(dt,2.f,4.f, 10.f,p);
+			EnemyShootAt(dt,2.f,4.f, 10.f,p,Turrets);
 			KiteTimer = 0;
 			if (rand() % 2 == 0)
 			{
@@ -102,7 +102,7 @@ void Enemy::EnemyMove(double dt,Player *p)
 		}
 		else
 		{
-			EnemyShootAt(dt, 2.f, 4.f, 10.f, p);
+			EnemyShootAt(dt, 2.f, 4.f, 10.f, p,Turrets);
 		}
 	}
 	else
@@ -111,7 +111,7 @@ void Enemy::EnemyMove(double dt,Player *p)
 		{
 			projectiles[i].moveBullet(dt, 60.f);
 		}
-		checkBulletsCollision(p);
+		checkBulletsCollision(p,Turrets);
 
 		if (spawnerCounter < 50)
 		{
@@ -154,7 +154,7 @@ void Enemy::BossSpawnMinions(const double &dt)
 	}
 }
 
-void Enemy::EnemyShootAt(const double &dt, const float &startShooting, const float &endShooting, const float &bulletSpeed, Player *p)
+void Enemy::EnemyShootAt(const double &dt, const float &startShooting, const float &endShooting, const float &bulletSpeed, Player *p, vector<Turret> Turrets)
 {
 	if (fireDelay < startShooting)
 	{
@@ -163,7 +163,7 @@ void Enemy::EnemyShootAt(const double &dt, const float &startShooting, const flo
 			if (armRotate > 0)
 				armRotate -= 90 * dt;
 			projectile.moveBullet(dt, 60.f);
-			checkBulletCollision(p);
+			checkBulletCollision(p,Turrets);
 		}
 		else
 		{
@@ -271,7 +271,7 @@ bool Enemy::isDead()
 		return false;
 }
 
-void Enemy::update(Camera3 camera,const double &dt, Player *p)
+void Enemy::update(Camera3 camera,const double &dt, Player *p,vector<Turret> Turrets)
 {
 	if (redAlien)
 	{
@@ -282,11 +282,28 @@ void Enemy::update(Camera3 camera,const double &dt, Player *p)
 			redTimer = 0.f;
 		}
 	}
-	target = camera.position;
-	EnemyMove(dt,p);
+	if (Turrets.empty())
+	{
+		target = camera.position;
+	}
+	else
+	{
+		float minDist = 1000;
+		int turretNumber2 = 0;
+		for (vector<Turret>::iterator it = Turrets.begin(); it != Turrets.end(); ++it,++turretNumber2)
+		{
+			if (sqrt(pow((it->GetPosition() - position).x, 2) + pow((it->GetPosition() - position).y, 2) + pow((it->GetPosition() - position).z, 2)) < minDist)
+			{
+				minDist = sqrt(pow((it->GetPosition() - position).x, 2) + pow((it->GetPosition() - position).y, 2) + pow((it->GetPosition() - position).z, 2));
+				target = it->GetPosition();
+				turretNumber = turretNumber2;
+			}
+		}
+	}
+	EnemyMove(dt,p,Turrets);
 }
 
-bool Enemy::checkBulletCollision(Player *p)
+bool Enemy::checkBulletCollision(Player *p, vector<Turret> Turrets)
 {
 	float x = 0.5f, y = 1.f, z = 0.5f;
 	if ((projectile.getPosition().x > target.x - x && projectile.getPosition().x < target.x + x
@@ -294,14 +311,16 @@ bool Enemy::checkBulletCollision(Player *p)
 		&& projectile.getPosition().z > target.z - z && projectile.getPosition().z < target.z + z)
 		|| (projectile.getPosition() - target).Length() < 0.70f)
 	{
-		(*p).TakeDmg(AttackDamage);
-		std::cout << (*p).GetHp() << std::endl;
+		if (Turrets.empty())
+			(*p).TakeDmg(AttackDamage);
+		else
+			Turrets[turretNumber].ReduceHp(AttackDamage);
 		return true;
 	}
 	return false;
 }
 
-bool Enemy::checkBulletsCollision(Player *p)
+bool Enemy::checkBulletsCollision(Player *p, vector<Turret> Turrets)
 {
 	float x = 0.5f, y = 1.f, z = 0.5f;
 	bool hit = false;
@@ -312,7 +331,10 @@ bool Enemy::checkBulletsCollision(Player *p)
 			&& projectiles[i].getPosition().z > target.z - z && projectiles[i].getPosition().z < target.z + z)
 			|| (projectiles[i].getPosition() - target).Length() < 0.70f)
 		{
-			(*p).TakeDmg(AttackDamage);
+			if (Turrets.empty())
+				(*p).TakeDmg(AttackDamage);
+			else
+				Turrets[turretNumber].ReduceHp(AttackDamage);
 			hit = true;
 		}
 	}
