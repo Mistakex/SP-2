@@ -24,8 +24,9 @@ public:
 	Vector3 Target;
 	bool shooting;
 	bool hit;
-private:
 	int Hp;
+private:
+	
 	const int damage;
 	const Vector3 position;
 	Vector3 Alien;
