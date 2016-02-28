@@ -1,21 +1,12 @@
 #include "Turret.h"
 
-Turret::Turret() :damage(0), position(0)
-{
-	Hp = 0;
-	fireDelay = 0;
-	shooting = 0;
-	BulletSpeed = 5.0f;
-	turretRotation = 0;
-	hit = 0;
-}
 
 Turret::Turret(const int&hp, const int&dmg, const Vector3 &pos) :damage(dmg), position(pos)
 {
 	Hp = hp;
 	fireDelay = 0;
 	shooting = 0;
-	BulletSpeed = 5.0f;
+	BulletSpeed = 75.0f;
 	turretRotation = 0;
 	hit = 0;
 }
@@ -35,17 +26,14 @@ void Turret::LookAtEnemy(GameObject enemy)
 void Turret::ShootAtEnemy(double dt)
 {
 	fireDelay += dt;
+	bullet.moveBullet(dt);
 	if (fireDelay > 1 && hit == false)
 	{
-		if (shooting == true)
-		{
-			bulletPos += (Target - position)*BulletSpeed*dt;
-		}
-		else
+		if (shooting == false)
 		{
 			shooting = true;
-			bulletPos = position;
-			Target = Alien;
+			bullet.updatePosition(position - Vector3(0, 0.5, 0));
+			bullet.setView((Target - position).Normalized());
 		}
 	}
 	else if (hit == true)
@@ -57,11 +45,11 @@ void Turret::ShootAtEnemy(double dt)
 }
 void Turret::TargetEnemy(Vector3 alien)
 {
+	Target = alien;
 	if (shooting == true)
 	{
 		if (DoneTargeting == false)
 		{
-			Alien = alien;
 			DoneTargeting = true;
 		}
 	}

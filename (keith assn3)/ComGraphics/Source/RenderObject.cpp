@@ -142,7 +142,7 @@ void Assignment3::RenderTurret()
 		if (Turrets[i].GetShooting() == true)
 		{
 			modelStack.PushMatrix();
-			modelStack.Translate(Turrets[i].bulletPos.x, Turrets[i].bulletPos.y, Turrets[i].bulletPos.z);
+			modelStack.Translate(Turrets[i].bullet.getPosition().x, Turrets[i].bullet.getPosition().y, Turrets[i].bullet.getPosition().z);
 			modelStack.Scale(0.1f, 0.1f, 0.1f);
 			RenderMesh(meshList[GEO_BULLET], true);
 			modelStack.PopMatrix();

@@ -3,6 +3,7 @@
 
 #include "Vector3.h"
 #include "GameObject.h"
+#include "Bullet.h"
 
 class Turret
 {
@@ -20,18 +21,18 @@ public:
 
 	Vector3 GetPosition();
 	float turretRotation;		//rotates to the enemy position
-	Vector3 bulletPos;
+	Bullet bullet;
 	Vector3 Target;
 	bool shooting;
 	bool hit;
 	int Hp;
+	float BulletSpeed;
 private:
 	
 	const int damage;
 	const Vector3 position;
 	Vector3 Alien;
 	float fireDelay;
-	float BulletSpeed;
 	bool DoneTargeting;
 };
 
