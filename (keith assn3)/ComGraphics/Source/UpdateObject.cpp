@@ -52,7 +52,7 @@ void Assignment3::TurretUpdate(double dt)
 		}
 		else
 		{
-			Turrets[i].bullet.updatePosition(Turrets[i].GetPosition() - Vector3(0, -1, 0));
+			Turrets[i].bullet.updatePosition(Turrets[i].GetPosition() - Vector3(0, 0.5, 0));
 		}
 	}
 }
