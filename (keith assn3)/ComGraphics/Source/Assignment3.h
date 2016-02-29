@@ -75,6 +75,8 @@ class Assignment3 : public Scene
 		GEO_DOME,
 		//Grenade
 		GEO_GRENADE,
+		//MEDKIT
+		GEO_MEDKIT,
 		NUM_GEOMETRY,
 	};
 	enum UNIFORM_TYPE

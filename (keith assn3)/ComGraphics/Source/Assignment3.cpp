@@ -289,6 +289,10 @@ void Assignment3::Init()
 
 	meshList[GEO_GRENADE] = MeshBuilder::GenerateOBJ("Grenade", "OBJ//Grenade.obj");
 	meshList[GEO_GRENADE]->textureID = LoadTGA("Image//Grenade.tga");
+
+	meshList[GEO_MEDKIT] = MeshBuilder::GenerateOBJ("Medkit", "OBJ//Medkit.obj");
+	meshList[GEO_MEDKIT]->textureID = LoadTGA("Image//Medkit.tga");
+
 	Mtx44 projection;
 	projection.SetToPerspective(70.0f, 4.0f / 3.0f, 0.1f, 5000.0f);
 	projectionStack.LoadMatrix(projection);
@@ -547,7 +551,7 @@ void Assignment3::Update(double dt)
 				}
 				else
 				{
-					GrenadesFlying.push_back(Grenade(Vector3(camera.position.x, camera.position.y, camera.position.z), Vector3(camera.target.x, camera.target.y, camera.target.z), 100, 20));
+					GrenadesFlying.push_back(Grenade(Vector3(camera.position.x, camera.position.y, camera.position.z), Vector3(camera.target.x, camera.target.y, camera.target.z), 100, 20, 3.0f));
 					GrenadeThrowDelay.resetTime();
 					player.noOfGrenadesHeld--;
 				}
@@ -1034,6 +1038,8 @@ void Assignment3::Render()
 			RenderModelOnScreen(meshList[GEO_TURRETHEAD], true, Vector3(5.f, 5.f, 5.f), 60.f, 1.f, -10, Vector3(90.f, 45.f, 0.f));
 		else if (player.WeaponState == 5 && player.noOfGrenadesHeld != 0)
 			RenderModelOnScreen(meshList[GEO_GRENADE], true, Vector3(5.f, 5.f, 5.f), 60.f, 0.f, -10, Vector3(0, -45.f, 30.f));
+		else if (player.WeaponState == 6)
+			RenderModelOnScreen(meshList[GEO_MEDKIT], true, Vector3(15.f, 15.f, 15.f), 60.f, 0.f, -10, Vector3(30.f, 45.f, 30.f));
 	}
 	// SHIP DISPLAY
 	if (getMagnitude(camera.position, ship.position) < 8.f && isCaptured && gameState == GS_MAIN)

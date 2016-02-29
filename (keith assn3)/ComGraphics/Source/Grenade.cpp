@@ -1,7 +1,9 @@
 #include "Grenade.h"
 
-Grenade::Grenade(Vector3 pos, Vector3 target, const int& dmg, const int& range) :damage(dmg), Range(range), throwGrenade(3.0f)
+Grenade::Grenade(Vector3 pos, Vector3 target, int dmg, int range,float time): throwGrenade(time)
 {
+	damage = dmg;
+	Range = range;
 	Explode = false;
 	size = 0;
 	GrenadeRotation = 0;
@@ -55,10 +57,18 @@ void Grenade::DealDamage(Enemy& enemy)
 		enemy.EnemyTakeDmg(damage);
 	}
 }
-Grenade&Grenade::operator=(const Grenade& nade)
+Grenade& Grenade::operator=(const Grenade& nade)
 {
-	Grenade a = nade;
-	return a;
+	LookAtDirection = nade.LookAtDirection;
+	GrenadeRotation = nade.GrenadeRotation;
+	size = nade.size;
+	Explode = nade.Explode;
+	Range = nade.Range;
+	damage = nade.damage;
+	Position = nade.Position;
+	Target = nade.Target;
+	View = nade.View;
+	return *this;
 }
 Vector3 Grenade::GetPosition()
 {
