@@ -1,7 +1,6 @@
 #include "Assignment3.h"
 
 
-
 void Assignment3::Scene1Updates(double dt)
 {
 	//////////////////Astronaut//////////////////

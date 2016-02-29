@@ -1031,6 +1031,8 @@ void Assignment3::Render()
 			RenderModelOnScreen(meshList[GEO_GUN], true, Vector3(22.f, 22.f, 22.f), 57.f, 3.f, -1.f, Vector3(12.f, 15.f, 0.f));
 		else if (player.WeaponState == 3)
 			RenderModelOnScreen(meshList[GEO_SNIPERRIFLE], true, Vector3(10.f, 10.f, 10.f), 57.f, 0.f, 39.f, Vector3(10.f, -79.f, 0.f));
+		else if (player.WeaponState == 4)
+			RenderModelOnScreen(meshList[GEO_TURRETHEAD], true, Vector3(10.f, 10.f, 10.f), 54.f, 0.f, -10.f, Vector3(30.f, -45.f, -30.f));
 		else if (player.WeaponState == 5 && player.noOfGrenadesHeld != 0)
 			RenderModelOnScreen(meshList[GEO_GRENADE], true, Vector3(5.f, 5.f, 5.f), 60.f, 0.f, -10, Vector3(0, -45.f, 30.f));
 		else if (player.WeaponState == 6)
