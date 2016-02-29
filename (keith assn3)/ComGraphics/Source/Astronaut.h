@@ -5,6 +5,7 @@
 #include "Weapon.h"
 #include "Player.h"
 #include "Harvestors.h"
+#include "Medkit.h"
 class Astronaut
 {
 public:
@@ -22,8 +23,15 @@ public:
 
 	// Purchase Functions and variables
 	void PurchaseHarvestor(Player& p);
+	//grenade
 	void PurchaseGrenades(Player& p);
-
+	void UpgradeGrenadeDamage(Player& p);
+	void UpgradeGrenadeRange(Player& p);
+	int GrenadeDamage = 100;
+	int GrenadeRange = 20;
+	//medkit
+	void UpgradeMedkitTicks(Player& p,Medkit& m);
+	void UpgradeMedkitHeal(Player& p, Medkit& m);
 	bool purchaseSuccess = false;
 	vector<Harvestors> Harvestor;
 

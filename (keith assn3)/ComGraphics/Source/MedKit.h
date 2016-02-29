@@ -19,8 +19,8 @@ public:
 	int MaxTimesHealed;
 	int TimesHealed;
 	int PlayerMaxHp;
-private:
 	int HealAmount;
+private:
 
 };
 
