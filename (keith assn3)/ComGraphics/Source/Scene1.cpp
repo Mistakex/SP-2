@@ -42,26 +42,55 @@ void Assignment3::Scene1Updates(double dt)
 					gameState = GS_MAIN;
 					debounceUI.resetTime();
 					break;
+
 				case(OPT_UP_PISTOL) :
 					a.UpgradeWeapon(pistol, player);
 					debounceUI.resetTime();
 					a.errorWindow = true;
 					break;
+
 				case(OPT_UP_RIFLE) :
 					a.UpgradeWeapon(SniperRifle, player);
 					debounceUI.resetTime();
 					a.errorWindow = true;
 					break;
+
 				case(OPT_UP_TURRET) :
 					a.UpgradeTurret(player);
 					debounceUI.resetTime();
 					a.errorWindow = true;
 					break;
+
+				case(OPT_UP_NADE_DMG) :
+					a.UpgradeGrenadeDamage(player);
+					debounceUI.resetTime();
+					a.errorWindow = true;
+					break;
+
+				case(OPT_UP_NADE_RANGE) :
+					a.UpgradeGrenadeRange(player);
+					debounceUI.resetTime();
+					a.errorWindow = true;
+					break;
+
+				case(OPT_UP_MEDKIT_TICKS) :
+					a.UpgradeMedkitTicks(player, medKit);
+					debounceUI.resetTime();
+					a.errorWindow = true;
+					break;
+
+				case(OPT_UP_MEDKIT_HEAL) :
+					a.UpgradeMedkitHeal(player, medKit);
+					debounceUI.resetTime();
+					a.errorWindow = true;
+					break;
+
 				case(OPT_BUY_HARVESTOR) :
 					a.PurchaseHarvestor(player);
 					debounceUI.resetTime();
 					a.errorWindow = true;
 					break;
+
 				case(OPT_BUY_GRENADES) :
 					a.PurchaseGrenades(player);
 					debounceUI.resetTime();
@@ -170,18 +199,41 @@ void Assignment3::RenderAstronautInteractions()
 		case(OPT_UP_PISTOL) :
 			RenderTextOnScreen(meshList[GEO_TEXT], "Resources Needed: " + std::to_string(pistol.getUpgradeCost()), Color(1, 0, 1), 4.5f, 5, 6);
 			break;
+
 		case(OPT_UP_RIFLE) :
 			RenderTextOnScreen(meshList[GEO_TEXT], "Resources Needed: " + std::to_string(SniperRifle.getUpgradeCost()), Color(1, 0, 1), 4.5f, 5, 6);
 			break;
+
 		case(OPT_UP_TURRET) :
 			RenderTextOnScreen(meshList[GEO_TEXT], "Resources Needed: " + std::to_string(a.TurretNewDmg), Color(1, 0, 1), 4.5f, 5, 6);
 			break;
+
+		case(OPT_UP_NADE_DMG) :
+			RenderTextOnScreen(meshList[GEO_TEXT], "Resources Needed: " + std::to_string(((a.GrenadeDamage - 100) + 30)), Color(1, 0, 1), 4.5f, 5, 6);
+			break;
+
+		case(OPT_UP_NADE_RANGE) :
+			RenderTextOnScreen(meshList[GEO_TEXT], "Resources Needed: " + std::to_string(((a.GrenadeRange - 19) * 10)), Color(1, 0, 1), 4.5f, 5, 6);
+			break;
+
+		case(OPT_UP_MEDKIT_TICKS) :
+			RenderTextOnScreen(meshList[GEO_TEXT], "Resources Needed: " + std::to_string(((medKit.MaxTimesHealed) * 10)), Color(1, 0, 1), 4.5f, 5, 6);
+			break;
+
+		case(OPT_UP_MEDKIT_HEAL) :
+			RenderTextOnScreen(meshList[GEO_TEXT], "Resources Needed: " + std::to_string(((medKit.HealAmount / 10) * 35)), Color(1, 0, 1), 4.5f, 5, 6);
+			break;
+
 		case(OPT_BUY_HARVESTOR) :
-			RenderTextOnScreen(meshList[GEO_TEXT], "Harvestors Owned: " + std::to_string(a.Harvestor.size()), Color(1, 0, 1), 4.5f, 5, 6);
+			RenderTextOnScreen(meshList[GEO_TEXT], "Resources Needed: " + std::to_string(50), Color(1, 0, 1), 4, 5.6f, 7);
+			RenderTextOnScreen(meshList[GEO_TEXT], "Harvestors Owned: " + std::to_string(a.Harvestor.size()), Color(1, 0, 1), 4, 5.6f, 6);
 			break;
+
 		case(OPT_BUY_GRENADES) :
-			RenderTextOnScreen(meshList[GEO_TEXT], "Grenades Owned: " + std::to_string(player.noOfGrenadesHeld), Color(1, 0, 1), 4.5f, 5, 6);
+			RenderTextOnScreen(meshList[GEO_TEXT], "Resources Needed: " + std::to_string(30), Color(1, 0, 1), 4, 5.6f, 7);
+			RenderTextOnScreen(meshList[GEO_TEXT], "Grenades Owned: " + std::to_string(player.noOfGrenadesHeld), Color(1, 0, 1), 4, 5.6f, 6);
 			break;
+
 		default:
 			break;
 		}

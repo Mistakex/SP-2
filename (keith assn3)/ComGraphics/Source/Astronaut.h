@@ -23,6 +23,7 @@ public:
 
 	// Purchase Functions and variables
 	void PurchaseHarvestor(Player& p);
+
 	//grenade
 	void PurchaseGrenades(Player& p);
 	void UpgradeGrenadeDamage(Player& p);
@@ -32,6 +33,7 @@ public:
 	//medkit
 	void UpgradeMedkitTicks(Player& p,Medkit& m);
 	void UpgradeMedkitHeal(Player& p, Medkit& m);
+
 	bool purchaseSuccess = false;
 	vector<Harvestors> Harvestor;
 

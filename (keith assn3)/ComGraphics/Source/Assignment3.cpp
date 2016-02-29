@@ -301,6 +301,10 @@ void Assignment3::Init()
 	AstronautOpt[OPT_UP_PISTOL] = "Upgrade Pistol?";
 	AstronautOpt[OPT_UP_RIFLE] = "Upgrade S. Rifle?";
 	AstronautOpt[OPT_UP_TURRET] = "Upgrade Turret?";
+	AstronautOpt[OPT_UP_NADE_DMG] = "Upgrade Grenade Damage?";
+	AstronautOpt[OPT_UP_NADE_RANGE] = "Upgrade Grenade Range?";
+	AstronautOpt[OPT_UP_MEDKIT_TICKS] = "Upgrade Medkit Ticks?";
+	AstronautOpt[OPT_UP_MEDKIT_HEAL] = "Upgrade Medkit Recovery?";
 	AstronautOpt[OPT_BUY_HARVESTOR] = "Purchase a Harvestor?";
 	AstronautOpt[OPT_BUY_GRENADES] = "Purchase a Grenade?";
 	AstronautOpt[OPT_BACK_TO_MAIN] = "Back to Game?";
@@ -458,7 +462,7 @@ void Assignment3::Update(double dt)
 			for (int i = 0; i < GrenadesFlying.size(); i++)
 			{
 				GrenadesFlying[i].ThrowGrenade(dt);
-				std::cout <<i<<"  :"<< GrenadesFlying[i].throwGrenade.GetTimeNow() << std::endl;
+				//std::cout <<i<<"  :"<< GrenadesFlying[i].throwGrenade.GetTimeNow() << std::endl;
 			}
 			if (GrenadesFlying[0].throwGrenade.GetTimeNow() <= 0.2)
 			{
@@ -550,7 +554,7 @@ void Assignment3::Update(double dt)
 				}
 				else
 				{
-					GrenadesFlying.push_back(Grenade(Vector3(camera.position.x, camera.position.y, camera.position.z), Vector3(camera.target.x, camera.target.y, camera.target.z), 100, 20, 3.0f));
+					GrenadesFlying.push_back(Grenade(Vector3(camera.position.x, camera.position.y, camera.position.z), Vector3(camera.target.x, camera.target.y, camera.target.z), a.GrenadeDamage, a.GrenadeRange, 3.0f));
 					GrenadeThrowDelay.resetTime();
 					player.noOfGrenadesHeld--;
 				}
@@ -921,6 +925,7 @@ void Assignment3::Render()
 	}
 
 	RenderAstronautInteractions();
+
 	//Harvestors
 	for (int i = 0; i < a.Harvestor.size(); i++)
 	{
