@@ -70,7 +70,7 @@ void Assignment3::RockSpawn(double dt)
 void Assignment3::TurretSpawn()
 {
 	float cutOff = 1; //used to mutiply camera view to get intersection with 0
-	if (camera.target.y <= 0)
+	if (camera.target.y < -0.3f)
 	{
 		while (TurretPos.y >= -1)
 		{
