@@ -941,14 +941,12 @@ void Assignment3::Render()
 		modelStack.Scale(0.1, 0.1 ,0.1);
 		RenderMesh(meshList[GEO_GRENADE], true);
 		modelStack.PopMatrix();
-	}
-	if (GrenadesFlying.empty() == false)
-	{
-		if (GrenadesFlying[0].Explode == true)
+
+		if (GrenadesFlying[i].Explode == true && !GrenadesFlying.empty())
 		{
 			modelStack.PushMatrix();
-			modelStack.Translate(GrenadesFlying[0].GetPosition().x, GrenadesFlying[0].GetPosition().y, GrenadesFlying[0].GetPosition().z);
-			modelStack.Scale(GrenadesFlying[0].size, GrenadesFlying[0].size, GrenadesFlying[0].size);
+			modelStack.Translate(GrenadesFlying[i].GetPosition().x, GrenadesFlying[i].GetPosition().y, GrenadesFlying[i].GetPosition().z);
+			modelStack.Scale(GrenadesFlying[i].size, GrenadesFlying[i].size, GrenadesFlying[i].size);
 			RenderMesh(meshList[GEO_LIGHTBALL], true);
 			modelStack.PopMatrix();
 		}
