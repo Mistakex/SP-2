@@ -4,11 +4,18 @@
 Player::Player(const int &hp) : HP(hp)
 {
 	Resources = 0;
+	Retry = 3;
 }
 
 Player::~Player()
 {
 
+}
+
+int Player::noOfRetry()
+{
+	Retry = 3;
+	return Retry;
 }
 
 int Player::GetHp()
@@ -94,4 +101,10 @@ bool Player::isDead()
 	}
 	else
 		return true;
+}
+
+void Player::reset()
+{
+	Resources /= 2;
+	HP = 100;
 }

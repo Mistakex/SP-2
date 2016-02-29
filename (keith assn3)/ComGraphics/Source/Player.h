@@ -8,8 +8,11 @@ class Player
 public:
 	Player(const int &hp);
 	~Player();
+	int noOfRetry();
+	int Retry;
 	int GetHp();
-	int ObtainResources(int amount); // increase resources 
+	int ObtainResources(int amount); // increase resources
+
 
 	void WhileMining(const double &dt);	//increase and decrease the value for MiningAction
 	float getMiningAction();
@@ -19,7 +22,7 @@ public:
 	int getResources();
 	bool isDead();
 	float getAngle(const Vector3 &view, const Vector3 &target);
-
+	void reset();
 
 	int BulletsInMagzine;
 	int TotalBullets;		//Reloading

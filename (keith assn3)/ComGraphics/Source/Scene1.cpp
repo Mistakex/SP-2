@@ -141,6 +141,21 @@ void Assignment3::Scene1Updates(double dt)
 		f.flagheight = 2;
 	}
 	//////////////////////////////////////////////
+
+	/*******************HP = 0*******************/
+	if (player.GetHp() <= 0)
+	{	
+		player.reset();
+		player.Retry -= 1;
+		camera.Reset();
+
+		if (player.Retry <= 0)
+		{
+			CameraMouseUpdate = false;
+		}
+	}
+
+	/********************************************/
 }
 void Assignment3::Scene1Render()
 {

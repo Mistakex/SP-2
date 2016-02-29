@@ -35,4 +35,16 @@ void Assignment3::Scene2Updates()
 		light[0].power = 10.0f;
 		EmptyVector();
 	}
+
+	if (player.GetHp() <= 0)
+	{
+		player.reset();
+		player.Retry -= 1;
+		camera.Reset();
+
+		if (player.Retry <= 0)
+		{
+			CameraMouseUpdate = false;
+		}
+	}
 }
