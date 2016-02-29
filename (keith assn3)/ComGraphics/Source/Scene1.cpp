@@ -150,7 +150,8 @@ void Assignment3::Scene1Updates(double dt)
 		camera.Reset();
 
 		if (player.Retry <= 0)
-		{
+		{	
+			player.gameOver();
 			CameraMouseUpdate = false;
 		}
 	}

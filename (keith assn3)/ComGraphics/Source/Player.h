@@ -23,6 +23,7 @@ public:
 	bool isDead();
 	float getAngle(const Vector3 &view, const Vector3 &target);
 	void reset();
+	void gameOver();
 
 	int BulletsInMagzine;
 	int TotalBullets;		//Reloading

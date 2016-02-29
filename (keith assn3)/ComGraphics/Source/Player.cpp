@@ -108,3 +108,8 @@ void Player::reset()
 	Resources /= 2;
 	HP = 100;
 }
+
+void Player::gameOver()
+{
+	Resources = 0;
+}

@@ -1089,24 +1089,26 @@ void Assignment3::Render()
 	{
 		modelStack.PushMatrix();
 		glBlendFunc(1.5, 1);
-		RenderModelOnScreen(meshList[GEO_UI], false, Vector3(30, 10, 10), 14.5, 55, 5, Vector3(90, 0, 0));
+		RenderModelOnScreen(meshList[GEO_UI], false, Vector3(30, 11, 11), 14.5, 55, 5, Vector3(90, 0, 0));
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		modelStack.PushMatrix();
-		RenderModelOnScreen(meshList[GEO_HEALTH], false, Vector3(player.GetHp() * 0.2, 2, 0), 22 - (158 - player.GetHp())*0.1, 57.7, 7, Vector3(90, 0, 0));
+		RenderModelOnScreen(meshList[GEO_HEALTH], false, Vector3(player.GetHp() * 0.2, 2, 0), 22 - (157 - player.GetHp())*0.1, 57.7, 7, Vector3(90, 0, 0));
 		RenderTextOnScreen(meshList[GEO_TEXT], "HP: ", Color(1, 0, 1), 2, 1.3, 28.3);
 		RenderTextOnScreen(meshList[GEO_TEXT], std::to_string(player.GetHp()), Color(1, 0, 1), 2, 2.2, 28.3);
+		RenderTextOnScreen(meshList[GEO_TEXT], "Retries: ", Color(1, 0, 1), 2, 1.3, 26.3);
+		RenderTextOnScreen(meshList[GEO_TEXT], std::to_string(player.Retry), Color(1, 0, 1), 2, 4, 26.3);
 		modelStack.PopMatrix();
 		modelStack.PopMatrix();
 	}
 
 	// FRAMERATE
 	modelStack.PushMatrix();
-	RenderTextOnScreen(meshList[GEO_TEXT], framerate.str(), Color(1, 0, 1), 2, 1.3, 25.7);
-
+	RenderTextOnScreen(meshList[GEO_TEXT], framerate.str(), Color(1, 0, 1), 2, 1.3, 25.3);
 	modelStack.PopMatrix();
+
 	//RESOURCES
 	modelStack.PushMatrix();
-	RenderTextOnScreen(meshList[GEO_TEXT], resources.str(), Color(1, 0, 1), 2, 1.3, 27.0);
+	RenderTextOnScreen(meshList[GEO_TEXT], resources.str(), Color(1, 0, 1), 2, 1.3, 27.3);
 	modelStack.PopMatrix();
 
 	// INFO
