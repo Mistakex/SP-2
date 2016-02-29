@@ -112,4 +112,6 @@ void Player::reset()
 void Player::gameOver()
 {
 	Resources = 0;
+	HP = 100;
+	Retry = 3;
 }

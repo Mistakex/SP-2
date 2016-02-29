@@ -358,6 +358,46 @@ void Assignment3::Update(double dt)
 		gameState = GS_SCENE2;
 	}
 
+	// Checks if player is dead and changes the gamestate accordingly
+	/*******************HP = 0*******************/
+	if (gameState == GS_DIED)
+	{
+		if (Application::IsKeyPressed(VK_RETURN))
+		{
+			gameState = GS_MAIN;
+			player.reset();
+			player.Retry -= 1;
+			camera.Reset();
+		}
+		camera.OnControls = false;
+	}
+
+	if (gameState == GS_GAMEOVER)
+	{
+		camera.OnControls = false;
+		if (Application::IsKeyPressed(VK_RETURN))
+		{
+			CameraMouseUpdate = true;
+			player.gameOver();
+			pistol.Damage = pistol.initialDamage;
+			SniperRifle.Damage = SniperRifle.initialDamage;
+			a.resetAllUpgrades();
+			gameState = GS_MAIN;
+		}
+	}
+
+	if (player.isDead())
+	{
+		if (player.Retry <= 0)
+		{
+			CameraMouseUpdate = false;
+			gameState = GS_GAMEOVER;
+			return;
+		}
+		gameState = GS_DIED;
+	}
+	/********************************************/
+
 	// Alien feedback bool
 	//countdown for camera lock
 	countdownCameraLock.TimeCountDown(dt);
@@ -643,7 +683,6 @@ void Assignment3::Update(double dt)
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); //default fill mode
 		if (Application::IsKeyPressed('0'))
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //wireframe mode
-
 	}
 }
 
@@ -1005,8 +1044,6 @@ void Assignment3::Render()
 		modelStack.PopMatrix();
 	}
 
-
-
 	//DOME
 	if (gameState == GS_SCENE2)
 	{
@@ -1092,9 +1129,32 @@ void Assignment3::Render()
 		modelStack.PopMatrix();
 	}
 
+
+	// UI window for astronaut / died / gameover
+	if (gameState == GS_ASTRONAUT_INTERACTION || gameState == GS_DIED || gameState == GS_GAMEOVER)
+	{
+		modelStack.PushMatrix();
+		RenderModelOnScreen(meshList[GEO_UI], false, Vector3(45, 15, 1), 40, 30, 2, Vector3(90, 0, 0));
+		modelStack.PopMatrix();
+	}
 	// Astronaut State interactions (shop etc)
 	RenderAstronautInteractions();
 
+	if (gameState == GS_DIED)
+	{
+		modelStack.PushMatrix();
+		RenderTextOnScreen(meshList[GEO_TEXT], "You died!", Color(1, 0, 1), 4.5f, 5, 7);
+		RenderTextOnScreen(meshList[GEO_TEXT], "Press Enter to Respawn.", Color(1, 0, 1), 4.5f, 5, 6);
+		modelStack.PopMatrix();
+	}
+
+	if (gameState == GS_GAMEOVER)
+	{
+		modelStack.PushMatrix();
+		RenderTextOnScreen(meshList[GEO_TEXT], "You used up all your retries!", Color(1, 0, 1), 3.7f, 6, 8);
+		RenderTextOnScreen(meshList[GEO_TEXT], "Press Enter to restart the game.", Color(1, 0, 1), 3.7f, 6, 7);
+		modelStack.PopMatrix();
+	}
 	//UI Screen & Player Health
 	if (isZoom == false)
 	{
@@ -1111,6 +1171,7 @@ void Assignment3::Render()
 		modelStack.PopMatrix();
 		modelStack.PopMatrix();
 	}
+
 
 	// FRAMERATE
 	modelStack.PushMatrix();
@@ -1161,6 +1222,7 @@ void Assignment3::Render()
 		modelStack.PopMatrix();
 	}
 
+	
 }
 
 void Assignment3::Exit()

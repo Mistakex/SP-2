@@ -27,6 +27,7 @@ public:
 	Bullet* Magazine;
 	int upgradeCost;
 	int Damage;
+	const int initialDamage;
 	int AmmoInClip;
 	bool hit;
 private:
@@ -39,7 +40,4 @@ private:
 	bool Zoom;
 	Camera3 *camera;
 };
-
-
-
 #endif // !WEAPON_H

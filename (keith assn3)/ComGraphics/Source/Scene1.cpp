@@ -147,22 +147,6 @@ void Assignment3::Scene1Updates(double dt)
 		f.flagheight = 2;
 	}
 	//////////////////////////////////////////////
-
-	/*******************HP = 0*******************/
-	if (player.GetHp() <= 0)
-	{	
-		player.reset();
-		player.Retry -= 1;
-		camera.Reset();
-
-		if (player.Retry <= 0)
-		{	
-			player.gameOver();
-			CameraMouseUpdate = false;
-		}
-	}
-
-	/********************************************/
 }
 void Assignment3::Scene1Render()
 {
@@ -206,13 +190,6 @@ void Assignment3::RenderScene1UI()
 
 void Assignment3::RenderAstronautInteractions()
 {
-	if (gameState == GS_ASTRONAUT_INTERACTION)
-	{
-		modelStack.PushMatrix();
-		RenderModelOnScreen(meshList[GEO_UI], false, Vector3(45, 15, 1), 40, 30, 2, Vector3(90, 0, 0));
-		modelStack.PopMatrix();
-	}
-
 	if (gameState == GS_ASTRONAUT_INTERACTION && !a.errorWindow)
 	{
 		RenderTextOnScreen(meshList[GEO_TEXT], AstronautOpt[AstroCursor], Color(1, 0, 1), 4.5f, 5, 7);

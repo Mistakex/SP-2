@@ -128,6 +128,8 @@ class Assignment3 : public Scene
 		GS_ASTRONAUT_INTERACTION,
 		GS_SCENE2,
 		GS_SCENE3,
+		GS_DIED,
+		GS_GAMEOVER,
 		NUM_GAMESTATES
 	};
 

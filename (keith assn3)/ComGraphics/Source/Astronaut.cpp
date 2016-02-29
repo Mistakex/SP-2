@@ -170,3 +170,15 @@ void Astronaut::UpgradeMedkitHeal(Player& p, Medkit& m)
 		enablePurchaseWindow = false;
 	}
 }
+
+void Astronaut::resetAllUpgrades()
+{
+	TurretNewDmg = 20;
+	GrenadeDamage = 100;
+	GrenadeRange = 20;
+
+	while (!Harvestor.empty())
+	{
+		Harvestor.pop_back();
+	}
+}

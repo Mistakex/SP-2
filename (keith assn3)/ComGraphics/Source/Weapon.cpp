@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-Weapon::Weapon(const int &dmg, const int &AmmoInMag, const int &MaxAmmoForWeap, const int &PriceOfWeap, const bool &AllowZoomForWeap) : Price(PriceOfWeap)
+Weapon::Weapon(const int &dmg, const int &AmmoInMag, const int &MaxAmmoForWeap, const int &PriceOfWeap, const bool &AllowZoomForWeap) : Price(PriceOfWeap), initialDamage(dmg)
 {
 	Damage = dmg;
 	MaxAmmo = MaxAmmoForWeap;
