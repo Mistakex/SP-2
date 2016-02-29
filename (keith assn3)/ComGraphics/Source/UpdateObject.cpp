@@ -54,6 +54,19 @@ void Assignment3::TurretUpdate(double dt)
 			Turrets[i].bullet.updatePosition(Turrets[i].GetPosition() - Vector3(0, 0.5, 0));
 		}
 	}
+
+
+	for (vector<Turret>::iterator it = Turrets.begin(); it != Turrets.end();)
+	{
+		if (it->Hp == 0)
+		{
+			it = Turrets.erase(it);
+		}
+		else
+		{
+			++it;
+		}
+	}
 }
 void Assignment3::AlienUpdate(double dt)
 {

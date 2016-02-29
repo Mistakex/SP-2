@@ -321,6 +321,7 @@ void Assignment3::Update(double dt)
 		dt = dt * 20;
 		player.ObtainResources(30);
 	}
+
 	if (gameState == GS_MAIN || gameState == GS_ASTRONAUT_INTERACTION)
 	{
 		camera.OnControls = true;

@@ -337,7 +337,10 @@ bool Enemy::checkBulletsCollision(Player *p, vector<Turret> *Turrets)
 			if (Turrets->empty())
 				(*p).TakeDmg(AttackDamage);
 			else
+			{
 				(*Turrets)[turretNumber].ReduceHp(AttackDamage);
+				std::cout << (*Turrets)[turretNumber].Hp << std::endl;
+			}
 			hit = true;
 		}
 	}

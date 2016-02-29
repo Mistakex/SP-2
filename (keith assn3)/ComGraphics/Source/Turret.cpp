@@ -25,7 +25,6 @@ void Turret::LookAtEnemy(GameObject enemy)
 void Turret::ShootAtEnemy(double dt)
 {
 	fireDelay += dt;
-	std::cout << fireDelay << std::endl;
 	if (fireDelay > 3.f)
 	{
 		fireDelay = 0.f;
@@ -56,7 +55,14 @@ void Turret::TargetEnemy(Vector3 alien)
 }
 void Turret::ReduceHp(int dmg)
 {
-	Hp -= dmg;
+	if (Hp - dmg <= 0)
+	{
+		Hp = 0;
+	}
+	else
+	{
+		Hp -= dmg;
+	}
 }
 int Turret::GetDamage()
 {

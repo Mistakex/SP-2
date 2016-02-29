@@ -8,7 +8,6 @@
 class Turret
 {
 public:
-	Turret();
 	Turret(const int&hp, const int&dmg, const Vector3 &pos);
 	~Turret();
 
@@ -29,8 +28,8 @@ public:
 	float BulletSpeed;
 private:
 	
-	const int damage;
-	const Vector3 position;
+	int damage;
+	Vector3 position;
 	Vector3 Alien;
 	float fireDelay;
 };
