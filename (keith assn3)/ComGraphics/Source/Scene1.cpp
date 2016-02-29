@@ -4,11 +4,11 @@
 void Assignment3::Scene1Updates(double dt)
 {
 	//////////////////Astronaut//////////////////
+	debounceUI.TimeCountDown(dt);
 	if (gameState == GS_ASTRONAUT_INTERACTION)
 	{
 		camera.OnControls = false;
-		debounceUI.TimeCountDown(dt);
-		if (Application::IsKeyPressed(VK_DOWN) && debounceUI.GetTimeNow() <=0)
+		if (((Application::IsKeyPressed('S')) || (Application::IsKeyPressed(VK_DOWN))) && (debounceUI.GetTimeNow() <= 0))
 		{
 			if (AstroCursor != (NUM_OPTIONS -1))
 			{
@@ -20,7 +20,7 @@ void Assignment3::Scene1Updates(double dt)
 			}
 			debounceUI.resetTime();
 		}
-		if (Application::IsKeyPressed(VK_UP) && debounceUI.GetTimeNow() <= 0)
+		if (((Application::IsKeyPressed('W')) || (Application::IsKeyPressed(VK_UP))) && (debounceUI.GetTimeNow() <= 0))
 		{
 			if (AstroCursor != 0)
 			{
@@ -106,10 +106,16 @@ void Assignment3::Scene1Updates(double dt)
 		}
 	}
 	//Astronaut initiate talking
-	if (Application::IsKeyPressed('E') && ((getMagnitude(a.GetAstronautPos(), camera.position)) < 3))
+	if (Application::IsKeyPressed('E') && gameState == GS_ASTRONAUT_INTERACTION && debounceUI.GetTimeNow() <= 0)
+	{
+		gameState = GS_MAIN;
+		debounceUI.resetTime();
+	}
+	if (Application::IsKeyPressed('E') && ((getMagnitude(a.GetAstronautPos(), camera.position)) < 3) && debounceUI.GetTimeNow() <= 0)
 	{
 		gameState = GS_ASTRONAUT_INTERACTION;
 		AstroCursor = 0;
+		debounceUI.resetTime();
 	}
 	////////////////////////////////////////////
 

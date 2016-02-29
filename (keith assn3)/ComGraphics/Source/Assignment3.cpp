@@ -586,7 +586,6 @@ void Assignment3::Update(double dt)
 				camera.MouseSensitivity = 0.2f;
 			}
 			rightClick.resetTime();
-
 		}
 
 		if (isZoom == true && isSniper == true)
