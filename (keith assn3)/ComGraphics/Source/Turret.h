@@ -33,7 +33,6 @@ private:
 	const Vector3 position;
 	Vector3 Alien;
 	float fireDelay;
-	bool DoneTargeting;
 };
 
 

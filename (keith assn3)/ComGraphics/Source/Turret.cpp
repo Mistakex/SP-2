@@ -6,7 +6,7 @@ Turret::Turret(const int&hp, const int&dmg, const Vector3 &pos) :damage(dmg), po
 	Hp = hp;
 	fireDelay = 0;
 	shooting = 0;
-	BulletSpeed = 75.0f;
+	BulletSpeed = 25.0f;
 	turretRotation = 0;
 	hit = 0;
 }
@@ -17,7 +17,6 @@ Turret::~Turret()
 
 void Turret::LookAtEnemy(GameObject enemy)
 {
-	Target = enemy.position;
 	Vector3 view = Target - position;
 	if (Target.z > position.z){ turretRotation = Math::RadianToDegree(atan(view.x / view.z))-180.0f; }
 	else{ turretRotation = Math::RadianToDegree(atan(view.x / view.z)); }
@@ -26,6 +25,12 @@ void Turret::LookAtEnemy(GameObject enemy)
 void Turret::ShootAtEnemy(double dt)
 {
 	fireDelay += dt;
+	std::cout << fireDelay << std::endl;
+	if (fireDelay > 3.f)
+	{
+		fireDelay = 0.f;
+		hit = true;
+	}
 	bullet.moveBullet(dt);
 	if (fireDelay > 1 && hit == false)
 	{
@@ -36,7 +41,7 @@ void Turret::ShootAtEnemy(double dt)
 			bullet.setView((Target - position).Normalized());
 		}
 	}
-	else if (hit == true || fireDelay > 5)
+	else if (hit == true)
 	{
 		hit = false;
 		shooting = false;
@@ -48,17 +53,6 @@ void Turret::ShootAtEnemy(double dt)
 void Turret::TargetEnemy(Vector3 alien)
 {
 	Target = alien;
-	if (shooting == true)
-	{
-		if (DoneTargeting == false)
-		{
-			DoneTargeting = true;
-		}
-	}
-	else if (shooting == false)
-	{
-		DoneTargeting = false;
-	}
 }
 void Turret::ReduceHp(int dmg)
 {

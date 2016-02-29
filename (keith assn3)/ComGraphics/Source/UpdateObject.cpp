@@ -9,7 +9,7 @@ void Assignment3::TurretUpdate(double dt)
 		{
 			Turrets[i].bullet.updatePosition(Vector3(0, -10, 0));
 		}
-		if (Aliens.empty() == true && Boss.isDead() ==false && gameState == GS_SCENE3)
+		else if (Aliens.empty() == true && Boss.isDead() ==false && gameState == GS_SCENE3)
 		{
 			Turrets[i].LookAtEnemy(Boss);
 			Turrets[i].TargetEnemy(Boss.position);
@@ -30,22 +30,21 @@ void Assignment3::TurretUpdate(double dt)
 			{
 				if (getMagnitude(Turrets[i].GetPosition(), Aliens[s].position) <= 15.f)
 				{
-					Turrets[i].LookAtEnemy(Aliens[s]);
 					Turrets[i].TargetEnemy(Aliens[s].position);
+					Turrets[i].LookAtEnemy(Aliens[s]);
 					Turrets[i].ShootAtEnemy(dt);
-					if (Turrets[i].shooting == true)
+
+					if (getMagnitude(Turrets[i].bullet.getPosition(), Turrets[i].Target) <= 1.0f && Turrets[i].hit == false)
 					{
-						if (getMagnitude(Turrets[i].bullet.getPosition(), Turrets[i].Target) <= 1.0f && Turrets[i].hit == false)
-						{
-							Turrets[i].hit = true;
-							Aliens[s].EnemyTakeDmg(Turrets[i].GetDamage());
-						}
+						Turrets[i].hit = true;
+						Aliens[s].EnemyTakeDmg(Turrets[i].GetDamage());
 					}
+
 					break;
 				}
-				else if (Turrets[i].shooting == true)
+				else
 				{
-					Turrets[i].bullet.moveBullet(dt,Turrets[i].BulletSpeed);
+					Turrets[i].bullet.moveBullet(dt, Turrets[i].BulletSpeed);
 				}
 				s++;
 			}
