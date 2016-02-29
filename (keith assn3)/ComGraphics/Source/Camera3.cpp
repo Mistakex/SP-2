@@ -14,7 +14,7 @@ Camera3::~Camera3()
 {
 }
 
-void Camera3::Init(const Vector3& pos, const Vector3& target, const Vector3& up,vector<Rock> *Rocks,Flag *flag)
+void Camera3::Init(const Vector3& pos, const Vector3& target, const Vector3& up, vector<Rock> *Rocks, Flag *flag, vector<CollisionObject> *Pillars)
 {
 	this->position = defaultPosition = pos;
 	this->target = defaultTarget = target;
@@ -26,6 +26,7 @@ void Camera3::Init(const Vector3& pos, const Vector3& target, const Vector3& up,
 	this->up = defaultUp = right.Cross(view).Normalized();
 	this->Rocks = Rocks;
 	this->flag = flag;
+	this->Pillars = Pillars;
 }
 
 void Camera3::CameraRotation(float CAMERASPEED)
@@ -105,7 +106,7 @@ bool Camera3::checkReverseCircleCollision(Vector3 center, float range, float mov
 	}
 }
 
-bool Camera3::checkAllCollision(float moveX, float moveZ) // used to check collision for objects
+bool Camera3::checkRockCollision(float moveX, float moveZ) // used to check collision for objects
 {
 	for (vector<Rock>::iterator it = Rocks->begin(); it != Rocks->end(); ++it)
 	{
@@ -114,9 +115,22 @@ bool Camera3::checkAllCollision(float moveX, float moveZ) // used to check colli
 			return true;
 		}
 	}
+
 	return false;
 }
 
+bool Camera3::checkPillarCollision(float moveX, float moveZ) // used to check collision for objects
+{
+	for (vector<CollisionObject>::iterator it = Pillars->begin(); it != Pillars->end(); ++it)
+	{
+		if (checkCircleCollision(it->position, it->circleRange, moveX, moveZ))
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
 
 
 void Camera3::Update(double dt,int gameState)
@@ -246,33 +260,35 @@ void Camera3::Update(double dt,int gameState)
 			}
 			if (gameState == 0 || gameState == 1)
 			{
-				if (!checkAllCollision(moveX + position.x, position.z) && !checkCircleCollision(flag->position, 1.f, moveX + position.x, position.z))
+				if (!checkRockCollision(moveX + position.x, position.z) && !checkCircleCollision(flag->position, 1.f, moveX + position.x, position.z))
 				{
 					position.x += moveX;
 				}
-				if (!checkAllCollision(position.x, moveZ + position.z) && !checkCircleCollision(flag->position, 1.f, position.x, moveZ + position.z))
+				if (!checkRockCollision(position.x, moveZ + position.z) && !checkCircleCollision(flag->position, 1.f, position.x, moveZ + position.z))
 				{
 					position.z += moveZ;
 				}
 			}
 			else if (gameState == 2)
 			{
-				if (!checkAllCollision(moveX + position.x, position.z) && !checkCircleCollision(Vector3(0,0,0), 18.5f, moveX + position.x, position.z))
+				if (!checkRockCollision(moveX + position.x, position.z) && !checkCircleCollision(Vector3(0,0,0), 18.5f, moveX + position.x, position.z))
 				{
 					position.x += moveX;
 				}
-				if (!checkAllCollision(position.x, moveZ + position.z) && !checkCircleCollision(Vector3(0, 0, 0), 18.5f, position.x, moveZ + position.z))
+				if (!checkRockCollision(position.x, moveZ + position.z) && !checkCircleCollision(Vector3(0, 0, 0), 18.5f, position.x, moveZ + position.z))
 				{
 					position.z += moveZ;
 				}
 			}
 			else if (gameState == 3)
 			{
-				if (!checkAllCollision(moveX + position.x, position.z) && !checkReverseCircleCollision(Vector3(0, 0, 0), 69.f, moveX + position.x, position.z))
+				if (!checkRockCollision(moveX + position.x, position.z) && !checkReverseCircleCollision(Vector3(0, 0, 0), 69.f, moveX + position.x, position.z)
+					&& !checkPillarCollision(moveX + position.x, position.z))
 				{
 					position.x += moveX;
 				}
-				if (!checkAllCollision(position.x, moveZ + position.z) && !checkReverseCircleCollision(Vector3(0, 0, 0), 69.f, position.x, moveZ + position.z))
+				if (!checkRockCollision(position.x, moveZ + position.z) && !checkReverseCircleCollision(Vector3(0, 0, 0), 69.f, position.x, moveZ + position.z)
+					&& !checkPillarCollision(position.x, moveZ + position.z))
 				{
 					position.z += moveZ;
 				}

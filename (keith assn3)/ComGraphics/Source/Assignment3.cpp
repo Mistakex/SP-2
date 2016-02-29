@@ -53,6 +53,11 @@ void Assignment3::Init()
 
 	Boss = Enemy(Vector3(0, 0, 0), camera.position, Vector3(5, 10, 5), 3000, 10, 0, 1000, 10,true);
 
+	Pillars.push_back(CollisionObject(Vector3(30,0,30), 5.f));
+	Pillars.push_back(CollisionObject(Vector3(-30,0,-30), 5.f));
+	Pillars.push_back(CollisionObject(Vector3(-30, 0, 30), 5.f));
+	Pillars.push_back(CollisionObject(Vector3(30, 0, -30), 5.f));
+
 	//srand
 	KillMessage.TimeCountDown(0.3);
 	srand(time_t(NULL));
@@ -174,7 +179,7 @@ void Assignment3::Init()
 	glUniform1f(m_parameters[U_LIGHT1_EXPONENT], light[1].exponent);
 
 	//Initialize camera settings
-	camera.Init(Vector3(0, 0, 30), Vector3(10, 0, 0), Vector3(0, 1, 0), &Rocks, &f);
+	camera.Init(Vector3(0, 0, 30), Vector3(10, 0, 0), Vector3(0, 1, 0), &Rocks, &f,&Pillars);
 
 	meshList[GEO_AXES] = MeshBuilder::GenerateAxes("reference", 1000, 1000, 1000);
 
@@ -293,6 +298,8 @@ void Assignment3::Init()
 	meshList[GEO_MEDKIT] = MeshBuilder::GenerateOBJ("Medkit", "OBJ//Medkit.obj");
 	meshList[GEO_MEDKIT]->textureID = LoadTGA("Image//Medkit.tga");
 
+	meshList[GEO_PILLAR] = MeshBuilder::GenerateCylinder("Pillar", Color(1, 1, 1), 30);
+
 	Mtx44 projection;
 	projection.SetToPerspective(70.0f, 4.0f / 3.0f, 0.1f, 5000.0f);
 	projectionStack.LoadMatrix(projection);
@@ -340,6 +347,10 @@ void Assignment3::Update(double dt)
 	if (gameState == GS_SCENE2)
 	{
 		Scene2Updates();
+	}
+	if (gameState == GS_SCENE3)
+	{
+		Scene3Updates();
 	}
 	ship.cutscene(dt);
 	if (ship.changeScene && gameState == GS_MAIN)
@@ -462,7 +473,6 @@ void Assignment3::Update(double dt)
 			for (int i = 0; i < GrenadesFlying.size(); i++)
 			{
 				GrenadesFlying[i].ThrowGrenade(dt);
-				//std::cout <<i<<"  :"<< GrenadesFlying[i].throwGrenade.GetTimeNow() << std::endl;
 			}
 			if (GrenadesFlying[0].throwGrenade.GetTimeNow() <= 0.2)
 			{
@@ -475,7 +485,7 @@ void Assignment3::Update(double dt)
 				{
 					GrenadesFlying[0].DealDamage(Aliens[i]);
 				}
-				if (Boss.isDead() == false)
+				if (Boss.isDead() == false && gameState == GS_SCENE3)
 				{
 					GrenadesFlying[0].DealDamage(Boss);
 				}
@@ -959,6 +969,8 @@ void Assignment3::Render()
 	RenderTurret();
 	//ALIEN
 	RenderAliens();
+	//PILLARS
+
 	
 	if (gameState == GS_SCENE3)
 	{

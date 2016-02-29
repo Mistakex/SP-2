@@ -103,7 +103,7 @@ void Weapon::update(double dt)
 	}
 }
 
-bool Weapon::checkBulletCollision(vector<Enemy> *aliens,Enemy *Boss,Bullet bullet)
+bool Weapon::checkBulletCollision(vector<Enemy> *aliens, Enemy *Boss, Bullet bullet)
 {
 		Vector3 temp = bullet.getPosition();
 		for (int i = 0; i < 50; ++i)

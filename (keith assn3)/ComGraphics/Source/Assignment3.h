@@ -21,6 +21,7 @@
 #include "Harvestors.h"
 #include "Grenade.h"
 #include "MedKit.h"
+#include "CollisionObject.h"
 #include <string>
 using std::string;
 
@@ -77,6 +78,8 @@ class Assignment3 : public Scene
 		GEO_GRENADE,
 		//MEDKIT
 		GEO_MEDKIT,
+		//PILLAR
+		GEO_PILLAR,
 		NUM_GEOMETRY,
 	};
 	enum UNIFORM_TYPE
@@ -145,6 +148,7 @@ public:
 	vector<Rock> Rocks;
 	vector<Turret> Turrets;
 	vector<Grenade> GrenadesFlying;
+	vector<CollisionObject> Pillars;
 
 	Weapon pistol = Weapon(20, 30, 100, 10, false);
 	Flag f = Flag(Vector3(0, 0.75f, 0), Vector3(1, 1, 1));
@@ -188,6 +192,7 @@ private:
 	void Scene2Updates();
 	void Scene2Render();
 	void Scene3Render();
+	void Scene3Updates();
 	//Remove alien
 	void EmptyVector();
 

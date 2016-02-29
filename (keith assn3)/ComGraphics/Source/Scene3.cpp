@@ -12,6 +12,14 @@ void Assignment3::Scene3Render()
 	RenderAlien(Boss.armRotate,Boss.redAlien);
 	modelStack.PopMatrix();
 
+	for (vector<CollisionObject>::iterator it = Pillars.begin(); it != Pillars.end(); ++it)
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(it->position.x, it->position.y, it->position.z);
+		modelStack.Scale(it->circleRange, 10, it->circleRange);
+		RenderMesh(meshList[GEO_PILLAR], true);
+		modelStack.PopMatrix();
+	}
 
 	for (int i = 0; i < 10; ++i)
 	{
@@ -31,4 +39,28 @@ void Assignment3::Scene3Render()
 		}
 	}
 
+}
+
+void Assignment3::Scene3Updates()
+{
+	for (int i = 0; i < sizeof(Boss.projectiles) / sizeof(Boss.projectiles[0]); ++i)
+	{
+		for (int j = 0; j < Pillars.size(); ++j)
+		{
+			if (getMagnitude(Boss.projectiles[i].getPosition(), Pillars[j].position) < Pillars[j].circleRange)
+			{
+				Boss.projectiles[i].setView(Vector3(0, 0, 0));
+			}
+		}
+	}
+	for (int i = 0; i < Aliens.size();++i)
+	{
+		for (int j = 0; j < Pillars.size(); ++j)
+		{
+			if (getMagnitude(Aliens[i].projectile.getPosition(), Pillars[j].position) < Pillars[j].circleRange)
+			{
+				Aliens[i].projectile.setView(Vector3(0, 0, 0));
+			}
+		}
+	}
 }
