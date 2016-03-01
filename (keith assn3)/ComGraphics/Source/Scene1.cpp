@@ -109,6 +109,7 @@ void Assignment3::Scene1Updates(double dt)
 	if (Application::IsKeyPressed('E') && gameState == GS_ASTRONAUT_INTERACTION && debounceUI.GetTimeNow() <= 0)
 	{
 		gameState = GS_MAIN;
+		a.errorWindow = false;
 		debounceUI.resetTime();
 	}
 	if (Application::IsKeyPressed('E') && ((getMagnitude(a.GetAstronautPos(), camera.position)) < 3) && debounceUI.GetTimeNow() <= 0)
