@@ -116,8 +116,8 @@ void Astronaut::UpgradeGrenadeDamage(Player& p)
 	}
 	else
 	{
-		GrenadeDamage += 25;
 		p.ObtainResources(-((GrenadeDamage - 100) + 30));
+		GrenadeDamage += 25;
 		upgradeSuccess = true;
 		enablePurchaseWindow = false;
 	}
@@ -132,8 +132,8 @@ void Astronaut::UpgradeGrenadeRange(Player& p)
 	}
 	else
 	{
-		GrenadeRange += 1;
 		p.ObtainResources(-((GrenadeRange - 19) * 10));
+		GrenadeRange += 1;
 		upgradeSuccess = true;
 		enablePurchaseWindow = false;
 	}
@@ -148,8 +148,8 @@ void Astronaut::UpgradeMedkitTicks(Player& p, Medkit& m)
 	}
 	else
 	{
-		m.MaxTimesHealed += 1;
 		p.ObtainResources(-(m.MaxTimesHealed) * 10);
+		m.MaxTimesHealed += 1;
 		upgradeSuccess = true;
 		enablePurchaseWindow = false;
 	}
@@ -164,8 +164,8 @@ void Astronaut::UpgradeMedkitHeal(Player& p, Medkit& m)
 	}
 	else
 	{
-		m.HealAmount += 10;
 		p.ObtainResources(-(m.HealAmount / 10) * 35);
+		m.HealAmount += 10;
 		upgradeSuccess = true;
 		enablePurchaseWindow = false;
 	}
