@@ -13,6 +13,15 @@ void Assignment3::Scene3Render()
 		modelStack.Scale(Boss.EnemySize, Boss.EnemySize, Boss.EnemySize);
 		RenderAlien(Boss.armRotate, Boss.redAlien);
 		modelStack.PopMatrix();
+
+		for (int i = 0; i < 10; ++i)
+		{
+			modelStack.PushMatrix();
+			modelStack.Translate(Boss.projectiles[i].getPosition().x, Boss.projectiles[i].getPosition().y, Boss.projectiles[i].getPosition().z);
+			modelStack.Scale(0.5f, 0.5f, 0.5f);
+			RenderMesh(meshList[GEO_BULLET], true);
+			modelStack.PopMatrix();
+		}
 	}
 
 	for (vector<CollisionObject>::iterator it = Pillars.begin(); it != Pillars.end(); ++it)
@@ -24,14 +33,7 @@ void Assignment3::Scene3Render()
 		modelStack.PopMatrix();
 	}
 
-	for (int i = 0; i < 10; ++i)
-	{
-		modelStack.PushMatrix();
-		modelStack.Translate(Boss.projectiles[i].getPosition().x, Boss.projectiles[i].getPosition().y, Boss.projectiles[i].getPosition().z);
-		modelStack.Scale(0.5f, 0.5f, 0.5f);
-		RenderMesh(meshList[GEO_BULLET], true);
-		modelStack.PopMatrix();
-	}
+
 
 	if (Boss.spawnerCounter >= 50)
 	{

@@ -45,6 +45,7 @@ void Assignment3::Scene1Updates(double dt)
 
 				case(OPT_UP_PISTOL) :
 					a.UpgradeWeapon(pistol, player);
+					std::cout << pistol.Damage << std::endl;
 					debounceUI.resetTime();
 					a.errorWindow = true;
 					break;
