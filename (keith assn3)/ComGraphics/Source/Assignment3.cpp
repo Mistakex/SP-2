@@ -16,7 +16,7 @@
 
 #include "Music.h"
 
-Music sound;
+
 
 extern GLFWwindow* m_window;
 
@@ -50,6 +50,8 @@ void Assignment3::Init()
 	pistol.init(&camera,&Pillars);
 	ship.init(&camera);
 	SniperRifle.init(&camera,&Pillars);
+
+	sound.playSoundThreaded("Music/spawn.mp3");
 
 	Boss = Enemy(Vector3(0, 0, 0), camera.position, Vector3(5, 10, 5), 3000, 10, 0, 1000, 10,true);
 
@@ -357,6 +359,12 @@ void Assignment3::Update(double dt)
 	/*******************HP = 0*******************/
 	if (gameState == GS_DIED)
 	{
+		if (playDead == false)
+		{
+			sound.pause();
+			playDead = true;
+			sound.playSoundThreaded("Music/death.mp3");
+		}
 		if (Application::IsKeyPressed(VK_RETURN))
 		{
 			gameState = GS_MAIN;
@@ -364,12 +372,19 @@ void Assignment3::Update(double dt)
 			player.Retry -= 1;
 			EmptyVector();
 			camera.Reset();
+			playDead = false;
 		}
 		camera.OnControls = false;
 	}
 
 	if (gameState == GS_GAMEOVER)
 	{
+		if (playDead == false)
+		{
+			sound.pause();
+			playDead = true;
+			sound.playSoundThreaded("Music/death.mp3");
+		}
 		camera.OnControls = false;
 		if (Application::IsKeyPressed(VK_RETURN))
 		{
@@ -380,6 +395,7 @@ void Assignment3::Update(double dt)
 			a.resetAllUpgrades();
 			EmptyVector();
 			gameState = GS_MAIN;
+			playDead = false;
 		}
 	}
 
@@ -557,7 +573,7 @@ void Assignment3::Update(double dt)
 			if (player.WeaponState == 1 && CountdownSniperRifle.GetTimeNow() <= 0)
 			{
 				SniperRifle.FireSR(&Aliens,&Boss);
-				sound.playSoundThreaded("Music/pew.mp3");
+				sound.playSoundThreaded("Music/sniper.mp3");
 				CountdownSniperRifle.resetTime();
 			}
 			if (player.WeaponState == 2 && countdownPistol.GetTimeNow() <= 0)
@@ -577,7 +593,7 @@ void Assignment3::Update(double dt)
 						if (player.isMining == false)
 						{
 							player.isMining = true;
-							sound.playSoundThreaded("Music/mining.wav");
+							sound.playSoundThreaded("Music/mining2.wav");
 							resourceOfRock = (*i).GetResources();
 							player.ObtainResources(resourceOfRock);
 							(*i).ReduceSize();
@@ -652,6 +668,14 @@ void Assignment3::Update(double dt)
 				isZoom = false;
 				camera.MouseSensitivity = 0.2f;
 			}
+		}
+
+		if (Boss.isDead() == true && bossDead == false)
+		{
+			sound.pause();
+			bossDead = true;
+			sound.increaseVolume();
+			sound.playSoundThreaded("Music/bossdie.mp3");
 		}
 
 		//framerate

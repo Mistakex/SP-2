@@ -22,9 +22,9 @@
 #include "Grenade.h"
 #include "MedKit.h"
 #include "CollisionObject.h"
+#include "Music.h"
 #include <string>
 using std::string;
-
 
 class Assignment3 : public Scene
 {
@@ -144,6 +144,8 @@ public:
 	virtual void Render();
 	virtual void Exit();
 
+	Music sound;
+
 	Enemy Boss;
 	vector<Enemy> Aliens;
 	vector<GameObject*> Collisions;
@@ -227,6 +229,10 @@ private:
 	bool isCaptured = false;
 	//After killing aliens
 	int Alienresources;
+
+	bool bossDead = false;
+	bool bossAlive = false;
+	bool playDead = false;
 
 	//info screen
 	bool isShown = false;

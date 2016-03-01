@@ -1,5 +1,6 @@
 #include "Assignment3.h"
 
+
 void Assignment3::EmptyVector()
 {
 	while (Aliens.empty() == false)
@@ -42,6 +43,7 @@ void Assignment3::Scene2Updates()
 		Pillars.push_back(CollisionObject(Vector3(-30, 0, -30), 5.f));
 		Pillars.push_back(CollisionObject(Vector3(-30, 0, 30), 5.f));
 		Pillars.push_back(CollisionObject(Vector3(30, 0, -30), 5.f));
+		sound.playSoundThreaded("Music/bossfight.mp3");
 	}
 
 	if (player.GetHp() <= 0)

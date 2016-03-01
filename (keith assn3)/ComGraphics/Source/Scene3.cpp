@@ -1,11 +1,12 @@
 #include "Assignment3.h"
+#include "Music.h"
 
 void Assignment3::Scene3Render()
 {
 	Boss.bossIsSpawned = true;
 
 	if (Boss.GetEnemyHp() > 0)
-	{
+	{	
 		modelStack.PushMatrix();
 		modelStack.Translate(Boss.position.x, Boss.position.y, Boss.position.z);
 		modelStack.Rotate(Boss.findDirection(), 0, 1, 0);
@@ -58,7 +59,7 @@ void Assignment3::Scene3Updates()
 			}
 		}
 	}
-	for (int i = 0; i < Aliens.size();++i)
+	for (int i = 0; i < Aliens.size(); ++i)
 	{
 		for (int j = 0; j < Pillars.size(); ++j)
 		{
