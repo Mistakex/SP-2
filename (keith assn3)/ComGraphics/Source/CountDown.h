@@ -10,7 +10,7 @@ public:
 	void resetTime();
 	float GetTimeNow();
 private:
-	const float Time;
+	float Time;
 	float countdown;
 };
 

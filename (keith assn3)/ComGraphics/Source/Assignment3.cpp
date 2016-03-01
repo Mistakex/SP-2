@@ -607,8 +607,6 @@ void Assignment3::Update(double dt)
 					GrenadesFlying.push_back(Grenade(Vector3(camera.position.x, camera.position.y, camera.position.z), Vector3(camera.target.x, camera.target.y, camera.target.z), a.GrenadeDamage, a.GrenadeRange, 3.0f));
 					GrenadeThrowDelay.resetTime();
 					player.noOfGrenadesHeld--;
-					player.WeaponState = 1;
-					CountdownSniperRifle.resetTime();
 				}
 			}
 			else if (player.WeaponState == 6 && medKit.activated == false)

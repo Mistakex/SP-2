@@ -68,6 +68,7 @@ Grenade& Grenade::operator=(const Grenade& nade)
 	Position = nade.Position;
 	Target = nade.Target;
 	View = nade.View;
+	throwGrenade = nade.throwGrenade;
 	return *this;
 }
 Vector3 Grenade::GetPosition()

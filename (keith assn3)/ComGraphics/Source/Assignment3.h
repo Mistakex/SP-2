@@ -211,7 +211,7 @@ private:
 	Countdown KillMessage = Countdown(0.3f);
 	Countdown CountdownSniperRifle = Countdown(1.0f);
 	Countdown countdownAlienSpawnByBoss = Countdown(0.5f);
-	Countdown GrenadeThrowDelay = Countdown(3.f);
+	Countdown GrenadeThrowDelay = Countdown(0.5f);
 	Player player = Player(100);
 	
 	
