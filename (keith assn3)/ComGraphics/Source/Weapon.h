@@ -14,7 +14,7 @@ public:
 	Weapon();
 	Weapon(const int &dmg,const int &AmmoInClip,const int &MaxAmmoForWeap, const int& price,const bool &AllowZoomForWeap);
 	~Weapon();
-	void init(Camera3 *target);
+	void init(Camera3 *camera, vector<CollisionObject> *Pillars);
 	void Fire(vector<Enemy> *aliens, Enemy *Boss);						//Goes into Update
 	void FireSR(vector<Enemy> *aliens, Enemy *Boss);
 	bool GetAllowZoom();
@@ -39,5 +39,6 @@ private:
 	bool AllowZoom;
 	bool Zoom;
 	Camera3 *camera;
+	vector<CollisionObject> *Pillars;
 };
 #endif // !WEAPON_H

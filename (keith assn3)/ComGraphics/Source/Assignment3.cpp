@@ -47,16 +47,11 @@ void Assignment3::Init()
 	CameraMouseUpdate = true;
 	player.WeaponState = 5;
 	player.noOfGrenadesHeld = 5;
-	pistol.init(&camera);
+	pistol.init(&camera,&Pillars);
 	ship.init(&camera);
-	SniperRifle.init(&camera);
+	SniperRifle.init(&camera,&Pillars);
 
 	Boss = Enemy(Vector3(0, 0, 0), camera.position, Vector3(5, 10, 5), 3000, 10, 0, 1000, 10,true);
-
-	Pillars.push_back(CollisionObject(Vector3(30,0,30), 5.f));
-	Pillars.push_back(CollisionObject(Vector3(-30,0,-30), 5.f));
-	Pillars.push_back(CollisionObject(Vector3(-30, 0, 30), 5.f));
-	Pillars.push_back(CollisionObject(Vector3(30, 0, -30), 5.f));
 
 	//srand
 	KillMessage.TimeCountDown(0.3);
@@ -367,6 +362,7 @@ void Assignment3::Update(double dt)
 			gameState = GS_MAIN;
 			player.reset();
 			player.Retry -= 1;
+			EmptyVector();
 			camera.Reset();
 		}
 		camera.OnControls = false;
@@ -382,6 +378,7 @@ void Assignment3::Update(double dt)
 			pistol.Damage = pistol.initialDamage;
 			SniperRifle.Damage = SniperRifle.initialDamage;
 			a.resetAllUpgrades();
+			EmptyVector();
 			gameState = GS_MAIN;
 		}
 	}

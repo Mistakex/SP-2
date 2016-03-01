@@ -20,9 +20,10 @@ Weapon::~Weapon()
 	delete[] Magazine;
 }
 
-void Weapon::init(Camera3 *camera)
+void Weapon::init(Camera3 *camera, vector<CollisionObject> *Pillars)
 {
 	this->camera = camera;
+	this->Pillars = Pillars;
 }
 
 void Weapon::Fire(vector<Enemy> *aliens,Enemy *Boss)
@@ -109,6 +110,13 @@ bool Weapon::checkBulletCollision(vector<Enemy> *aliens, Enemy *Boss, Bullet bul
 		for (int i = 0; i < 50; ++i)
 		{
 			temp += bullet.getView().Normalized();
+			for (vector<CollisionObject>::iterator it2 = (*Pillars).begin(); it2 != (*Pillars).end(); ++it2)
+			{
+				if ((temp - it2->position).Length() < it2->circleRange)
+				{
+					return false;
+				}
+			}
 			for (vector<Enemy>::iterator it = aliens->begin(); it != aliens->end(); ++it)
 			{
 				if (temp.x >(*it).position.x - (*it).rangexyz.x && temp.x < (*it).position.x + (*it).rangexyz.x
@@ -142,6 +150,13 @@ bool Weapon::checkBulletCollisionSR(vector<Enemy> *aliens, Enemy *Boss, Bullet b
 	for (int i = 0; i < 100; ++i)
 	{
 		temp += bullet.getView().Normalized();
+		for (vector<CollisionObject>::iterator it2 = (*Pillars).begin(); it2 != (*Pillars).end(); ++it2)
+		{
+			if ((temp - it2->position).Length() < it2->circleRange)
+			{
+				return false;
+			}
+		}
 		if (temp.x >(*Boss).position.x - (*Boss).rangexyz.x && temp.x < (*Boss).position.x + (*Boss).rangexyz.x
 			&& temp.y >(*Boss).position.y && temp.y < (*Boss).position.y + (*Boss).rangexyz.y
 			&& temp.z >(*Boss).position.z - (*Boss).rangexyz.z && temp.z < (*Boss).position.z + (*Boss).rangexyz.z

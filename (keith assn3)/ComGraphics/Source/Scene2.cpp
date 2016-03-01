@@ -14,6 +14,10 @@ void Assignment3::EmptyVector()
 	{
 		Turrets.pop_back();
 	}
+	while (Pillars.empty() == false)
+	{
+		Pillars.pop_back();
+	}
 }
 void Assignment3::RenderDome(float scale, float x, float y, float z)
 {
@@ -34,6 +38,10 @@ void Assignment3::Scene2Updates()
 		light[0].position.Set(0,30.0f, 0);
 		light[0].power = 10.0f;
 		EmptyVector();
+		Pillars.push_back(CollisionObject(Vector3(30, 0, 30), 5.f));
+		Pillars.push_back(CollisionObject(Vector3(-30, 0, -30), 5.f));
+		Pillars.push_back(CollisionObject(Vector3(-30, 0, 30), 5.f));
+		Pillars.push_back(CollisionObject(Vector3(30, 0, -30), 5.f));
 	}
 
 	if (player.GetHp() <= 0)
