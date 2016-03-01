@@ -117,6 +117,17 @@ bool Weapon::checkBulletCollision(vector<Enemy> *aliens, Enemy *Boss, Bullet bul
 					return false;
 				}
 			}
+
+			if (temp.x >(*Boss).position.x - (*Boss).rangexyz.x && temp.x < (*Boss).position.x + (*Boss).rangexyz.x
+				&& temp.y >(*Boss).position.y && temp.y < (*Boss).position.y + (*Boss).rangexyz.y
+				&& temp.z >(*Boss).position.z - (*Boss).rangexyz.z && temp.z < (*Boss).position.z + (*Boss).rangexyz.z
+				&& Boss->bossIsSpawned && Boss->GetEnemyHp() > 0)
+			{
+				(*Boss).EnemyTakeDmg(Damage);
+				(*Boss).redAlien = true;
+				return true;
+			}
+
 			for (vector<Enemy>::iterator it = aliens->begin(); it != aliens->end(); ++it)
 			{
 				if (temp.x >(*it).position.x - (*it).rangexyz.x && temp.x < (*it).position.x + (*it).rangexyz.x
@@ -127,16 +138,6 @@ bool Weapon::checkBulletCollision(vector<Enemy> *aliens, Enemy *Boss, Bullet bul
 					(*it).redAlien = true;
 					return true;
 				}
-			}
-
-			if (temp.x >(*Boss).position.x - (*Boss).rangexyz.x && temp.x < (*Boss).position.x + (*Boss).rangexyz.x
-				&& temp.y >(*Boss).position.y && temp.y < (*Boss).position.y + (*Boss).rangexyz.y
-				&& temp.z >(*Boss).position.z - (*Boss).rangexyz.z && temp.z < (*Boss).position.z + (*Boss).rangexyz.z
-				&& Boss->bossIsSpawned)
-			{
-				(*Boss).EnemyTakeDmg(Damage);
-				(*Boss).redAlien = true;
-				return true;
 			}
 	}
 	return false;
@@ -160,7 +161,7 @@ bool Weapon::checkBulletCollisionSR(vector<Enemy> *aliens, Enemy *Boss, Bullet b
 		if (temp.x >(*Boss).position.x - (*Boss).rangexyz.x && temp.x < (*Boss).position.x + (*Boss).rangexyz.x
 			&& temp.y >(*Boss).position.y && temp.y < (*Boss).position.y + (*Boss).rangexyz.y
 			&& temp.z >(*Boss).position.z - (*Boss).rangexyz.z && temp.z < (*Boss).position.z + (*Boss).rangexyz.z
-			&& Boss->bossIsSpawned)
+			&& Boss->bossIsSpawned && Boss->GetEnemyHp() > 0)
 		{
 			hitboss = 1;
 			(*Boss).redAlien = true;

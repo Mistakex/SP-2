@@ -481,7 +481,10 @@ void Assignment3::Update(double dt)
 		{
 			KillMessage.TimeCountDown(dt);
 			AlienUpdate(dt);
-			Boss.update(camera, dt, &player,&Turrets);
+			if (Boss.GetEnemyHp() > 0)
+			{
+				Boss.update(camera, dt, &player, &Turrets);
+			}
 		}
 		//Turrets Aim and Shoot
 		TurretUpdate(dt);
@@ -1061,8 +1064,8 @@ void Assignment3::Render()
 		RenderText(meshList[GEO_TEXT], std::to_string(Aliens[i].GetEnemyHp()), Color(0, 1, 0));
 		modelStack.PopMatrix();
 	}
-	
-	if (gameState == GS_SCENE3)
+	// Boss HP
+	if (gameState == GS_SCENE3 && Boss.GetEnemyHp() > 0)
 	{
 		modelStack.PushMatrix();
 		modelStack.Translate(Boss.position.x, Boss.position.y + 12.f, Boss.position.z);
