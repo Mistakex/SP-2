@@ -417,21 +417,21 @@ void Assignment3::Update(double dt)
 		SniperRifle.update(dt);
 		debounce.TimeCountDown(dt);
 
-		// Pistol
+		// SniperRifle
 		if (Application::IsKeyPressed('1') && debounce.GetTimeNow() < 0)
+		{
+			debounce.resetTime();
+			player.WeaponState = 1;
+		}
+
+		// Pistol
+		if (Application::IsKeyPressed('2') && debounce.GetTimeNow() < 0)
 		{
 			debounce.resetTime();
 			player.WeaponState = 2;
 		}
 
 		// Pickaxe
-		if (Application::IsKeyPressed('2') && debounce.GetTimeNow() < 0)
-		{
-			debounce.resetTime();
-			player.WeaponState = 1;
-		}
-
-		// Sniper Rifle
 		if (Application::IsKeyPressed('3') && debounce.GetTimeNow() < 0)
 		{
 			debounce.resetTime();
@@ -446,7 +446,7 @@ void Assignment3::Update(double dt)
 			player.WeaponState = 4;
 		}
 
-		// Grenades
+		// Grenades and medkit
 		if (Application::IsKeyPressed('5') && debounce.GetTimeNow() < 0)
 		{
 			debounce.resetTime();
@@ -553,7 +553,19 @@ void Assignment3::Update(double dt)
 		}
 		if (Application::IsKeyPressed(VK_LBUTTON) && !ship.updateCutscene) //check for keypress and weapon holding
 		{
-			if (player.WeaponState == 1 && (Rocks.empty() == 0) && (countdownMining.GetTimeNow() <= 0))
+			if (player.WeaponState == 1 && CountdownSniperRifle.GetTimeNow() <= 0)
+			{
+				SniperRifle.FireSR(&Aliens,&Boss);
+				sound.playSoundThreaded("Music/sniper.mp3");
+				CountdownSniperRifle.resetTime();
+			}
+			if (player.WeaponState == 2 && countdownPistol.GetTimeNow() <= 0)
+			{
+				pistol.Fire(&Aliens,&Boss);
+				sound.playSoundThreaded("Music/pistol.mp3");
+				countdownPistol.resetTime();
+			}
+			if (player.WeaponState == 3 && (Rocks.empty() == 0) && (countdownMining.GetTimeNow() <= 0))
 			{
 				vector<Rock>::iterator i = Rocks.begin();
 				while (i != Rocks.end())
@@ -579,21 +591,11 @@ void Assignment3::Update(double dt)
 					else{ i++; }
 				}
 			}
-			if (player.WeaponState == 2 && countdownPistol.GetTimeNow() <= 0)
-			{
-				pistol.Fire(&Aliens,&Boss);
-				sound.playSoundThreaded("Music/pistol.mp3");
-				countdownPistol.resetTime();
-			}
-			if (player.WeaponState == 3 && CountdownSniperRifle.GetTimeNow() <= 0)
-			{
-				SniperRifle.FireSR(&Aliens,&Boss);
-				sound.playSoundThreaded("Music/sniper.mp3");
-				CountdownSniperRifle.resetTime();
-			}
-			else if (player.WeaponState == 4 && countdownTurretSpawn.GetTimeNow() <= 0/* && player.getResources() >= 50*/)
+			else if (player.WeaponState == 4 && countdownTurretSpawn.GetTimeNow() <= 0 && player.getResources() >= 50)
 			{
 				TurretSpawn();
+				player.WeaponState = 1;
+				CountdownSniperRifle.resetTime();
 			}
 			else if (player.WeaponState == 5 && GrenadeThrowDelay.GetTimeNow() <= 0)
 			{
@@ -607,17 +609,21 @@ void Assignment3::Update(double dt)
 					GrenadesFlying.push_back(Grenade(Vector3(camera.position.x, camera.position.y, camera.position.z), Vector3(camera.target.x, camera.target.y, camera.target.z), a.GrenadeDamage, a.GrenadeRange, 3.0f));
 					GrenadeThrowDelay.resetTime();
 					player.noOfGrenadesHeld--;
+					player.WeaponState = 1;
+					CountdownSniperRifle.resetTime();
 				}
 			}
 			else if (player.WeaponState == 6 && medKit.activated == false)
 			{
 				medKit.activated = true;
+				player.WeaponState = 1;
+				CountdownSniperRifle.resetTime();
 			}
 		}
 		rightClick.TimeCountDown(dt);
 		if (Application::IsKeyPressed(VK_RBUTTON) && !ship.updateCutscene && rightClick.GetTimeNow() < 0)
 		{
-			if (player.WeaponState == 3 && isZoom == false)
+			if (player.WeaponState == 1 && isZoom == false)
 			{
 				sound.playSoundThreaded("Music/zoom.mp3");
 				Mtx44 projection;
@@ -626,7 +632,7 @@ void Assignment3::Update(double dt)
 				camera.MouseSensitivity = 0.05f;
 				isZoom = true;
 			}
-			else if (player.WeaponState == 3 && isZoom == true)
+			else if (player.WeaponState == 1 && isZoom == true)
 			{
 				sound.playSoundThreaded("Music/zoom.mp3");
 				Mtx44 projection;
@@ -640,7 +646,7 @@ void Assignment3::Update(double dt)
 
 		if (isZoom == true && isSniper == true)
 		{
-			if (player.WeaponState == 1 || player.WeaponState == 2 || player.WeaponState == 4)
+			if (player.WeaponState == 3 || player.WeaponState == 2 || player.WeaponState == 4)
 			{
 				Mtx44 projection;
 				projection.SetToPerspective(70.0f, 4.0f / 3.0f, 0.1f, 5000.0f);
@@ -1079,11 +1085,11 @@ void Assignment3::Render()
 	if (!ship.updateCutscene && isZoom == false)
 	{
 		if (player.WeaponState == 1)
-			RenderModelOnScreen(meshList[GEO_PICKAXE], true, Vector3(10.f, 10.f, 10.f), 70.f, 0.f, -10, Vector3(0, -45.f, player.getMiningAction()));
+			RenderModelOnScreen(meshList[GEO_SNIPERRIFLE], true, Vector3(10.f, 10.f, 10.f), 57.f, 0.f, 39.f, Vector3(10.f, -79.f, 0.f));
 		else if (player.WeaponState == 2)
 			RenderModelOnScreen(meshList[GEO_GUN], true, Vector3(22.f, 22.f, 22.f), 57.f, 3.f, -1.f, Vector3(12.f, 15.f, 0.f));
 		else if (player.WeaponState == 3)
-			RenderModelOnScreen(meshList[GEO_SNIPERRIFLE], true, Vector3(10.f, 10.f, 10.f), 57.f, 0.f, 39.f, Vector3(10.f, -79.f, 0.f));
+			RenderModelOnScreen(meshList[GEO_PICKAXE], true, Vector3(10.f, 10.f, 10.f), 70.f, 0.f, -10, Vector3(0, -45.f, player.getMiningAction()));
 		else if (player.WeaponState == 4)
 			RenderModelOnScreen(meshList[GEO_TURRETHEAD], true, Vector3(10.f, 10.f, 10.f), 54.f, 0.f, -10.f, Vector3(30.f, -45.f, -30.f));
 		else if (player.WeaponState == 5 && player.noOfGrenadesHeld != 0)
