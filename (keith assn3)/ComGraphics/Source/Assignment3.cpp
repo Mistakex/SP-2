@@ -529,6 +529,7 @@ void Assignment3::Update(double dt)
 				{
 					GrenadesFlying[0].DealDamage(Boss);
 				}
+				sound.playSoundThreaded("Music/explosion.wav");
 				GrenadesFlying.erase(GrenadesFlying.begin());
 			}
 		}
@@ -556,13 +557,13 @@ void Assignment3::Update(double dt)
 			if (player.WeaponState == 1 && CountdownSniperRifle.GetTimeNow() <= 0)
 			{
 				SniperRifle.FireSR(&Aliens,&Boss);
-				sound.playSoundThreaded("Music/sniper.mp3");
+				sound.playSoundThreaded("Music/pew.mp3");
 				CountdownSniperRifle.resetTime();
 			}
 			if (player.WeaponState == 2 && countdownPistol.GetTimeNow() <= 0)
 			{
 				pistol.Fire(&Aliens,&Boss);
-				sound.playSoundThreaded("Music/pistol.mp3");
+				sound.playSoundThreaded("Music/pew.mp3");
 				countdownPistol.resetTime();
 			}
 			if (player.WeaponState == 3 && (Rocks.empty() == 0) && (countdownMining.GetTimeNow() <= 0))
@@ -604,6 +605,7 @@ void Assignment3::Update(double dt)
 				}
 				else
 				{
+					sound.playSoundThreaded("Music/throwgrenade.wav");
 					GrenadesFlying.push_back(Grenade(Vector3(camera.position.x, camera.position.y, camera.position.z), Vector3(camera.target.x, camera.target.y, camera.target.z), a.GrenadeDamage, a.GrenadeRange, 3.0f));
 					GrenadeThrowDelay.resetTime();
 					player.noOfGrenadesHeld--;
