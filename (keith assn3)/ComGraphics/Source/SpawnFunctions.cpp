@@ -82,5 +82,7 @@ void Assignment3::TurretSpawn()
 		Turrets.push_back(newTurret);
 		countdownTurretSpawn.resetTime();
 		TurretPos = (0.f, 0.f, 0.f);//reset the value of the variable
+		player.WeaponState = 1;
+		CountdownSniperRifle.resetTime();
 	}
 }
