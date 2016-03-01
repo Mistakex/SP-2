@@ -128,6 +128,7 @@ void Enemy::EnemyMove(double dt, Player *p, vector<Turret> *Turrets)
 
 void Enemy::EnemyTakeDmg(int Dmg)
 {
+	redAlien = true;
 	if (Hp - Dmg >= 0)
 		Hp -= Dmg;
 	else

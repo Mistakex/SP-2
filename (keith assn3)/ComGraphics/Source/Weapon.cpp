@@ -124,7 +124,6 @@ bool Weapon::checkBulletCollision(vector<Enemy> *aliens, Enemy *Boss, Bullet bul
 				&& Boss->bossIsSpawned && Boss->GetEnemyHp() > 0)
 			{
 				(*Boss).EnemyTakeDmg(Damage);
-				(*Boss).redAlien = true;
 				return true;
 			}
 
@@ -135,7 +134,6 @@ bool Weapon::checkBulletCollision(vector<Enemy> *aliens, Enemy *Boss, Bullet bul
 					&& temp.z >(*it).position.z - (*it).rangexyz.z && temp.z < (*it).position.z + (*it).rangexyz.z)
 				{
 					(*it).EnemyTakeDmg(Damage);
-					(*it).redAlien = true;
 					return true;
 				}
 			}

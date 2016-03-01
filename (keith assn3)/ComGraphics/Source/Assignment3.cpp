@@ -576,7 +576,7 @@ void Assignment3::Update(double dt)
 						if (player.isMining == false)
 						{
 							player.isMining = true;
-							sound.playSoundThreaded("Music/mining2.wav");
+							sound.playSoundThreaded("Music/mining.wav");
 							resourceOfRock = (*i).GetResources();
 							player.ObtainResources(resourceOfRock);
 							(*i).ReduceSize();
