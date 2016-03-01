@@ -73,7 +73,7 @@ void Astronaut::PurchaseHarvestor(Player& p)
 	}
 	else
 	{
-		Harvestors newHarvestor((0, 0, 0), 1);
+		Harvestors newHarvestor((0, 0, 0), 0.5f);
 		Harvestor.push_back(newHarvestor);
 		p.ObtainResources(-50);
 		purchaseSuccess = true;

@@ -78,6 +78,8 @@ class Assignment3 : public Scene
 		GEO_GRENADE,
 		//MEDKIT
 		GEO_MEDKIT,
+		//HARVESTORs
+		GEO_HARVESTOR,
 		//PILLAR
 		GEO_PILLAR,
 		NUM_GEOMETRY,
@@ -180,6 +182,9 @@ private:
 	void TurretSpawn();
 	void TurretUpdate(double dt);
 	void AlienUpdate(double dt);
+	void HarvestorUpdate(double dt);
+	void GrenadeUpdate(double dt);
+	void MiningUpdate();
 	//Render Functions
 	void RenderPole();
 	void RenderFlag();

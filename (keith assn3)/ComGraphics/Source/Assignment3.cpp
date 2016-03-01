@@ -295,6 +295,9 @@ void Assignment3::Init()
 	meshList[GEO_MEDKIT] = MeshBuilder::GenerateOBJ("Medkit", "OBJ//Medkit.obj");
 	meshList[GEO_MEDKIT]->textureID = LoadTGA("Image//Medkit.tga");
 
+	meshList[GEO_HARVESTOR] = MeshBuilder::GenerateOBJ("Harvestor", "OBJ//Harvestor.obj");
+	meshList[GEO_HARVESTOR]->textureID = LoadTGA("Image//Harvestor.tga");
+
 	meshList[GEO_PILLAR] = MeshBuilder::GenerateCylinder("Pillar", Color(1, 1, 1), 30);
 
 	Mtx44 projection;
@@ -474,7 +477,6 @@ void Assignment3::Update(double dt)
 			{
 				player.WeaponState = 5;
 			}
-			std::cout << player.WeaponState << std::endl;
 		}
 
 		// updating 2nd light
@@ -507,48 +509,9 @@ void Assignment3::Update(double dt)
 		//Rock mining
 		player.WhileMining(dt);
 		//Harvestor
-		if (a.Harvestor.empty() == false && Rocks.empty() == false)
-		{
-			for (int i = 0; i < a.Harvestor.size(); i++)
-			{
-				a.Harvestor[i].MoveTowards(Rocks[0].position,dt);
-				if (getMagnitude(a.Harvestor[i].Position, Rocks[0].position) <= 4)
-				{
-					a.Harvestor[i].MineRocks(Rocks[0], player);
-					if (Rocks[0].Size <= 0)
-					{
-						Rocks.erase(Rocks.begin());
-						break;
-					}
-				}
-			}
-		}
+		HarvestorUpdate(dt);
 		//Grenades
-		if (GrenadesFlying.empty() == false)
-		{
-			for (int i = 0; i < GrenadesFlying.size(); i++)
-			{
-				GrenadesFlying[i].ThrowGrenade(dt);
-			}
-			if (GrenadesFlying[0].throwGrenade.GetTimeNow() <= 0.2)
-			{
-				GrenadesFlying[0].Explode = true;
-				GrenadesFlying[0].GetExplosion();
-			}
-			if (GrenadesFlying[0].throwGrenade.GetTimeNow() <= 0)
-			{
-				for (int i = 0; i < Aliens.size(); i++)
-				{
-					GrenadesFlying[0].DealDamage(Aliens[i]);
-				}
-				if (Boss.isDead() == false && gameState == GS_SCENE3)
-				{
-					GrenadesFlying[0].DealDamage(Boss);
-				}
-				sound.playSoundThreaded("Music/explosion.wav");
-				GrenadesFlying.erase(GrenadesFlying.begin());
-			}
-		}
+		GrenadeUpdate(dt);
 		//Medkits
 		medKit.Activated();
 		medKit.Heal(player);
@@ -584,29 +547,7 @@ void Assignment3::Update(double dt)
 			}
 			if (player.WeaponState == 3 && (Rocks.empty() == 0) && (countdownMining.GetTimeNow() <= 0))
 			{
-				vector<Rock>::iterator i = Rocks.begin();
-				while (i != Rocks.end())
-				{
-					if ((getMagnitude(Vector3((*i).position.x, -1, (*i).position.z), Vector3(camera.position.x, camera.position.y - 1, camera.position.z)) - (*i).Size * 2.f) < 0
-						&& player.getAngle(camera.view, Vector3((*i).position.x, -1, (*i).position.z) - camera.position) < 45.f)
-					{
-						if (player.isMining == false)
-						{
-							player.isMining = true;
-							sound.playSoundThreaded("Music/mining2.wav");
-							resourceOfRock = (*i).GetResources();
-							player.ObtainResources(resourceOfRock);
-							(*i).ReduceSize();
-						}
-						if ((*i).Size <= 0)
-						{
-							Rocks.erase(i);
-						}
-						countdownMining.resetTime();
-						break;
-					}
-					else{ i++; }
-				}
+				MiningUpdate();
 			}
 			else if (player.WeaponState == 4 && countdownTurretSpawn.GetTimeNow() <= 0 && player.getResources() >= 50)
 			{
@@ -615,16 +556,12 @@ void Assignment3::Update(double dt)
 			else if (player.WeaponState == 5 && GrenadeThrowDelay.GetTimeNow() <= 0)
 			{
 				// If player has no Grenades at all.
-				if (player.noOfGrenadesHeld <= 0)
-				{
-					return;
-				}
-				else
+				if (player.noOfGrenadesHeld > 0)
 				{
 					sound.playSoundThreaded("Music/throwgrenade.wav");
 					GrenadesFlying.push_back(Grenade(Vector3(camera.position.x, camera.position.y, camera.position.z), Vector3(camera.target.x, camera.target.y, camera.target.z), a.GrenadeDamage, a.GrenadeRange, 3.0f));
 					GrenadeThrowDelay.resetTime();
-					player.noOfGrenadesHeld--;
+					player.noOfGrenadesHeld--;					
 				}
 			}
 			else if (player.WeaponState == 6 && medKit.activated == false)
@@ -635,32 +572,34 @@ void Assignment3::Update(double dt)
 			}
 		}
 		rightClick.TimeCountDown(dt);
-		if (Application::IsKeyPressed(VK_RBUTTON) && !ship.updateCutscene && rightClick.GetTimeNow() < 0)
+		if (Application::IsKeyPressed(VK_RBUTTON) && rightClick.GetTimeNow() < 0 && !ship.updateCutscene)
 		{
-			if (player.WeaponState == 1 && isZoom == false)
+			if (player.WeaponState == 1)
 			{
 				sound.playSoundThreaded("Music/zoom.mp3");
-				Mtx44 projection;
-				projection.SetToPerspective(10.0f, 4.0f / 3.0f, 0.1f, 5000.0f);
-				projectionStack.LoadMatrix(projection);
-				camera.MouseSensitivity = 0.05f;
-				isZoom = true;
-			}
-			else if (player.WeaponState == 1 && isZoom == true)
-			{
-				sound.playSoundThreaded("Music/zoom.mp3");
-				Mtx44 projection;
-				projection.SetToPerspective(70.0f, 4.0f / 3.0f, 0.1f, 5000.0f);
-				projectionStack.LoadMatrix(projection);
-				isZoom = false;
-				camera.MouseSensitivity = 0.2f;
+				if (isZoom == false)
+				{
+					Mtx44 projection;
+					projection.SetToPerspective(10.0f, 4.0f / 3.0f, 0.1f, 5000.0f);
+					projectionStack.LoadMatrix(projection);
+					camera.MouseSensitivity = 0.02f;
+					isZoom = true;
+				}
+				else
+				{
+					Mtx44 projection;
+					projection.SetToPerspective(70.0f, 4.0f / 3.0f, 0.1f, 5000.0f);
+					projectionStack.LoadMatrix(projection);
+					camera.MouseSensitivity = 0.2f;
+					isZoom = false;
+				}
 			}
 			rightClick.resetTime();
 		}
 
 		if (isZoom == true && isSniper == true)
 		{
-			if (player.WeaponState == 3 || player.WeaponState == 2 || player.WeaponState == 4)
+			if (player.WeaponState != 1)
 			{
 				Mtx44 projection;
 				projection.SetToPerspective(70.0f, 4.0f / 3.0f, 0.1f, 5000.0f);
@@ -1009,7 +948,7 @@ void Assignment3::Render()
 		modelStack.Translate(a.Harvestor[i].Position.x, 0, a.Harvestor[i].Position.z);
 		modelStack.Rotate(a.Harvestor[i].GetHarvestorRotation(), 0, 1, 0);
 		modelStack.Scale(1, 1, 1);
-		RenderMesh(meshList[GEO_LIGHTBALL], true);
+		RenderMesh(meshList[GEO_HARVESTOR], true);
 		modelStack.PopMatrix();
 	}
 	//GRENADES
@@ -1081,7 +1020,6 @@ void Assignment3::Render()
 	{
 		RenderDome(40, 0, -1, 0);
 	}
-
 	//Aliens HP
 	for (int i = 0; i < Aliens.size(); i++)
 	{
