@@ -562,7 +562,7 @@ void Assignment3::Update(double dt)
 			}
 			else if (player.WeaponState == 4 && countdownTurretSpawn.GetTimeNow() <= 0 && player.getResources() >= 50)
 			{
-				TurretSpawn();
+				TurretSpawn();	
 			}
 			else if (player.WeaponState == 5 && GrenadeThrowDelay.GetTimeNow() <= 0)
 			{

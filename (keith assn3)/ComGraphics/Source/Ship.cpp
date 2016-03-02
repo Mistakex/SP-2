@@ -25,25 +25,25 @@ void Ship::cutscene(const double &dt)
 	{
 		Camera->OnControls = false;
 		Camera->target = position;
-		cutsceneTimer += dt;
+		cutsceneTimer += (float)dt;
 		if (cutsceneTimer < 2.f)
 		{
 			Camera->position = Vector3(0, 0, -35);
-			position += Vector3(0, 3, 0)*dt;
+			position += Vector3(0, 3, 0)*(float)dt;
 		}
 		else if (cutsceneTimer < 4.f)
 		{
 			Camera->position = (position.x, 0, position.z);
-			position += Vector3(0, 3, 0)*dt;
+			position += Vector3(0, 3, 0)*(float)dt;
 		}
 		else if (cutsceneTimer < 8.f)
 		{
 			Camera->position = position + Vector3(10, -3, 0);
-			position -= Vector3(100, 0, 0)*dt;
+			position -= Vector3(100, 0, 0)*(float)dt;
 			if (cutsceneTimer > 6.f)
 			{
 				displayFade = true;
-				fadesize += 100.f * dt;
+				fadesize += 100.f * (float)dt;
 			}
 		}
 		else if (cutsceneTimer > 9.f)
@@ -51,8 +51,8 @@ void Ship::cutscene(const double &dt)
 			Camera->OnControls = true;
 			changeScene = true;
 			Camera->position = Vector3(0, 0, 70);
-			if (fadesize - 10.f*dt > 0.f)
-				fadesize -= 100.f * dt;
+			if (fadesize - 10.f*(float)dt > 0.f)
+				fadesize -= 100.f * (float)dt;
 			else
 			{
 				fadesize = 0.1f;
