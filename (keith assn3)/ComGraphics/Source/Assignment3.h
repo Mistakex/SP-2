@@ -228,13 +228,13 @@ private:
 	int resourceOfRock;
 	//Gun
 	bool isZoom = false;
-	bool isSniper = false;
 	//Flag
 	bool isCapturing = false;
 	bool isCaptured = false;
 	//After killing aliens
 	int Alienresources;
 
+	// Boss sounds
 	bool bossDead = false;
 	bool bossAlive = false;
 	bool playDead = false;

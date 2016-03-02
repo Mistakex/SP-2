@@ -135,6 +135,11 @@ void Enemy::EnemyTakeDmg(int Dmg)
 		Hp = 0;
 }
 
+void Enemy::EnemySetHp(int Hp)
+{
+	this->Hp = Hp;
+}
+
 void Enemy::BossSpawnMinions(const double &dt)
 {
 	spawnDelay += dt;

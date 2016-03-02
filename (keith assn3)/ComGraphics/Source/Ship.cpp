@@ -3,6 +3,7 @@
 Ship::Ship(const Vector3 &pos,const Vector3 &range)
 {
 	position = pos;
+	defaultPosition = pos;
 	rangexyz = range;
 	cutsceneTimer = 0.f;
 	fadesize = 0.1f;
@@ -58,6 +59,8 @@ void Ship::cutscene(const double &dt)
 				displayFade = false;
 				updateCutscene = false;
 				cutsceneTimer = 0.f;
+				changeScene = false;
+				position = defaultPosition;
 			}
 		}
 	}

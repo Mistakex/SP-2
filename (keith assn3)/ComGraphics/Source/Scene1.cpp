@@ -142,12 +142,7 @@ void Assignment3::Scene1Updates(double dt)
 	{
 		isCapturing = false;
 	}
-	//reset everything
-	if (Application::IsKeyPressed('R'))
-	{
-		f.flagIsBlue = false;
-		f.flagheight = 2;
-	}
+
 	//////////////////////////////////////////////
 }
 void Assignment3::Scene1Render()

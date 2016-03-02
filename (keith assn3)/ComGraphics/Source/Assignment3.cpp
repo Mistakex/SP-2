@@ -329,6 +329,20 @@ static std::stringstream resources;
 
 void Assignment3::Update(double dt)
 {
+	//reset everything
+	if (Application::IsKeyPressed('R'))
+	{
+		f.flagIsBlue = false;
+		f.flagheight = 2.5;
+		gameState = GS_MAIN;
+		isCapturing = false;
+		isCaptured = false;
+		bossDead = false;
+		bossAlive = false;
+		playDead = false;
+		Boss.EnemySetHp(3000);
+	}
+
 	if (Application::IsKeyPressed('Z'))
 	{
 		std::cout << camera.position.x << std::endl;
@@ -339,9 +353,6 @@ void Assignment3::Update(double dt)
 	if (gameState == GS_MAIN || gameState == GS_ASTRONAUT_INTERACTION)
 	{
 		camera.OnControls = true;
-	}
-	if (gameState == GS_MAIN || gameState == GS_ASTRONAUT_INTERACTION)
-	{
 		Scene1Updates(dt);
 	}
 	if (gameState == GS_SCENE2)
@@ -352,6 +363,7 @@ void Assignment3::Update(double dt)
 	{
 		Scene3Updates();
 	}
+
 	ship.cutscene(dt);
 	if (ship.changeScene && gameState == GS_MAIN)
 	{
@@ -455,7 +467,6 @@ void Assignment3::Update(double dt)
 		{
 			debounce.resetTime();
 			player.WeaponState = 3;
-			isSniper = true;
 		}
 
 		// Turrets
@@ -597,7 +608,18 @@ void Assignment3::Update(double dt)
 			rightClick.resetTime();
 		}
 
-		if (isZoom == true && isSniper == true)
+		if (Application::IsKeyPressed(VK_F1) && infoscreen.GetTimeNow() <= 0)
+		{
+			if (isShown == false)
+			{
+				isShown = true;
+			}
+			else
+				isShown = false;
+			infoscreen.resetTime();
+		}
+
+		if (isZoom == true)
 		{
 			if (player.WeaponState != 1)
 			{
@@ -1157,17 +1179,6 @@ void Assignment3::Render()
 		RenderModelOnScreen(meshList[GEO_INFO], false, Vector3(40, 40, 40), 40, 30, 6, Vector3(90, 270, 0));
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		modelStack.PopMatrix();
-	}
-
-	if (Application::IsKeyPressed(VK_F1) && infoscreen.GetTimeNow() <= 0)
-	{
-		if (isShown == false)
-		{
-			isShown = true;
-		}
-		else
-			isShown = false;
-		infoscreen.resetTime();
 	}
 
 	if (gameState == GS_MAIN)

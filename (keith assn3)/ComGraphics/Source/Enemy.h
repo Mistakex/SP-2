@@ -28,6 +28,7 @@ public:
 	void EnemyKite(double dt);
 	void EnemyMove(double dt, Player *p, vector<Turret> *Turrets);				//move to find
 	void EnemyTakeDmg(int Dmg);
+	void EnemySetHp(int Hp);
 	void EnemyShootAt(const double &dt, const float &startShooting, const float &endShooting, const float &bulletSpeed, Player *p, vector<Turret> *Turrets);			//shooting of the enemy
 	void BossShootAt(const double &dt, const float &startShooting, const float &endShooting, const float &bulletSpeed, Player *p);			//shooting of the enemy
 	void BossSpawnMinions(const double &dt);

@@ -18,6 +18,7 @@ public:
 private:
 	Camera3 *Camera;
 	float cutsceneTimer;
+	Vector3 defaultPosition;
 };
 
 
