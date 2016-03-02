@@ -194,6 +194,7 @@ void Assignment3::RenderAstronautInteractions()
 	if (gameState == GS_ASTRONAUT_INTERACTION && !a.errorWindow)
 	{
 		RenderTextOnScreen(meshList[GEO_TEXT], AstronautOpt[AstroCursor], Color(1, 0, 1), 4.5f, 5, 7);
+		RenderTextOnScreen(meshList[GEO_TEXT], "Press 'E' to exit and 'Enter' to choose", Color(1, 0, 0), 2.5f, 10, 9);
 		switch (AstroCursor)
 		{
 		case(OPT_UP_PISTOL) :

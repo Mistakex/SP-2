@@ -19,6 +19,7 @@ public:
 	void TakeDmg(int dmg);
 	void RecoverHp(int recovered);
 	void changeWeapon(int weapon);
+	void setResources(int Resources);
 	int getResources();
 	bool isDead();
 	float getAngle(const Vector3 &view, const Vector3 &target);

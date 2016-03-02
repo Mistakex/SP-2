@@ -23,6 +23,11 @@ int Player::GetHp()
 	return HP;
 }
 
+void Player::setResources(int Resources)
+{
+	this->Resources = Resources;
+}
+
 int Player::ObtainResources(int amount)
 {
 	Resources += amount;

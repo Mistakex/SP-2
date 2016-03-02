@@ -324,10 +324,10 @@ void Camera3::Update(double dt,int gameState)
 		}
 
 		//reset
-		if (Application::IsKeyPressed('R'))
-		{
-			Reset();
-		}
+		//if (Application::IsKeyPressed('R'))
+		//{
+		//	Reset();
+		//}
 
 		//mouse rotation of camera
 		CameraRotation(MouseSensitivity);

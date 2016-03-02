@@ -76,7 +76,7 @@ void Assignment3::Scene3UI()
 	{
 		modelStack.PushMatrix();
 		RenderTextOnScreen(meshList[GEO_TEXT], "YOU WIN!", Color(1, 0, 0), 10.f, 2.75f, 2.5f);
-		RenderTextOnScreen(meshList[GEO_TEXT], "Press 'R' to restart", Color(1, 0, 0),2, 16.f, 10.f);
+		RenderTextOnScreen(meshList[GEO_TEXT], "Press 'P' to pause and restart", Color(1, 0, 0),2, 16.f, 10.f);
 		modelStack.PopMatrix();
 	}
 }

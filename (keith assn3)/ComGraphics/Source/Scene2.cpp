@@ -31,7 +31,7 @@ void Assignment3::RenderDome(float scale, float x, float y, float z)
 
 void Assignment3::Scene2Updates()
 {
-	if (camera.position.x <1.5f &&camera.position.x >-1.5f && camera.position.z > 18 && camera.position.z < 19)
+	if (camera.position.x < 5.5f &&camera.position.x >-5.5f && camera.position.z > 17 && camera.position.z < 26)
 	{
 		gameState = GS_SCENE3;
 		camera.position.Set(0, 0, 68);

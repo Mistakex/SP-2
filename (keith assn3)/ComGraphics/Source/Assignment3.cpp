@@ -335,20 +335,20 @@ static std::stringstream resources;
 void Assignment3::Update(double dt)
 {
 	//reset everything
-	if (Application::IsKeyPressed('R'))
-	{
-		sound.pause();
-		f.flagIsBlue = false;
-		f.flagheight = 2.5;
-		gameState = GS_MAIN;
-		isCapturing = false;
-		isCaptured = false;
-		bossDead = false;
-		bossAlive = false;
-		playDead = false;
-		Boss.EnemySetHp(3000);
-		player.Retry = 3;
-	}
+	//if (Application::IsKeyPressed('R'))
+	//{
+	//	sound.pause();
+	//	f.flagIsBlue = false;
+	//	f.flagheight = 2.5;
+	//	gameState = GS_MAIN;
+	//	isCapturing = false;
+	//	isCaptured = false;
+	//	bossDead = false;
+	//	bossAlive = false;
+	//	playDead = false;
+	//	Boss.EnemySetHp(3000);
+	//	player.Retry = 3;
+	//}
 
 	if (Application::IsKeyPressed('Z'))
 	{
@@ -449,15 +449,18 @@ void Assignment3::Update(double dt)
 				sound.pause();
 				f.flagIsBlue = false;
 				f.flagheight = 2.5;
-				gameState = tempGS;
+				gameState = GS_MAIN;
 				isCapturing = false;
 				isCaptured = false;
 				bossDead = false;
 				bossAlive = false;
 				playDead = false;
 				Boss.EnemySetHp(3000);
+				Boss.bossIsSpawned = false;
 				player.Retry = 3;
 				CameraMouseUpdate = true;
+				player.setResources(0);
+				camera.Reset();
 				break;
 			case(P_OPT_QUITGAME) :
 				quitGame = true;
@@ -1230,7 +1233,7 @@ void Assignment3::Render()
 	if (gameState == GS_ASTRONAUT_INTERACTION || gameState == GS_DIED || gameState == GS_GAMEOVER || gameState == GS_PAUSE)
 	{
 		modelStack.PushMatrix();
-		RenderModelOnScreen(meshList[GEO_UI], false, Vector3(45, 15, 1), 40, 30, 2, Vector3(90, 0, 0));
+		RenderModelOnScreen(meshList[GEO_UI], false, Vector3(45, 20, 1), 40, 30, 2, Vector3(90, 0, 0));
 		modelStack.PopMatrix();
 	}
 	// Astronaut State interactions (shop etc)
@@ -1256,6 +1259,9 @@ void Assignment3::Render()
 	{
 		modelStack.PushMatrix();
 		RenderTextOnScreen(meshList[GEO_TEXT], "Game is Paused.", Color(1, 0, 1), 3.7f, 6, 8);
+		RenderTextOnScreen(meshList[GEO_TEXT], "^", Color(1, 0, 0), 3.7f, 13.f, 8.5f);
+		RenderTextOnScreen(meshList[GEO_TEXT], "Enter", Color(1, 0, 0), 3.7f, 12.5f, 7.5f);
+		RenderTextOnScreen(meshList[GEO_TEXT], "v", Color(1, 0, 0), 3.7f, 13.f, 6.5f);
 		RenderTextOnScreen(meshList[GEO_TEXT], PauseOpt[pauseScreenCursor], Color(1, 0, 1), 3.7f, 6, 7);
 		modelStack.PopMatrix();
 
