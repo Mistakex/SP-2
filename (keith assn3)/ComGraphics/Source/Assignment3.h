@@ -86,6 +86,10 @@ class Assignment3 : public Scene
 		GEO_SPACETRUCK,
 		//MOUNTAIN
 		GEO_MOUNTAIN,
+		//WaterTank
+		GEO_WATERTANK,
+		//Shop Banner
+		GEO_SHOPBANNER,
 		NUM_GEOMETRY,
 	};
 	enum UNIFORM_TYPE
@@ -164,7 +168,7 @@ public:
 
 	Weapon pistol = Weapon(20, 30, 100, 10, false);
 	Flag f = Flag(Vector3(0, 0.75f, 0), Vector3(1, 1, 1));
-	Astronaut a = Astronaut(Vector3(5, -1, 0));
+	Astronaut a = Astronaut(Vector3(0, -1, 9));
 	Ship ship = Ship(Vector3(0, 0, -50), Vector3(5, 5, 5));
 	Weapon SniperRifle = Weapon(80, 10, 100, 100, true);	
 	Medkit medKit = Medkit(100, 10, 5, 0.5, 10);

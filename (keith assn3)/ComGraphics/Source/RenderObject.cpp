@@ -175,6 +175,7 @@ void Assignment3::RenderAstronaut()
 	modelStack.PushMatrix();
 	modelStack.Translate(a.GetAstronautPos().x, a.GetAstronautPos().y, a.GetAstronautPos().z);
 	modelStack.Scale(0.3f, 0.3f, 0.3f);
+	modelStack.Rotate(90, 0, 1, 0);
 	RenderMesh(meshList[GEO_ASTRONAUT], true);
 	modelStack.PopMatrix();
 }

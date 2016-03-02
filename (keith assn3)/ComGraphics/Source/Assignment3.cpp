@@ -304,6 +304,12 @@ void Assignment3::Init()
 
 	meshList[GEO_MOUNTAIN] = MeshBuilder::GenerateOBJ("Mountain", "OBJ//mountain.obj");
 	meshList[GEO_MOUNTAIN]->textureID = LoadTGA("Image//mountain.tga");
+	
+	meshList[GEO_WATERTANK] = MeshBuilder::GenerateOBJ("Watertank", "OBJ//Watertank.obj");
+	meshList[GEO_WATERTANK]->textureID = LoadTGA("Image//Watertank.tga");
+
+	meshList[GEO_SHOPBANNER] = MeshBuilder::GenerateOBJ("Watertank", "OBJ//flag.obj");
+	meshList[GEO_SHOPBANNER]->textureID = LoadTGA("Image//Shopbanner.tga");
 
 	Mtx44 projection;
 	projection.SetToPerspective(70.0f, 4.0f / 3.0f, 0.1f, 5000.0f);
@@ -1044,7 +1050,15 @@ void Assignment3::Render()
 	{
 		RenderSkybox();
 	}
-
+	//Watertank
+	if (gameState == 2)
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(40, -1, 0);
+		modelStack.Scale(3, 3, 3);
+		RenderMesh(meshList[GEO_WATERTANK], true);
+		modelStack.PopMatrix();
+	}
 	// mountains
 	for (int i = 0; i < 360; i += 30)
 	{
