@@ -315,6 +315,11 @@ void Assignment3::Init()
 	AstronautOpt[OPT_BUY_HARVESTOR] = "Purchase a Harvestor?";
 	AstronautOpt[OPT_BUY_GRENADES] = "Purchase a Grenade?";
 	AstronautOpt[OPT_BACK_TO_MAIN] = "Back to Game?";
+
+	// Sets words for Pause Menu(includes death and restart menu)
+	PauseOpt[P_OPT_UNPAUSE] = "Unpause?";
+	PauseOpt[P_OPT_RESTART] = "Restart?";
+	PauseOpt[P_OPT_QUITGAME] = "Quit Game?";
 }
 
 static float ROT_LIMIT = 45.f;
@@ -394,6 +399,74 @@ void Assignment3::Update(double dt)
 		camera.OnControls = false;
 	}
 
+	if (Application::IsKeyPressed('P') && gameState != GS_PAUSE)
+	{
+		if (tempGS != GS_PAUSE)
+		{
+			tempGS = gameState;
+		}
+		gameState = GS_PAUSE;
+	}
+
+	// GS PAUSE
+	if (gameState == GS_PAUSE)
+	{
+		CameraMouseUpdate = false;
+		debouncePauseUI.TimeCountDown(dt);
+		if (((Application::IsKeyPressed('S')) || (Application::IsKeyPressed(VK_DOWN))) && (debouncePauseUI.GetTimeNow() <= 0))
+		{
+			if (pauseScreenCursor != (NUM_PAUSE_OPTIONS - 1))
+			{
+				pauseScreenCursor++;
+			}
+			else
+			{
+				pauseScreenCursor = 0;
+			}
+			debouncePauseUI.resetTime();
+		}
+		if (((Application::IsKeyPressed('W')) || (Application::IsKeyPressed(VK_UP))) && (debouncePauseUI.GetTimeNow() <= 0))
+		{
+			if (pauseScreenCursor != 0)
+			{
+				pauseScreenCursor--;
+			}
+			else
+			{
+				pauseScreenCursor = NUM_PAUSE_OPTIONS - 1;
+			}
+			debouncePauseUI.resetTime();
+		}
+		if (Application::IsKeyPressed(VK_RETURN) && debouncePauseUI.GetTimeNow() <= 0)
+		{
+			switch (pauseScreenCursor)
+			{
+			case(P_OPT_UNPAUSE) :
+				gameState = tempGS;
+				CameraMouseUpdate = true;
+				break;
+			case(P_OPT_RESTART) :
+				sound.pause();
+				f.flagIsBlue = false;
+				f.flagheight = 2.5;
+				gameState = tempGS;
+				isCapturing = false;
+				isCaptured = false;
+				bossDead = false;
+				bossAlive = false;
+				playDead = false;
+				Boss.EnemySetHp(3000);
+				player.Retry = 3;
+				CameraMouseUpdate = true;
+				break;
+			case(P_OPT_QUITGAME) :
+				quitGame = true;
+				break;
+			}
+		}
+	}
+
+	// Gameover screen
 	if (gameState == GS_GAMEOVER)
 	{
 		if (playDead == false)
@@ -402,17 +475,51 @@ void Assignment3::Update(double dt)
 			playDead = true;
 			sound.playSoundThreaded("Music/death.mp3");
 		}
+		CameraMouseUpdate = false;
 		camera.OnControls = false;
-		if (Application::IsKeyPressed(VK_RETURN))
+		debouncePauseUI.TimeCountDown(dt);
+		if (((Application::IsKeyPressed('S')) || (Application::IsKeyPressed(VK_DOWN))) && (debouncePauseUI.GetTimeNow() <= 0))
 		{
-			CameraMouseUpdate = true;
-			player.gameOver();
-			pistol.Damage = pistol.initialDamage;
-			SniperRifle.Damage = SniperRifle.initialDamage;
-			a.resetAllUpgrades();
-			EmptyVector();
-			gameState = GS_MAIN;
-			playDead = false;
+			if (quitGameCursor == 0)
+			{
+				quitGameCursor = 1;
+			}
+			else
+			{
+				quitGameCursor = 0;
+			}
+			debouncePauseUI.resetTime();
+		}
+		if (((Application::IsKeyPressed('W')) || (Application::IsKeyPressed(VK_UP))) && (debouncePauseUI.GetTimeNow() <= 0))
+		{
+			if (quitGameCursor == 0)
+			{
+				quitGameCursor = 1;
+			}
+			else
+			{
+				quitGameCursor = 0;
+			}
+			debouncePauseUI.resetTime();
+		}
+		if (Application::IsKeyPressed(VK_RETURN) && debouncePauseUI.GetTimeNow() <= 0)
+		{
+			switch (quitGameCursor)
+			{
+			case(P_OPT_RESTART) :
+				player.gameOver();
+				pistol.Damage = pistol.initialDamage;
+				SniperRifle.Damage = SniperRifle.initialDamage;
+				a.resetAllUpgrades();
+				EmptyVector();
+				gameState = GS_MAIN;
+				CameraMouseUpdate = true;
+				playDead = false;
+				break;
+			case(P_OPT_QUITGAME) :
+				quitGame = true;
+				break;
+			}
 		}
 	}
 
@@ -434,12 +541,6 @@ void Assignment3::Update(double dt)
 	infoscreen.TimeCountDown(dt);
 
 	//mouse rotation of camera
-	if (Application::IsKeyPressed(0x50) && countdownCameraLock.GetTimeNow() <= 0)
-	{
-		if (CameraMouseUpdate == false){ CameraMouseUpdate = true; }
-		else{ CameraMouseUpdate = false; }
-		countdownCameraLock.resetTime();
-	}
 	if (CameraMouseUpdate == true)
 	{
 		camera.Update(dt,static_cast<int>(gameState));
@@ -1126,7 +1227,7 @@ void Assignment3::Render()
 	}
 
 	// UI window for astronaut / died / gameover
-	if (gameState == GS_ASTRONAUT_INTERACTION || gameState == GS_DIED || gameState == GS_GAMEOVER)
+	if (gameState == GS_ASTRONAUT_INTERACTION || gameState == GS_DIED || gameState == GS_GAMEOVER || gameState == GS_PAUSE)
 	{
 		modelStack.PushMatrix();
 		RenderModelOnScreen(meshList[GEO_UI], false, Vector3(45, 15, 1), 40, 30, 2, Vector3(90, 0, 0));
@@ -1147,8 +1248,17 @@ void Assignment3::Render()
 	{
 		modelStack.PushMatrix();
 		RenderTextOnScreen(meshList[GEO_TEXT], "You used up all your retries!", Color(1, 0, 1), 3.7f, 6, 8);
-		RenderTextOnScreen(meshList[GEO_TEXT], "Press Enter to restart the game.", Color(1, 0, 1), 3.7f, 6, 7);
+		RenderTextOnScreen(meshList[GEO_TEXT], PauseOpt[quitGameCursor], Color(1, 0, 1), 3.7f, 6, 7);
 		modelStack.PopMatrix();
+	}
+
+	if (gameState == GS_PAUSE)
+	{
+		modelStack.PushMatrix();
+		RenderTextOnScreen(meshList[GEO_TEXT], "Game is Paused.", Color(1, 0, 1), 3.7f, 6, 8);
+		RenderTextOnScreen(meshList[GEO_TEXT], PauseOpt[pauseScreenCursor], Color(1, 0, 1), 3.7f, 6, 7);
+		modelStack.PopMatrix();
+
 	}
 	//UI Screen & Player Health
 	if (isZoom == false)

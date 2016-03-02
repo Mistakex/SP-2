@@ -132,10 +132,12 @@ class Assignment3 : public Scene
 		GS_SCENE3,
 		GS_DIED,
 		GS_GAMEOVER,
+		GS_PAUSE,
 		NUM_GAMESTATES
 	};
 
 	GameStates gameState;
+	GameStates tempGS;
 
 public:
 	Assignment3();
@@ -275,6 +277,20 @@ private:
 	MS modelStack, viewStack, projectionStack;
 
 	Light light[2];
+
+	
+	enum PauseOptions
+	{
+		P_OPT_RESTART,
+		P_OPT_QUITGAME,
+		P_OPT_UNPAUSE,
+		NUM_PAUSE_OPTIONS
+	};
+
+	string PauseOpt[NUM_PAUSE_OPTIONS];
+	Countdown debouncePauseUI = Countdown(0.2f);
+	bool quitGameCursor = 0; // for after 3 retries are used
+	int pauseScreenCursor = 0;
 };
 
 #endif
