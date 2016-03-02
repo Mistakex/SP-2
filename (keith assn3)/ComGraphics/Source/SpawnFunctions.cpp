@@ -1,7 +1,15 @@
 #include "Assignment3.h"
 
 
+/******************************************************************************/
+/*!
+\brief	spawn alien
 
+\param	dt
+delta time value
+
+*/
+/******************************************************************************/
 void Assignment3::AlienSpawn(double dt)
 {
 	if ((countdownAlienSpawn.TimeCountDown(dt) <= 0) && (Aliens.size()) < 20 && (f.flagIsBlue == true))
@@ -26,6 +34,17 @@ void Assignment3::AlienSpawn(double dt)
 		}
 	}
 }
+/******************************************************************************/
+/*!
+\brief	boss ability to spawn normal aliens
+
+\param	AlienType
+Alien type spawned
+\param	dt
+delta time value
+
+*/
+/******************************************************************************/
 void Assignment3::AlienSpawnByBoss(double dt ,short AlienType)
 {
 	countdownAlienSpawnByBoss.TimeCountDown(dt);
@@ -51,6 +70,15 @@ void Assignment3::AlienSpawnByBoss(double dt ,short AlienType)
 		}
 	}
 }
+/******************************************************************************/
+/*!
+\brief	spawn rocks
+
+\param	dt
+delta time value
+
+*/
+/******************************************************************************/
 void Assignment3::RockSpawn(double dt)
 {
 	if (countdownRock.TimeCountDown(dt) <= 0 && Rocks.size() < 10)
@@ -66,7 +94,13 @@ void Assignment3::RockSpawn(double dt)
 		}
 	}
 }
+/******************************************************************************/
+/*!
+\brief	Spawn Turret by finding the intersection to the ground
 
+
+*/
+/******************************************************************************/
 void Assignment3::TurretSpawn()
 {
 	float cutOff = 1; //used to mutiply camera view to get intersection with 0
