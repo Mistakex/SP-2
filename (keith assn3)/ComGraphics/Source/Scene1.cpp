@@ -1,11 +1,14 @@
 #include "Assignment3.h"
 
+static float SpaceTruckRotation = 0.f;
 
 void Assignment3::Scene1Updates(double dt)
 {
-	light[0].type = Light::LIGHT_DIRECTIONAL;
-	light[0].position.Set(0.f, 5.f, 20.f);
-	light[0].power = 1;
+	//space truck rotation
+	if (SpaceTruckRotation < 360.f)
+		SpaceTruckRotation += 10.f * (float)dt;
+	else
+		SpaceTruckRotation = 0.f;
 
 	//////////////////Astronaut//////////////////
 	debounceUI.TimeCountDown(dt);
@@ -149,6 +152,8 @@ void Assignment3::Scene1Updates(double dt)
 
 	//////////////////////////////////////////////
 }
+
+
 void Assignment3::Scene1Render()
 {
 	//POLE
@@ -159,6 +164,13 @@ void Assignment3::Scene1Render()
 	RenderAstronaut();
 	//CRATERS;
 	RenderCraters();
+
+	//SPACETRUCK
+	modelStack.PushMatrix();
+	modelStack.Rotate(-SpaceTruckRotation, 0, 1, 0);
+	modelStack.Translate(150,-1,0);
+	RenderMesh(meshList[GEO_SPACETRUCK], true);
+	modelStack.PopMatrix();
 
 	//SPACESHIP
 	if (isCaptured || ship.updateCutscene)

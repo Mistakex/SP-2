@@ -82,6 +82,8 @@ class Assignment3 : public Scene
 		GEO_HARVESTOR,
 		//PILLAR
 		GEO_PILLAR,
+		//TRUCK
+		GEO_SPACETRUCK,
 		NUM_GEOMETRY,
 	};
 	enum UNIFORM_TYPE

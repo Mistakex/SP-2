@@ -128,9 +128,9 @@ void Assignment3::Init()
 	glUseProgram(m_programID);
 
 	light[0].type = Light::LIGHT_DIRECTIONAL;
-	light[0].position.Set(0.f, 5.f, 20.f);
-	light[0].color.Set(1, 1, 1);
-	light[0].power = 1;
+	light[0].color.Set(1, 0.9, 1);
+	light[0].position.Set(0.f, -5.f, 0.f);
+	light[0].power = 0.95;
 	light[0].kC = 1.f;
 	light[0].kL = 0.1f;
 	light[0].kQ = 0.001f;
@@ -139,9 +139,10 @@ void Assignment3::Init()
 	light[0].exponent = 3.f;
 	light[0].spotDirection.Set(0.0f, 1.0f, 0.0f);
 
-	light[1].type = Light::LIGHT_SPOT;
+	light[1].type = Light::LIGHT_DIRECTIONAL;
 
 	light[1].color.Set(1, 1, 1);
+	light[1].position.Set(0.f, 15.f, 0.f);
 	light[1].power = 0.5;
 	light[1].kC = 1.f;
 	light[1].kL = 0.01f;
@@ -149,8 +150,6 @@ void Assignment3::Init()
 	light[1].cosCutoff = cos(Math::DegreeToRadian(30));
 	light[1].cosInner = cos(Math::DegreeToRadian(10));
 	light[1].exponent = 3.f;
-	light[1].position.Set(camera.position.x, camera.position.y, camera.position.z);
-	light[1].spotDirection.Set(camera.target.x, camera.target.y, camera.target.z);
 
 	// Pass information
 	glUniform1i(m_parameters[U_NUMLIGHTS], 2);
@@ -299,6 +298,9 @@ void Assignment3::Init()
 	meshList[GEO_HARVESTOR]->textureID = LoadTGA("Image//Harvestor.tga");
 
 	meshList[GEO_PILLAR] = MeshBuilder::GenerateCylinder("Pillar", Color(1, 1, 1), 30);
+
+	meshList[GEO_SPACETRUCK] = MeshBuilder::GenerateOBJ("Spacetruck", "OBJ//LandObject.obj");
+	meshList[GEO_SPACETRUCK]->textureID = LoadTGA("Image//LandObject.tga");
 
 	Mtx44 projection;
 	projection.SetToPerspective(70.0f, 4.0f / 3.0f, 0.1f, 5000.0f);
@@ -606,11 +608,6 @@ void Assignment3::Update(double dt)
 			}
 		}
 
-		// updating 2nd light
-		light[1].position.Set(camera.position.x + camera.target.x / 15,
-			camera.position.y + camera.target.y / 15,
-			camera.position.z + camera.target.z / 15);
-		light[1].spotDirection.Set(-(camera.target.x - camera.position.x), -(camera.target.y - camera.position.y), -(camera.target.z - camera.position.z));
 
 		if (gameState == GS_MAIN || gameState == GS_ASTRONAUT_INTERACTION || gameState == GS_SCENE2)
 		{
@@ -685,6 +682,7 @@ void Assignment3::Update(double dt)
 				// If player has no Grenades at all.
 				if (player.noOfGrenadesHeld > 0)
 				{
+					sound.decreaseVolume();
 					sound.playSoundThreaded("Music/throwgrenade.wav");
 					GrenadesFlying.push_back(Grenade(Vector3(camera.position.x, camera.position.y, camera.position.z), Vector3(camera.target.x, camera.target.y, camera.target.z), a.GrenadeDamage, a.GrenadeRange, 3.0f));
 					GrenadeThrowDelay.resetTime();
@@ -1033,28 +1031,10 @@ void Assignment3::Render()
 	}
 	else
 	{
-		Position lightPosition_cameraspace = viewStack.Top() * light[0].position;
+		Position lightPosition_cameraspace = viewStack.Top() * light[1].position;
 		glUniform3fv(m_parameters[U_LIGHT1_POSITION], 1, &lightPosition_cameraspace.x);
 	}
 
-	if (light[2].type == Light::LIGHT_DIRECTIONAL)
-	{
-		Vector3 lightDir(light[2].position.x, light[2].position.y, light[2].position.z);
-		Vector3 lightDirection_cameraspace = viewStack.Top() * lightDir;
-		glUniform3fv(m_parameters[U_LIGHT1_POSITION], 1, &lightDirection_cameraspace.x);
-	}
-	else if (light[2].type == Light::LIGHT_SPOT)
-	{
-		Position lightPosition_cameraspace = viewStack.Top() * light[2].position;
-		glUniform3fv(m_parameters[U_LIGHT1_POSITION], 1, &lightPosition_cameraspace.x);
-		Vector3 spotDirection_cameraspace = viewStack.Top() * light[2].spotDirection;
-		glUniform3fv(m_parameters[U_LIGHT1_SPOTDIRECTION], 1, &spotDirection_cameraspace.x);
-	}
-	else
-	{
-		Position lightPosition_cameraspace = viewStack.Top() * light[0].position;
-		glUniform3fv(m_parameters[U_LIGHT1_POSITION], 1, &lightPosition_cameraspace.x);
-	}
 
 	//skybox
 	if (gameState != GS_SCENE3)

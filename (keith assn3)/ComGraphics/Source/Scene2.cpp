@@ -35,25 +35,11 @@ void Assignment3::Scene2Updates()
 	{
 		gameState = GS_SCENE3;
 		camera.position.Set(0, 0, 68);
-		light[0].type = Light::LIGHT_POINT;
-		light[0].position.Set(0,30.0f, 0);
-		light[0].power = 10.0f;
 		EmptyVector();
 		Pillars.push_back(CollisionObject(Vector3(30, 0, 30), 5.f));
 		Pillars.push_back(CollisionObject(Vector3(-30, 0, -30), 5.f));
 		Pillars.push_back(CollisionObject(Vector3(-30, 0, 30), 5.f));
 		Pillars.push_back(CollisionObject(Vector3(30, 0, -30), 5.f));
 		sound.playSoundThreaded("Music/bossfight.mp3");
-	}
-
-	if (player.GetHp() <= 0)
-	{
-		player.reset();
-		camera.Reset();
-		gameState = GS_DIED;
-		if (player.Retry <= 0)
-		{
-			gameState = GS_GAMEOVER;
-		}
 	}
 }
