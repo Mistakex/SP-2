@@ -70,6 +70,8 @@ void Assignment3::RockSpawn(double dt)
 void Assignment3::TurretSpawn()
 {
 	float cutOff = 1; //used to mutiply camera view to get intersection with 0
+	bool check = true;
+
 	if (camera.target.y < -0.3f)
 	{
 		while (TurretPos.y >= -1)
@@ -77,12 +79,22 @@ void Assignment3::TurretSpawn()
 			TurretPos = camera.view * cutOff;
 			cutOff += 0.1f;
 		}
-		player.ObtainResources(-50);
-		Turret newTurret(100, a.TurretNewDmg, Vector3(TurretPos.x + camera.position.x, 0, TurretPos.z + camera.position.z));
-		Turrets.push_back(newTurret);
-		countdownTurretSpawn.resetTime();
-		TurretPos = (0.f, 0.f, 0.f);//reset the value of the variable
-		player.WeaponState = 1;
-		CountdownSniperRifle.resetTime();
+		for (unsigned int i = 0; i < Pillars.size(); ++i)
+		{
+			if (getMagnitude(Vector3(TurretPos.x + camera.position.x, 0, TurretPos.z + camera.position.z), Pillars[i].position) < Pillars[i].circleRange)
+			{
+				check = false;
+			}
+		}
+		if (check == true)
+		{
+			player.ObtainResources(-50);
+			Turret newTurret(100, a.TurretNewDmg, Vector3(TurretPos.x + camera.position.x, 0, TurretPos.z + camera.position.z));
+			Turrets.push_back(newTurret);
+			countdownTurretSpawn.resetTime();
+			TurretPos = (0.f, 0.f, 0.f);//reset the value of the variable
+			player.WeaponState = 1;
+			CountdownSniperRifle.resetTime();
+		}
 	}
 }
