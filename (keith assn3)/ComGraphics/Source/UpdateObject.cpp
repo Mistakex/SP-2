@@ -25,7 +25,7 @@ void Assignment3::TurretUpdate(double dt)
 		}
 		else if (Aliens.empty() == false)
 		{
-			short s = 0;
+			size_t s = 0;
 			while (s < Aliens.size())
 			{
 				if (getMagnitude(Turrets[i].GetPosition(), Aliens[s].position) <= 15.f)
@@ -90,7 +90,7 @@ void Assignment3::HarvestorUpdate(double dt)
 {
 	if (a.Harvestor.empty() == false && Rocks.empty() == false)
 	{
-		for (int i = 0; i < a.Harvestor.size(); i++)
+		for (unsigned int i = 0; i < a.Harvestor.size(); i++)
 		{
 			a.Harvestor[i].MoveTowards(Rocks[0].position, dt);
 			if (getMagnitude(a.Harvestor[i].Position, Rocks[0].position) <= 4)
@@ -109,7 +109,7 @@ void Assignment3::GrenadeUpdate(double dt)
 {
 	if (GrenadesFlying.empty() == false)
 	{
-		for (int i = 0; i < GrenadesFlying.size(); i++)
+		for (unsigned int i = 0; i < GrenadesFlying.size(); i++)
 		{
 			GrenadesFlying[i].ThrowGrenade(dt);
 		}
@@ -120,7 +120,7 @@ void Assignment3::GrenadeUpdate(double dt)
 		}
 		if (GrenadesFlying[0].throwGrenade.GetTimeNow() <= 0)
 		{
-			for (int i = 0; i < Aliens.size(); i++)
+			for (unsigned int i = 0; i < Aliens.size(); i++)
 			{
 				GrenadesFlying[0].DealDamage(Aliens[i]);
 			}

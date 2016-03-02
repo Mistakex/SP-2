@@ -63,7 +63,7 @@ bool Enemy::GetShooting()
 
 void Enemy::EnemyMove(double dt, Player *p, vector<Turret> *Turrets)
 {
-	fireDelay += dt;
+	fireDelay += (float)dt;
 
 	Vector3 view = Vector3(0, 0, 0);
 	if (target != position)
@@ -73,11 +73,11 @@ void Enemy::EnemyMove(double dt, Player *p, vector<Turret> *Turrets)
 	{
 		if (GetDistance() > range + KiteTimer)
 		{
-			position += Vector3(view.x,0,view.z)*MoveSpeed*dt;
+			position += Vector3(view.x,0.f,view.z)*(float)MoveSpeed*(float)dt;
 			if (Shooting == true)
 			{
 				if (armRotate > 0)
-					armRotate -= 90 * dt;
+					armRotate -= (float)(90 * dt);
 				projectile.moveBullet(dt, 70.f);
 				checkBulletCollision(p,Turrets);
 			}
@@ -120,7 +120,7 @@ void Enemy::EnemyMove(double dt, Player *p, vector<Turret> *Turrets)
 		else
 		{
 			if (armRotate > 0)
-				armRotate -= 90 * dt;
+				armRotate -= (float)(90 * dt);
 			BossSpawnMinions(dt);
 		}
 	}
@@ -142,16 +142,16 @@ void Enemy::EnemySetHp(int Hp)
 
 void Enemy::BossSpawnMinions(const double &dt)
 {
-	spawnDelay += dt;
+	spawnDelay += (float)dt;
 	float speed = 5;
 	if (position.y < 10 && startSpawningMinions)
 	{
-		position.y += speed * dt;
+		position.y += speed * (float)dt;
 	}
 	else
 	{
 		startSpawningMinions = false;
-		position.y -= speed * dt;
+		position.y -= (float)(speed * dt);
 		if (position.y <= 0)
 		{
 			position.y = 0;
@@ -167,7 +167,7 @@ void Enemy::EnemyShootAt(const double &dt, const float &startShooting, const flo
 		if (Shooting == true)
 		{
 			if (armRotate > 0)
-				armRotate -= 90 * dt;
+				armRotate -= (float)(90 * dt);
 			projectile.moveBullet(dt, 60.f);
 			checkBulletCollision(p,Turrets);
 		}
@@ -187,7 +187,7 @@ void Enemy::EnemyShootAt(const double &dt, const float &startShooting, const flo
 	{
 		if (armRotate < 90)
 		{
-			armRotate += 90 * dt;
+			armRotate += (float)(90 * dt);
 		}
 		Shooting = false;
 	}
@@ -226,7 +226,7 @@ void Enemy::BossShootAt(const double &dt, const float &startShooting, const floa
 	{
 		if (armRotate < 90)
 		{
-			armRotate += 90 * dt;
+			armRotate += (float)(90 * dt);
 		}
 		Shooting = false;
 	}
@@ -251,9 +251,9 @@ void Enemy::EnemyKite(double dt)
 			view = (target - position).Normalized();
 		Vector3 right = view.Cross(Vector3(0, 1, 0));
 		if (moveRight == true)
-			position += right*(MoveSpeed / 4)*dt;
+			position += right*((float)MoveSpeed / 4.f)*(float)dt;
 		else
-			position -= right*(MoveSpeed / 4)*dt;
+			position -= right*((float)MoveSpeed / 4.f)*(float)dt;
 	}
 }
 
@@ -281,7 +281,7 @@ void Enemy::update(Camera3 camera,const double &dt, Player *p,vector<Turret> *Tu
 {
 	if (redAlien)
 	{
-		redTimer += dt;
+		redTimer += (float)dt;
 		if (redTimer > 0.3f)
 		{
 			redAlien = false;

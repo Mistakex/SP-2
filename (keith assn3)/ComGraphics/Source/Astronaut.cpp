@@ -31,8 +31,8 @@ void Astronaut::UpgradeWeapon(Weapon& weap,Player& p)
 	else
 	{
 		p.ObtainResources(-(weap.getUpgradeCost()));
-		weap.setUpgradeCost(weap.getUpgradeCost() * 1.5);
-		weap.Damage *= 1.5;
+		weap.setUpgradeCost(weap.getUpgradeCost() * (int)1.5);
+		weap.Damage *= (int)1.5;
 		upgradeSuccess = true;
 		enablePurchaseWindow = false;
 	}
@@ -49,7 +49,7 @@ void Astronaut::UpgradeTurret(Player& p)
 	else
 	{
 		p.ObtainResources(-TurretNewDmg);
-		TurretNewDmg *= 1.5;
+		TurretNewDmg *= (int)1.5;
 		upgradeSuccess = true;
 		enablePurchaseWindow = false;
 	}
@@ -73,7 +73,7 @@ void Astronaut::PurchaseHarvestor(Player& p)
 	}
 	else
 	{
-		Harvestors newHarvestor((0, 0, 0), 0.5f);
+		Harvestors newHarvestor(Vector3(0, 0, 0), 0.5f);
 		Harvestor.push_back(newHarvestor);
 		p.ObtainResources(-50);
 		purchaseSuccess = true;

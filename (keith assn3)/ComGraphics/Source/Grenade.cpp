@@ -20,15 +20,15 @@ void Grenade::ThrowGrenade(double dt)
 	{
 		if (throwGrenade.GetTimeNow()> 2.0f)
 		{
-			Position += View*dt*10;
+			Position += View*(float)dt*10.f;
 		}
 		else
 		{
-			Position.x += View.x*dt * 10;
-			Position.z += View.z*dt * 10;
+			Position.x += View.x*(float)dt * 10;
+			Position.z += View.z*(float)dt * 10;
 			if (Position.y >= -1)
 			{
-				Position.y -= View.y*dt*10;
+				Position.y -= View.y*(float)dt*10.f;
 			}
 		}
 	}
@@ -36,12 +36,12 @@ void Grenade::ThrowGrenade(double dt)
 	{
 		if (Position.y >= -1)
 		{
-			Position.x += View.x*dt *10;
-			Position.z += View.z*dt *10;
-			Position.y += View.y*dt *10;
+			Position.x += View.x*(float)dt *10;
+			Position.z += View.z*(float)dt * 10;
+			Position.y += View.y*(float)dt * 10;
 		}
 	}
-	GrenadeRotation+=180*dt;
+	GrenadeRotation += 180 * (float)dt;
 }
 void Grenade::LookAt()
 {
@@ -77,7 +77,7 @@ Vector3 Grenade::GetPosition()
 }
 void Grenade::GetExplosion()
 {
-	size += 0.11*(Range / 2);
+	size += 0.11f*((float)Range / 2.f);
 }
 Grenade::~Grenade()
 {

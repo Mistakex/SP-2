@@ -964,7 +964,7 @@ void Assignment3::Render()
 	RenderAstronautInteractions();
 
 	//Harvestors
-	for (int i = 0; i < a.Harvestor.size(); i++)
+	for (unsigned int i = 0; i < a.Harvestor.size(); i++)
 	{
 		modelStack.PushMatrix();
 		modelStack.Translate(a.Harvestor[i].Position.x, 0, a.Harvestor[i].Position.z);
@@ -974,13 +974,13 @@ void Assignment3::Render()
 		modelStack.PopMatrix();
 	}
 	//GRENADES
-	for (int i = 0; i < GrenadesFlying.size(); i++)
+	for (unsigned int i = 0; i < GrenadesFlying.size(); i++)
 	{
 		modelStack.PushMatrix();
 		modelStack.Translate(GrenadesFlying[i].GetPosition().x, GrenadesFlying[i].GetPosition().y, GrenadesFlying[i].GetPosition().z);
 		modelStack.Rotate(GrenadesFlying[i].LookAtDirection, 0, 0, 1);
 		modelStack.Rotate(GrenadesFlying[i].GrenadeRotation, 1, 0, 0);
-		modelStack.Scale(0.1, 0.1 ,0.1);
+		modelStack.Scale(0.1f, 0.1f ,0.1f);
 		RenderMesh(meshList[GEO_GRENADE], true);
 		modelStack.PopMatrix();
 
@@ -1043,10 +1043,10 @@ void Assignment3::Render()
 		RenderDome(40, 0, -1, 0);
 	}
 	//Aliens HP
-	for (int i = 0; i < Aliens.size(); i++)
+	for (unsigned int i = 0; i < Aliens.size(); i++)
 	{
 		modelStack.PushMatrix();
-		modelStack.Translate(Aliens[i].position.x, Aliens[i].position.y + 0.5, Aliens[i].position.z);
+		modelStack.Translate(Aliens[i].position.x, Aliens[i].position.y + 0.5f, Aliens[i].position.z);
 		modelStack.Rotate(Aliens[i].findDirection() - 180, 0, 1, 0);
 		modelStack.Scale(0.5, 0.5, 0.5);
 		RenderText(meshList[GEO_TEXT], std::to_string(Aliens[i].GetEnemyHp()), Color(0, 1, 0));
@@ -1147,15 +1147,15 @@ void Assignment3::Render()
 	if (isZoom == false)
 	{
 		modelStack.PushMatrix();
-		glBlendFunc(1.5, 1);
+		glBlendFunc(static_cast<GLenum>(1.5), static_cast<GLenum>(1));
 		RenderModelOnScreen(meshList[GEO_UI], false, Vector3(30, 11, 11), 14.5, 55, 5, Vector3(90, 0, 0));
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		modelStack.PushMatrix();
-		RenderModelOnScreen(meshList[GEO_HEALTH], false, Vector3(player.GetHp() * 0.2, 2, 0), 22 - (157 - player.GetHp())*0.1, 57.7, 7, Vector3(90, 0, 0));
-		RenderTextOnScreen(meshList[GEO_TEXT], "HP: ", Color(1, 0, 1), 2, 1.3, 28.3);
-		RenderTextOnScreen(meshList[GEO_TEXT], std::to_string(player.GetHp()), Color(1, 0, 1), 2, 2.2, 28.3);
-		RenderTextOnScreen(meshList[GEO_TEXT], "Retries: ", Color(1, 0, 1), 2, 1.3, 26.3);
-		RenderTextOnScreen(meshList[GEO_TEXT], std::to_string(player.Retry), Color(1, 0, 1), 2, 4, 26.3);
+		RenderModelOnScreen(meshList[GEO_HEALTH], false, Vector3(player.GetHp() * 0.2f, 2.f, 0.f), 22.f - (157.f - (float)player.GetHp())*0.1f, 57.7f, 7.f, Vector3(90.f, 0.f, 0.f));
+		RenderTextOnScreen(meshList[GEO_TEXT], "HP: ", Color(1, 0, 1), 2.f, 1.3f, 28.3f);
+		RenderTextOnScreen(meshList[GEO_TEXT], std::to_string(player.GetHp()), Color(1, 0, 1), 2.f, 2.2f, 28.3f);
+		RenderTextOnScreen(meshList[GEO_TEXT], "Retries: ", Color(1, 0, 1), 2.f, 1.3f, 26.3f);
+		RenderTextOnScreen(meshList[GEO_TEXT], std::to_string(player.Retry), Color(1, 0, 1), 2.f, 4.f, 26.3f);
 		modelStack.PopMatrix();
 		modelStack.PopMatrix();
 	}
@@ -1163,19 +1163,19 @@ void Assignment3::Render()
 
 	// FRAMERATE
 	modelStack.PushMatrix();
-	RenderTextOnScreen(meshList[GEO_TEXT], framerate.str(), Color(1, 0, 1), 2, 1.3, 25.3);
+	RenderTextOnScreen(meshList[GEO_TEXT], framerate.str(), Color(1, 0, 1), 2.f, 1.3f, 25.3f);
 	modelStack.PopMatrix();
 
 	//RESOURCES
 	modelStack.PushMatrix();
-	RenderTextOnScreen(meshList[GEO_TEXT], resources.str(), Color(1, 0, 1), 2, 1.3, 27.3);
+	RenderTextOnScreen(meshList[GEO_TEXT], resources.str(), Color(1, 0, 1), 2.f, 1.3f, 27.3f);
 	modelStack.PopMatrix();
 
 	// INFO
 	if (isShown == true)
 	{
 		modelStack.PushMatrix();
-		glBlendFunc(1.5, 1);
+		glBlendFunc(static_cast<GLenum>(1.5), static_cast<GLenum>(1));
 		RenderModelOnScreen(meshList[GEO_INFO], false, Vector3(40, 40, 40), 40, 30, 6, Vector3(90, 270, 0));
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		modelStack.PopMatrix();
