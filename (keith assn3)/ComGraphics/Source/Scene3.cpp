@@ -44,7 +44,6 @@ void Assignment3::Scene3Render()
 			Boss.spawnDelay = 0.f;
 		}
 	}
-
 }
 
 void Assignment3::Scene3Updates()
@@ -68,5 +67,16 @@ void Assignment3::Scene3Updates()
 				Aliens[i].projectile.setView(Vector3(0, 0, 0));
 			}
 		}
+	}
+}
+
+void Assignment3::Scene3UI()
+{
+	if (Boss.GetEnemyHp() <= 0)
+	{
+		modelStack.PushMatrix();
+		RenderTextOnScreen(meshList[GEO_TEXT], "YOU WIN!", Color(1, 0, 0), 10.f, 2.75f, 2.5f);
+		RenderTextOnScreen(meshList[GEO_TEXT], "Press 'R' to restart", Color(1, 0, 0),2, 16.f, 10.f);
+		modelStack.PopMatrix();
 	}
 }

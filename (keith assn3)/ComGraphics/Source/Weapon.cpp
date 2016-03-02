@@ -37,10 +37,10 @@ void Weapon::Fire(vector<Enemy> *aliens,Enemy *Boss)
 			hit = true;
 		}
 		bulletCount++;
-	}
-	else
-	{
-		bulletCount = 0;
+		if (bulletCount == AmmoInClip)
+		{
+			bulletCount = 0;
+		}
 	}
 }
 void Weapon::FireSR(vector<Enemy> *aliens,Enemy *Boss)
@@ -54,10 +54,10 @@ void Weapon::FireSR(vector<Enemy> *aliens,Enemy *Boss)
 			hit = true;
 		}
 		bulletCount++;
-	}
-	else
-	{
-		bulletCount = 0;
+		if (bulletCount == AmmoInClip)
+		{
+			bulletCount = 0;
+		}
 	}
 }
 bool Weapon::GetAllowZoom()

@@ -332,6 +332,7 @@ void Assignment3::Update(double dt)
 	//reset everything
 	if (Application::IsKeyPressed('R'))
 	{
+		sound.pause();
 		f.flagIsBlue = false;
 		f.flagheight = 2.5;
 		gameState = GS_MAIN;
@@ -341,6 +342,7 @@ void Assignment3::Update(double dt)
 		bossAlive = false;
 		playDead = false;
 		Boss.EnemySetHp(3000);
+		player.Retry = 3;
 	}
 
 	if (Application::IsKeyPressed('Z'))
@@ -947,7 +949,7 @@ void Assignment3::Render()
 	}
 
 	//axes
-	RenderMesh(meshList[GEO_AXES], false);
+	//RenderMesh(meshList[GEO_AXES], false);
 
 	//floor
 	modelStack.PushMatrix();
@@ -1117,6 +1119,11 @@ void Assignment3::Render()
 		modelStack.PopMatrix();
 	}
 
+	//UI for scene 3
+	if (gameState == GS_SCENE3)
+	{
+		Scene3UI();
+	}
 
 	// UI window for astronaut / died / gameover
 	if (gameState == GS_ASTRONAUT_INTERACTION || gameState == GS_DIED || gameState == GS_GAMEOVER)

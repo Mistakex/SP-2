@@ -49,12 +49,11 @@ void Assignment3::Scene2Updates()
 	if (player.GetHp() <= 0)
 	{
 		player.reset();
-		player.Retry -= 1;
 		camera.Reset();
-
+		gameState = GS_DIED;
 		if (player.Retry <= 0)
 		{
-			CameraMouseUpdate = false;
+			gameState = GS_GAMEOVER;
 		}
 	}
 }

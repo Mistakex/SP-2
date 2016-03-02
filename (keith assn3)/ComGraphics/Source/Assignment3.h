@@ -202,6 +202,7 @@ private:
 	void Scene2Render();
 	void Scene3Render();
 	void Scene3Updates();
+	void Scene3UI();
 	//Remove alien
 	void EmptyVector();
 

@@ -3,6 +3,10 @@
 
 void Assignment3::Scene1Updates(double dt)
 {
+	light[0].type = Light::LIGHT_DIRECTIONAL;
+	light[0].position.Set(0.f, 5.f, 20.f);
+	light[0].power = 1;
+
 	//////////////////Astronaut//////////////////
 	debounceUI.TimeCountDown(dt);
 	if (gameState == GS_ASTRONAUT_INTERACTION)
@@ -157,7 +161,7 @@ void Assignment3::Scene1Render()
 	RenderCraters();
 
 	//SPACESHIP
-	if (f.flagIsBlue || ship.updateCutscene)
+	if (isCaptured || ship.updateCutscene)
 	{
 		modelStack.PushMatrix();
 		modelStack.Translate(ship.position.x, -1 + ship.position.y, ship.position.z);
@@ -179,7 +183,7 @@ void Assignment3::RenderScene1UI()
 		else
 		{
 			modelStack.PushMatrix();
-			RenderTextOnScreen(meshList[GEO_TEXT], "Flag Captured!", Color(0, 1, 0), 5, 6, 10);
+			RenderTextOnScreen(meshList[GEO_TEXT], "Head to the ship!", Color(0, 1, 0), 5, 6, 10);
 			modelStack.PopMatrix();
 		}
 	}

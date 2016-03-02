@@ -32,16 +32,16 @@ void Assignment3::AlienSpawnByBoss(double dt ,short AlienType)
 	if ((Aliens.size()) < 20 && countdownAlienSpawnByBoss.GetTimeNow() <=0)
 	{
 		countdownAlienSpawn.resetTime();
-		float spwanAlienz = (rand()%10)+3;
-		float spwanAlienx = (rand() % 10) + 3;
+		float spwanAlienz = (float)(rand()%10)+3.f;
+		float spwanAlienx = (float)(rand() % 10) + 3.f;
 		if (AlienType == 0)
 		{
-			Enemy newAlien(Vector3(spwanAlienx, 0.f, spwanAlienz), Vector3(camera.position.x, -1.f, camera.position.z), Vector3(0.5, 1, 0.5), 100, 5, 10, 10);
+			Enemy newAlien(Vector3(spwanAlienx, 0.f, spwanAlienz), Vector3(camera.position.x, -1.f, camera.position.z), Vector3(0.5f, 1.f, 0.5f), 100, 5, 10, 10);
 			Aliens.push_back(newAlien);
 		}
 		else if (AlienType == 1)
 		{
-			Enemy newAlien(Vector3(spwanAlienx, 0.f, spwanAlienz), Vector3(camera.position.x, -1.f, camera.position.z), Vector3(0.8, 1, 0.8), 200, 5, 5, 10, 2.0f);
+			Enemy newAlien(Vector3(spwanAlienx, 0.f, spwanAlienz), Vector3(camera.position.x, -1.f, camera.position.z), Vector3(0.8f, 1.f, 0.8f), 200, 5, 5, 10, 2.0f);
 			Aliens.push_back(newAlien);
 		}
 		else
@@ -75,7 +75,7 @@ void Assignment3::TurretSpawn()
 		while (TurretPos.y >= -1)
 		{
 			TurretPos = camera.view * cutOff;
-			cutOff += 0.1;
+			cutOff += 0.1f;
 		}
 		player.ObtainResources(-50);
 		Turret newTurret(100, a.TurretNewDmg, Vector3(TurretPos.x + camera.position.x, 0, TurretPos.z + camera.position.z));
