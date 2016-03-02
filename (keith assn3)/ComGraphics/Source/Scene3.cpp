@@ -5,6 +5,8 @@ void Assignment3::Scene3Render()
 {
 	Boss.bossIsSpawned = true;
 
+	RenderDome(40, 0, -1, 0);
+
 	if (Boss.GetEnemyHp() > 0)
 	{	
 		modelStack.PushMatrix();

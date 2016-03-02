@@ -84,6 +84,8 @@ class Assignment3 : public Scene
 		GEO_PILLAR,
 		//TRUCK
 		GEO_SPACETRUCK,
+		//MOUNTAIN
+		GEO_MOUNTAIN,
 		NUM_GEOMETRY,
 	};
 	enum UNIFORM_TYPE

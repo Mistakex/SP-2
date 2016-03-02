@@ -302,6 +302,9 @@ void Assignment3::Init()
 	meshList[GEO_SPACETRUCK] = MeshBuilder::GenerateOBJ("Spacetruck", "OBJ//LandObject.obj");
 	meshList[GEO_SPACETRUCK]->textureID = LoadTGA("Image//LandObject.tga");
 
+	meshList[GEO_MOUNTAIN] = MeshBuilder::GenerateOBJ("Mountain", "OBJ//mountain.obj");
+	meshList[GEO_MOUNTAIN]->textureID = LoadTGA("Image//mountain.tga");
+
 	Mtx44 projection;
 	projection.SetToPerspective(70.0f, 4.0f / 3.0f, 0.1f, 5000.0f);
 	projectionStack.LoadMatrix(projection);
@@ -1042,13 +1045,24 @@ void Assignment3::Render()
 		RenderSkybox();
 	}
 
+	// mountains
+	for (int i = 0; i < 360; i += 30)
+	{
+		modelStack.PushMatrix();
+		modelStack.Rotate(i, 0, 1, 0);
+		modelStack.Translate(250, -10, 0);
+		modelStack.Scale(100, 100, 100);
+		RenderMesh(meshList[GEO_MOUNTAIN], true);
+		modelStack.PopMatrix();
+	}
+
 	//axes
 	//RenderMesh(meshList[GEO_AXES], false);
 
 	//floor
 	modelStack.PushMatrix();
 	modelStack.Translate(0, -1, 0);
-	modelStack.Scale(300, 1, 300);
+	modelStack.Scale(350, 1, 350);
 	RenderMesh(meshList[GEO_QUAD], true);
 	modelStack.PopMatrix();
 
@@ -1093,9 +1107,7 @@ void Assignment3::Render()
 	RenderTurret();
 	//ALIEN
 	RenderAliens();
-	//PILLARS
 
-	
 	if (gameState == GS_SCENE3)
 	{
 		Scene3Render();
@@ -1134,10 +1146,7 @@ void Assignment3::Render()
 	{
 		RenderDome(10, 0, -1, 0);
 	}
-	if (gameState == GS_SCENE3)
-	{
-		RenderDome(40, 0, -1, 0);
-	}
+
 	//Aliens HP
 	for (unsigned int i = 0; i < Aliens.size(); i++)
 	{
