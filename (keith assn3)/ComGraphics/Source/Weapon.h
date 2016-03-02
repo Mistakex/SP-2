@@ -28,6 +28,7 @@ public:
 	int upgradeCost;
 	int Damage;
 	const int initialDamage;
+	const int initialUC;
 	int AmmoInClip;
 	bool hit;
 private:

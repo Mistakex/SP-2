@@ -458,6 +458,14 @@ void Assignment3::Update(double dt)
 				Boss.EnemySetHp(3000);
 				Boss.bossIsSpawned = false;
 				player.Retry = 3;
+				player.gameOver();
+				pistol.Damage = pistol.initialDamage;
+				SniperRifle.Damage = SniperRifle.initialDamage;
+				a.resetAllUpgrades();
+				a.resetWeaponUpgrades(pistol);
+				a.resetWeaponUpgrades(SniperRifle);
+				EmptyVector();
+				gameState = GS_MAIN;
 				CameraMouseUpdate = true;
 				player.setResources(0);
 				camera.Reset();
@@ -514,6 +522,8 @@ void Assignment3::Update(double dt)
 				pistol.Damage = pistol.initialDamage;
 				SniperRifle.Damage = SniperRifle.initialDamage;
 				a.resetAllUpgrades();
+				a.resetWeaponUpgrades(pistol);
+				a.resetWeaponUpgrades(SniperRifle);
 				EmptyVector();
 				gameState = GS_MAIN;
 				CameraMouseUpdate = true;

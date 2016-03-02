@@ -171,6 +171,11 @@ void Astronaut::UpgradeMedkitHeal(Player& p, Medkit& m)
 	}
 }
 
+void Astronaut::resetWeaponUpgrades(Weapon& weap)
+{
+	weap.Damage = weap.initialDamage;
+	weap.setUpgradeCost(weap.initialUC);
+}
 void Astronaut::resetAllUpgrades()
 {
 	TurretNewDmg = 20;

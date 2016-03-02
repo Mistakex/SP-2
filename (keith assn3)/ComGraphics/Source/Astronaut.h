@@ -39,6 +39,7 @@ public:
 	void UpgradeMedkitHeal(Player& p, Medkit& m);
 
 	// Reset functions for when the player hits game over
+	void resetWeaponUpgrades(Weapon& weap);
 	void resetAllUpgrades();
 	bool purchaseSuccess = false;
 	vector<Harvestors> Harvestor;
