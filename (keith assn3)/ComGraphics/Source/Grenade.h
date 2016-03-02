@@ -1,9 +1,25 @@
+/******************************************************************************/
+/*!
+\file	Grenade.h
+\author Leong Jun Xiang
+\par	email: 152907b@mymail.nyp.edu.sg
+\brief
+Grenade from flying till explosion
+*/
+/******************************************************************************/
 #ifndef GRENADE_H
 #define GRENADE_H
 
 #include "Vector3.h"
 #include "CountDown.h"
 #include "Enemy.h"
+
+/******************************************************************************/
+/*!
+Class Grenade:
+\brief	Grenade stats and updates
+*/
+/******************************************************************************/
 class Grenade
 {
 public:
