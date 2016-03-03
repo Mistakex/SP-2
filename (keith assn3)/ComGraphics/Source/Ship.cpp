@@ -12,7 +12,7 @@ Ship transitions and cutscenes.
 /******************************************************************************/
 /*!
 \brief
-Default constructor for enemy class
+Default constructor for ship class
 \param pos
 Ship position
 \param range
@@ -44,7 +44,7 @@ Ship::~Ship()
 \brief
 Initialization of camera to ship
 \param camera
-Change camera to ship
+Writes the camera to the camera in ship
 */
 /******************************************************************************/
 void Ship::init(Camera3 *camera)
@@ -55,9 +55,9 @@ void Ship::init(Camera3 *camera)
 /******************************************************************************/
 /*!
 \brief
-Cutscene for ship
+Updates the cutscene for ship
 \param dt
-timer for cutscene
+time in between each frame
 */
 /******************************************************************************/
 void Ship::cutscene(const double &dt)

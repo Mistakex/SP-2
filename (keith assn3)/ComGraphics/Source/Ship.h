@@ -4,7 +4,7 @@
 \author Cheng Zi Wei Keith
 \par	email: 152639K@mymail.nyp.edu.sg
 \brief
-Enemies shooting and finding their way to the player, including the boss
+Ship that is used for transition of scenes
 */
 /******************************************************************************/
 
@@ -26,11 +26,11 @@ public:
 	Ship(const Vector3 &pos,const Vector3 &range);
 	~Ship();
 	void init(Camera3 *camera);
-	void cutscene(const double &dt);
-	float fadesize;
-	bool displayFade;
-	bool updateCutscene;
-	bool changeScene;
+	void cutscene(const double &dt); // cutscene update function
+	float fadesize; // size of cutscene fading
+	bool displayFade; // whether or not to display the scene changer
+	bool updateCutscene; // whether or not to update the cutscene
+	bool changeScene; // is the scene changing?
 private:
 	Camera3 *Camera;
 	float cutsceneTimer;
