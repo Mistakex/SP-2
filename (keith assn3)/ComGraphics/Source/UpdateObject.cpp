@@ -7,7 +7,7 @@
 Contains all the update functions for the object
 */
 /******************************************************************************/
-#include "Assignment3.h"
+#include "SP2.h"
 
 /******************************************************************************/
 /*!
@@ -17,7 +17,7 @@ Contains all the update functions for the object
 delta time value
 */
 /******************************************************************************/
-void Assignment3::TurretUpdate(double dt)
+void SP2::TurretUpdate(double dt)
 {
 	for (size_t i = 0; i < Turrets.size(); i++)
 	{
@@ -92,7 +92,7 @@ void Assignment3::TurretUpdate(double dt)
 delta time value
 */
 /******************************************************************************/
-void Assignment3::AlienUpdate(double dt)
+void SP2::AlienUpdate(double dt)
 {
 	for (vector<Enemy>::iterator it = Aliens.begin(); it != Aliens.end();)
 	{
@@ -118,7 +118,7 @@ void Assignment3::AlienUpdate(double dt)
 delta time value
 */
 /******************************************************************************/
-void Assignment3::HarvestorUpdate(double dt)
+void SP2::HarvestorUpdate(double dt)
 {
 	if (a.Harvestor.empty() == false && Rocks.empty() == false)
 	{
@@ -145,7 +145,7 @@ void Assignment3::HarvestorUpdate(double dt)
 delta time value
 */
 /******************************************************************************/
-void Assignment3::GrenadeUpdate(double dt)
+void SP2::GrenadeUpdate(double dt)
 {
 	if (GrenadesFlying.empty() == false)
 	{
@@ -178,7 +178,7 @@ void Assignment3::GrenadeUpdate(double dt)
 \brief	Update for mining
 */
 /******************************************************************************/
-void Assignment3::MiningUpdate()
+void SP2::MiningUpdate()
 {
 	vector<Rock>::iterator i = Rocks.begin();
 	while (i != Rocks.end())

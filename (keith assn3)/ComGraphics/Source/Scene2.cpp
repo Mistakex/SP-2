@@ -7,7 +7,7 @@
 scene2 updates
 */
 /******************************************************************************/
-#include "Assignment3.h"
+#include "SP2.h"
 
 /******************************************************************************/
 /*!
@@ -16,7 +16,7 @@ scene2 updates
 delta time
 */
 /******************************************************************************/
-void Assignment3::EmptyVector()
+void SP2::EmptyVector()
 {
 	while (Aliens.empty() == false)
 	{
@@ -52,7 +52,7 @@ y coordinate
 z coordinate
 */
 /******************************************************************************/
-void Assignment3::RenderDome(float scale, float x, float y, float z)
+void SP2::RenderDome(float scale, float x, float y, float z)
 {
 	modelStack.PushMatrix();
 	modelStack.Translate(x, y, z);
@@ -65,7 +65,7 @@ void Assignment3::RenderDome(float scale, float x, float y, float z)
 \brief	Update for scene2
 */
 /******************************************************************************/
-void Assignment3::Scene2Updates()
+void SP2::Scene2Updates()
 {
 	if (camera.position.x < 5.5f &&camera.position.x >-5.5f && camera.position.z > 17 && camera.position.z < 26)
 	{

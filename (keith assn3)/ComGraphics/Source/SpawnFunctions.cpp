@@ -7,7 +7,7 @@
 Contains all the spawn function
 */
 /******************************************************************************/
-#include "Assignment3.h"
+#include "SP2.h"
 
 
 /******************************************************************************/
@@ -19,7 +19,7 @@ delta time value
 
 */
 /******************************************************************************/
-void Assignment3::AlienSpawn(double dt)
+void SP2::AlienSpawn(double dt)
 {
 	if ((countdownAlienSpawn.TimeCountDown(dt) <= 0) && (Aliens.size()) < 20 && (f.flagIsBlue == true))
 	{
@@ -54,7 +54,7 @@ delta time value
 
 */
 /******************************************************************************/
-void Assignment3::AlienSpawnByBoss(double dt ,short AlienType)
+void SP2::AlienSpawnByBoss(double dt, short AlienType)
 {
 	countdownAlienSpawnByBoss.TimeCountDown(dt);
 	if ((Aliens.size()) < 20 && countdownAlienSpawnByBoss.GetTimeNow() <=0)
@@ -88,7 +88,7 @@ delta time value
 
 */
 /******************************************************************************/
-void Assignment3::RockSpawn(double dt)
+void SP2::RockSpawn(double dt)
 {
 	if (countdownRock.TimeCountDown(dt) <= 0 && Rocks.size() < 10)
 	{
@@ -110,7 +110,7 @@ void Assignment3::RockSpawn(double dt)
 
 */
 /******************************************************************************/
-void Assignment3::TurretSpawn()
+void SP2::TurretSpawn()
 {
 	float cutOff = 1; //used to mutiply camera view to get intersection with 0
 	bool check = true;

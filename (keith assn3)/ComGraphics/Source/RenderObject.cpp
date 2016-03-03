@@ -7,13 +7,13 @@
 Contains different rendering of objects
 */
 /******************************************************************************/
-#include "Assignment3.h"
+#include "SP2.h"
 /******************************************************************************/
 /*!
 \brief	Renders GEO_FLAGPOLE
 */
 /******************************************************************************/
-void Assignment3::RenderPole()
+void SP2::RenderPole()
 {
 	modelStack.PushMatrix();
 	modelStack.Scale(1.5, 2, 1.5);
@@ -29,7 +29,7 @@ void Assignment3::RenderPole()
 \brief	Renders the flag
 */
 /******************************************************************************/
-void Assignment3::RenderFlag()
+void SP2::RenderFlag()
 {
 	if (!f.flagIsBlue)
 	{
@@ -68,7 +68,7 @@ void Assignment3::RenderFlag()
 \brief	funtion that renders the aliens
 */
 /******************************************************************************/
-void Assignment3::RenderAlien(float armRotate,bool isRed)
+void SP2::RenderAlien(float armRotate, bool isRed)
 {
 	modelStack.PushMatrix();
 	modelStack.Translate(0.f, -3.2f, 0.f);
@@ -117,7 +117,7 @@ void Assignment3::RenderAlien(float armRotate,bool isRed)
 \brief	Renders craters on the floor
 */
 /******************************************************************************/
-void Assignment3::RenderCraters()
+void SP2::RenderCraters()
 {
 	for (int i = 0; i < 3; ++i)
 	{
@@ -155,7 +155,7 @@ void Assignment3::RenderCraters()
 \brief	Renders Turrets
 */
 /******************************************************************************/
-void Assignment3::RenderTurret()
+void SP2::RenderTurret()
 {
 	for (size_t i = 0; i < Turrets.size(); i++)
 	{
@@ -187,7 +187,7 @@ void Assignment3::RenderTurret()
 \brief	Renders aliens
 */
 /******************************************************************************/
-void Assignment3::RenderAliens()
+void SP2::RenderAliens()
 {
 	for (size_t i = 0; i < Aliens.size(); ++i)
 	{
@@ -213,7 +213,7 @@ void Assignment3::RenderAliens()
 \brief	Renders astronaut
 */
 /******************************************************************************/
-void Assignment3::RenderAstronaut()
+void SP2::RenderAstronaut()
 {
 	modelStack.PushMatrix();
 	modelStack.Translate(a.GetAstronautPos().x, a.GetAstronautPos().y, a.GetAstronautPos().z);

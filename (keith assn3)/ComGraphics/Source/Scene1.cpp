@@ -7,7 +7,7 @@
 Updates for sccene 1
 */
 /******************************************************************************/
-#include "Assignment3.h"
+#include "SP2.h"
 
 static float SpaceTruckRotation = 0.f;
 
@@ -18,7 +18,7 @@ static float SpaceTruckRotation = 0.f;
 delta time
 */
 /******************************************************************************/
-void Assignment3::Scene1Updates(double dt)
+void SP2::Scene1Updates(double dt)
 {
 	//space truck rotation
 	if (SpaceTruckRotation < 360.f)
@@ -174,7 +174,7 @@ void Assignment3::Scene1Updates(double dt)
 \brief	Render for scene1 only
 */
 /******************************************************************************/
-void Assignment3::Scene1Render()
+void SP2::Scene1Render()
 {
 	//POLE
 	RenderPole();
@@ -219,7 +219,7 @@ void Assignment3::Scene1Render()
 \brief	UI rendering for scene1 only
 */
 /******************************************************************************/
-void Assignment3::RenderScene1UI()
+void SP2::RenderScene1UI()
 {
 	if (f.getMagnitude(camera.position) <= 7.5f)
 	{
@@ -242,7 +242,7 @@ void Assignment3::RenderScene1UI()
 \brief	Render interaction with astronaut for scene1 only
 */
 /******************************************************************************/
-void Assignment3::RenderAstronautInteractions()
+void SP2::RenderAstronautInteractions()
 {
 	if (gameState == GS_ASTRONAUT_INTERACTION && !a.errorWindow)
 	{

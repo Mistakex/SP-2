@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "Assignment3.h"
+#include "SP2.h"
 
 GLFWwindow* m_window;
 const unsigned char FPS = 60; // FPS of this game
