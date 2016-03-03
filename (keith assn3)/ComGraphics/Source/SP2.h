@@ -4,7 +4,7 @@
 \author
 \par	email:
 \brief
-Contains different rendering of objects
+Contains everything related to the SP2 scene
 */
 /******************************************************************************/
 
@@ -35,6 +35,14 @@ Contains different rendering of objects
 #include "Music.h"
 #include <string>
 using std::string;
+
+/******************************************************************************/
+/*!
+Class SP2:
+\brief
+The scene of the entire project. It is a child of Scene
+*/
+/******************************************************************************/
 
 class SP2 : public Scene
 {

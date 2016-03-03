@@ -1,3 +1,13 @@
+/******************************************************************************/
+/*!
+\file	SP2.cpp
+\author 
+\par	email:
+\brief
+The entire SP2 scene
+*/
+/******************************************************************************/
+
 #include "SP2.h"
 #include "GL\glew.h"
 
@@ -20,14 +30,40 @@
 using std::cout;
 using std::endl;
 
+/******************************************************************************/
+/*!
+\brief
+Default constructor of scene
+*/
+/******************************************************************************/
 
 SP2::SP2()
 {
 }
 
+/******************************************************************************/
+/*!
+\brief
+Default destructor of scene
+*/
+/******************************************************************************/
+
 SP2::~SP2()
 {
 }
+
+/******************************************************************************/
+/*!
+\brief
+Gets the magnitude between two vector3s
+\param object
+One of the objects
+\param target
+The other object
+\return
+Returns the distance between the two Vector3s
+*/
+/******************************************************************************/
 
 float SP2::getMagnitude(const Vector3 object, const Vector3 target)
 {
@@ -37,6 +73,13 @@ float SP2::getMagnitude(const Vector3 object, const Vector3 target)
 	a.z = object.z - target.z;
 	return sqrt(pow(a.x, 2) + pow(a.y, 2) + pow(a.z, 2));
 }
+
+/******************************************************************************/
+/*!
+\brief
+Restarts the scene's variables
+*/
+/******************************************************************************/
 
 void SP2::restartScene()
 {
@@ -71,6 +114,14 @@ void SP2::restartScene()
 	gameState = GS_MAIN;
 	CameraMouseUpdate = true;
 }
+
+/******************************************************************************/
+/*!
+\brief
+Initializes the variables in SP2
+*/
+/******************************************************************************/
+
 void SP2::Init()
 {
 	gameState = GS_MAIN;
@@ -372,6 +423,15 @@ static float skyBoxRotate = 0.f; // rotation of skybox
 
 static std::stringstream framerate;
 static std::stringstream resources;
+
+/******************************************************************************/
+/*!
+\brief
+Updates everything in SP2 every frame
+\param dt
+The time in between each frame
+*/
+/******************************************************************************/
 
 void SP2::Update(double dt)
 {
@@ -783,6 +843,17 @@ void SP2::Update(double dt)
 	}
 }
 
+/******************************************************************************/
+/*!
+\brief
+Used to render meshes
+\param *mesh
+The mesh to render
+\param enableLight
+Whether or not to enable light for the mesh
+*/
+/******************************************************************************/
+
 void SP2::RenderMesh(Mesh*mesh, bool enableLight) // rendering of meshes
 {
 	Mtx44 MVP, modelView, modelView_inverse_transpose;
@@ -826,6 +897,13 @@ void SP2::RenderMesh(Mesh*mesh, bool enableLight) // rendering of meshes
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 }
+
+/******************************************************************************/
+/*!
+\brief
+Rendering of Skybox
+*/
+/******************************************************************************/
 
 void SP2::RenderSkybox() // rendering of skybox
 {
@@ -879,6 +957,19 @@ void SP2::RenderSkybox() // rendering of skybox
 	modelStack.PopMatrix();
 }
 
+/******************************************************************************/
+/*!
+\brief
+Rendering of text
+\param *mesh
+Mesh to render
+\param text
+Text to render
+\param color
+Color of text to render
+*/
+/******************************************************************************/
+
 void SP2::RenderText(Mesh* mesh, std::string text, Color color)
 {
 	if (!mesh || mesh->textureID <= 0) //Proper error check
@@ -905,6 +996,25 @@ void SP2::RenderText(Mesh* mesh, std::string text, Color color)
 	glUniform1i(m_parameters[U_TEXT_ENABLED], 0);
 	glEnable(GL_DEPTH_TEST);
 }
+
+/******************************************************************************/
+/*!
+\brief
+Rendering of text on screen
+\param *mesh
+Mesh to render
+\param text
+Text to render
+\param color
+Color of text to render
+\param size
+Size of the text
+\param x
+x-coordinate of the text
+\param y
+y-coordinate of the text
+*/
+/******************************************************************************/
 
 void SP2::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y)
 {
@@ -950,6 +1060,27 @@ void SP2::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float si
 	glEnable(GL_DEPTH_TEST);
 }
 
+/******************************************************************************/
+/*!
+\brief
+Rendering of model on screen
+\param *mesh
+Mesh to render
+\param enableLight
+Whether or not to enable light
+\param size
+Size of the model on the screen
+/param x
+X-coordinate of model
+/param y
+Y-coordinate of model
+/param z
+Z-coordinate of model
+/param rotation
+Rotation of the model on screen
+*/
+/******************************************************************************/
+
 void SP2::RenderModelOnScreen(Mesh *mesh, bool enableLight, Vector3 size, float x, float y, float z, Vector3 rotation) // used to render pickaxe on screen
 {
 
@@ -974,6 +1105,13 @@ void SP2::RenderModelOnScreen(Mesh *mesh, bool enableLight, Vector3 size, float 
 	viewStack.PopMatrix();
 	modelStack.PopMatrix();
 }
+
+/******************************************************************************/
+/*!
+\brief
+Rendering everything in the scene
+*/
+/******************************************************************************/
 
 void SP2::Render()
 {
@@ -1322,6 +1460,13 @@ void SP2::Render()
 
 	
 }
+
+/******************************************************************************/
+/*!
+\brief
+Exiting the scene
+*/
+/******************************************************************************/
 
 void SP2::Exit()
 {
