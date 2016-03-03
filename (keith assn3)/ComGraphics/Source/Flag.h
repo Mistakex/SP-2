@@ -1,8 +1,3 @@
-#ifndef FLAG_H
-#define FLAG_H
-#include"Vector3.h"
-#include "GameObject.h"
-
 /******************************************************************************/
 /*!
 \file	Flag.h
@@ -12,6 +7,11 @@
 Captures enemy flag and flag changes to player's flag.
 */
 /******************************************************************************/
+
+#ifndef FLAG_H
+#define FLAG_H
+#include"Vector3.h"
+#include "GameObject.h"
 
 /******************************************************************************/
 /*!

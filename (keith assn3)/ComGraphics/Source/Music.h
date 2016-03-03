@@ -1,3 +1,13 @@
+/******************************************************************************/
+/*!
+\file	Music.h
+\author Chin Hao Ming
+\par	email: 154158D@mymail.nyp.edu.sg
+\brief
+Play music, increase & decrease volumes.
+*/
+/******************************************************************************/
+
 #ifndef _MUSIC_H
 #define _MUSIC_H
 
@@ -9,6 +19,13 @@
 #include "../include/irrKlang.h"
 using namespace irrklang;
 using std::string;
+
+/******************************************************************************/
+/*!
+Class Music:
+\brief	Status of music and its functions.
+*/
+/******************************************************************************/
 
 class Music
 {
