@@ -1,8 +1,51 @@
 #include "Enemy.h"
 
+/******************************************************************************/
+/*!
+\file	Enemy.cpp
+\author Cheng Zi Wei Keith
+\par	email: 152639K@mymail.nyp.edu.sg
+\brief
+Enemies shooting and finding their way to the player, including the boss
+*/
+/******************************************************************************/
+
+/******************************************************************************/
+/*!
+\brief	
+Default constructor for enemy class
+*/
+/******************************************************************************/
+
 Enemy::Enemy()
 {
 }
+
+/******************************************************************************/
+/*!
+\brief	
+Constructor for Enemy class
+
+\param	pos
+Enemy position
+\param	target
+Enemy target
+\param	range
+The collision range of the enemy for the bullets from weapons
+\param	hp
+Health of the enemy
+\param	attack
+Attack damage of enemy
+\param	movespeed
+Movement speed of enemy
+\param range2
+The range of which the enemy will follow the player until it starts shooting
+\param size
+The size of the enemy
+\param Boss
+To check whether the enemy will follow the patterns of a boss or a regular enemy
+*/
+/******************************************************************************/
 
 Enemy::Enemy(Vector3 pos,Vector3 tar, Vector3 range, int hp, int attack, int movespeed,int range2,float size,bool Boss) : Hp(hp), AttackDamage(attack), MoveSpeed(movespeed)
 {
@@ -26,29 +69,81 @@ Enemy::Enemy(Vector3 pos,Vector3 tar, Vector3 range, int hp, int attack, int mov
 	startSpawningMinions = false;
 }
 
+/******************************************************************************/
+/*!
+\brief	
+Default destructor for enemy class
+*/
+/******************************************************************************/
+
 Enemy::~Enemy()
 {
 }
+
+/******************************************************************************/
+/*!
+\brief	
+A getter function for enemy hp
+\return
+Returns the health of the enemy
+*/
+/******************************************************************************/
 
 int Enemy::GetEnemyHp()
 {
 	return Hp;
 }
 
+/******************************************************************************/
+/*!
+\brief	
+A getter function for enemy attack damage
+\return
+Returns the attack damage of the enemy
+*/
+/******************************************************************************/
+
 int Enemy::GetEnemyAtt()
 {
 	return AttackDamage;
 }
+
+/******************************************************************************/
+/*!
+\brief	
+A getter function for enemy movement speed
+\return
+Returns the attack damage of the enemy
+*/
+/******************************************************************************/
 
 int Enemy::GetMovespeed()
 {
 	return MoveSpeed;
 }
 
+/******************************************************************************/
+/*!
+\brief	
+A getter function for enemy resources
+\return
+Returns the resources the enemy will drop
+*/
+/******************************************************************************/
+
 short Enemy::GetResources()
 {
 	return Resources;
 }
+
+/******************************************************************************/
+/*!
+\brief	
+Finds the distance between the enemy and the target of the enemy
+\return
+Returns the distance between target and enemy
+*/
+/******************************************************************************/
 
 float Enemy::GetDistance()
 {
@@ -56,10 +151,32 @@ float Enemy::GetDistance()
 	return sqrt(pow(view.x, 2) + pow(view.y, 2) + pow(view.z, 2));
 }
 
+/******************************************************************************/
+/*!
+\brief	
+Checks whether the enemy is currently shooting
+\return 
+Returns whether the enemy is currently shooting or not
+*/
+/******************************************************************************/
+
 bool Enemy::GetShooting()
 {
 	return Shooting;
 }
+
+/******************************************************************************/
+/*!
+\brief	
+The code for movement and shooting of enemy and boss is all run here. 
+\param dt
+The time in between each frame
+\param *p
+The player. Used for checking collision between player and the enemy bullet, allowing the player health to be updated
+\param *Turrets
+Used for checking collision between the turrets and the enemy bullet, allowing the turrets health to be updated
+*/
+/******************************************************************************/
 
 void Enemy::EnemyMove(double dt, Player *p, vector<Turret> *Turrets)
 {
@@ -115,7 +232,7 @@ void Enemy::EnemyMove(double dt, Player *p, vector<Turret> *Turrets)
 
 		if (spawnerCounter < 50)
 		{
-			BossShootAt(dt, 0.1f, 0.2f, 5.f, p);
+			BossShootAt(dt, 0.1f, 0.2f);
 		}
 		else
 		{
@@ -126,6 +243,17 @@ void Enemy::EnemyMove(double dt, Player *p, vector<Turret> *Turrets)
 	}
 }
 
+/******************************************************************************/
+/*!
+\brief	
+Damage taken by enemy. Turns the enemy red when damage is taken
+\exception
+When hp after damage taken is below 0, Hp defaults to 0
+\param
+The damage taken by the enemy.
+*/
+/******************************************************************************/
+
 void Enemy::EnemyTakeDmg(int Dmg)
 {
 	redAlien = true;
@@ -135,10 +263,26 @@ void Enemy::EnemyTakeDmg(int Dmg)
 		Hp = 0;
 }
 
-void Enemy::EnemySetHp(int Hp)
+/******************************************************************************/
+/*!
+\brief	Changes the Hp of the enemy
+\param Hp
+The amount of Hp that the enemy is set to
+*/
+/******************************************************************************/
+
+void Enemy::EnemySetHp(const int &Hp)
 {
 	this->Hp = Hp;
 }
+
+/******************************************************************************/
+/*!
+\brief	Code for the boss spawning minions. This is run when the boss's spawnerCounter reaches 50
+\param dt
+The amount of time in between each frame
+*/
+/******************************************************************************/
 
 void Enemy::BossSpawnMinions(const double &dt)
 {
@@ -159,6 +303,24 @@ void Enemy::BossSpawnMinions(const double &dt)
 		}
 	}
 }
+
+/******************************************************************************/
+/*!
+\brief	Code for the enemy shooting. The enemy raises its arms, shoots a bullet, then lowers its arms.
+\param dt
+The amount of time in between each frame
+\param startShooting
+The amount of time before the enemy starts raising its arms
+\param endShooting
+The amount of time before the entire shooting animations ends
+\param bulletSpeed
+The speed of the bullet
+\param *p
+The player, allowing for checking of bullet collision and updating the player hp
+\param *Turrets
+The turrets, allowing for checking of bullet collision and updating the turrets hp
+*/
+/******************************************************************************/
 
 void Enemy::EnemyShootAt(const double &dt, const float &startShooting, const float &endShooting, const float &bulletSpeed, Player *p, vector<Turret> *Turrets)
 {
@@ -193,7 +355,19 @@ void Enemy::EnemyShootAt(const double &dt, const float &startShooting, const flo
 	}
 }
 
-void Enemy::BossShootAt(const double &dt, const float &startShooting, const float &endShooting, const float &bulletSpeed, Player *p)
+/******************************************************************************/
+/*!
+\brief	Code for the boss shooting. The enemy raises its arms, shoots a bullet
+\param dt
+The amount of time in between each frame
+\param startShooting
+The amount of time before the enemy starts raising its arms
+\param endShooting
+The amount of time before the entire shooting animations ends
+*/
+/******************************************************************************/
+
+void Enemy::BossShootAt(const double &dt, const float &startShooting, const float &endShooting)
 {
 	if (fireDelay < startShooting)
 	{
@@ -232,6 +406,14 @@ void Enemy::BossShootAt(const double &dt, const float &startShooting, const floa
 	}
 }
 
+/******************************************************************************/
+/*!
+\brief	Code for finding the angle between the enemy and the target
+\return
+The angle between the enemy and target of enemy
+*/
+/******************************************************************************/
+
 float Enemy::findDirection()
 {
 	Vector3 view = target - position;
@@ -240,6 +422,14 @@ float Enemy::findDirection()
 	else
 		return Math::RadianToDegree(atan(view.x / view.z));
 }
+
+/******************************************************************************/
+/*!
+\brief	The enemy kites the player by moving left and right in this function
+\param dt
+The time in between each frame
+*/
+/******************************************************************************/
 
 void Enemy::EnemyKite(double dt)
 {
@@ -257,6 +447,14 @@ void Enemy::EnemyKite(double dt)
 	}
 }
 
+/******************************************************************************/
+/*!
+\brief	Checks whether the enemy is in range of the player to shoot him
+\return
+Returns true if the enemy is in range of the player and false if it is not in range
+*/
+/******************************************************************************/
+
 bool Enemy::InRangeOfPlayer()
 {
 	if (GetDistance() >= range)
@@ -267,6 +465,14 @@ bool Enemy::InRangeOfPlayer()
 		return true;
 }
 
+/******************************************************************************/
+/*!
+\brief	Checks whether the enemy is dead or not
+\return
+Returns true if the enemy has Hp lesser than or equals to 0 and false if it has more than 0 Hp
+*/
+/******************************************************************************/
+
 bool Enemy::isDead()
 {
 	if (Hp <= 0)
@@ -276,6 +482,20 @@ bool Enemy::isDead()
 	else
 		return false;
 }
+
+/******************************************************************************/
+/*!
+\brief	Updates the enemy's target every frame and makes the enemy move
+\param camera
+Used to get camera position to get the player's position
+\param dt
+Time in between each frame
+\param *p
+Used to run the EnemyMove function to move the enemy
+\param *Turrets
+Used to run the EnemyMove function to move the enemy
+*/
+/******************************************************************************/
 
 void Enemy::update(Camera3 camera,const double &dt, Player *p,vector<Turret> *Turrets)
 {
@@ -309,6 +529,18 @@ void Enemy::update(Camera3 camera,const double &dt, Player *p,vector<Turret> *Tu
 	EnemyMove(dt,p,Turrets);
 }
 
+/******************************************************************************/
+/*!
+\brief	Used to check for collision between the enemy's bullet and the player or turret
+\param *p
+Used to update the player's health if there is collision
+\param *Turrets
+Used to update the turret's health if there is collision
+\return
+Returns true if there is collision and returns false if there is no collision
+*/
+/******************************************************************************/
+
 bool Enemy::checkBulletCollision(Player *p, vector<Turret> *Turrets)
 {
 	float x = 0.5f, y = 1.f, z = 0.5f;
@@ -328,6 +560,18 @@ bool Enemy::checkBulletCollision(Player *p, vector<Turret> *Turrets)
 	}
 	return false;
 }
+
+/******************************************************************************/
+/*!
+\brief	Used to check for collision between the bosses bullet and the player or turret
+\param *p
+Used to update the player's health if there is collision
+\param *Turrets
+Used to update the turret's health if there is collision
+\return
+Returns true if there is collision and returns false if there is no collision
+*/
+/******************************************************************************/
 
 bool Enemy::checkBulletsCollision(Player *p, vector<Turret> *Turrets)
 {

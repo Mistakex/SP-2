@@ -10,6 +10,23 @@
 
 using std::vector;
 
+/******************************************************************************/
+/*!
+\file	Enemy.h
+\author Cheng Zi Wei Keith
+\par	email: 152639K@mymail.nyp.edu.sg
+\brief
+Enemies shooting and finding their way to the player, including the boss
+*/
+/******************************************************************************/
+
+/******************************************************************************/
+/*!
+Class Enemy:
+\brief	Enemy stats and functions. It is a child of GameObject
+*/
+/******************************************************************************/
+
 class Enemy: public GameObject
 {
 public:
@@ -28,9 +45,9 @@ public:
 	void EnemyKite(double dt);
 	void EnemyMove(double dt, Player *p, vector<Turret> *Turrets);				//move to find
 	void EnemyTakeDmg(int Dmg);
-	void EnemySetHp(int Hp);
+	void EnemySetHp(const int &Hp);
 	void EnemyShootAt(const double &dt, const float &startShooting, const float &endShooting, const float &bulletSpeed, Player *p, vector<Turret> *Turrets);			//shooting of the enemy
-	void BossShootAt(const double &dt, const float &startShooting, const float &endShooting, const float &bulletSpeed, Player *p);			//shooting of the enemy
+	void BossShootAt(const double &dt, const float &startShooting, const float &endShooting);			//shooting of the enemy
 	void BossSpawnMinions(const double &dt);
 	float findDirection();
 	void update(Camera3 camera,const double &dt,Player *p,vector<Turret> *Turrets);

@@ -128,9 +128,9 @@ void Assignment3::Init()
 	glUseProgram(m_programID);
 
 	light[0].type = Light::LIGHT_DIRECTIONAL;
-	light[0].color.Set(1, 0.9, 1);
+	light[0].color.Set(1, 0.9f, 1);
 	light[0].position.Set(0.f, -5.f, 0.f);
-	light[0].power = 0.95;
+	light[0].power = 0.95f;
 	light[0].kC = 1.f;
 	light[0].kL = 0.1f;
 	light[0].kQ = 0.001f;
@@ -308,7 +308,7 @@ void Assignment3::Init()
 	meshList[GEO_WATERTANK] = MeshBuilder::GenerateOBJ("Watertank", "OBJ//Watertank.obj");
 	meshList[GEO_WATERTANK]->textureID = LoadTGA("Image//Watertank.tga");
 
-	meshList[GEO_SHOPBANNER] = MeshBuilder::GenerateOBJ("Watertank", "OBJ//flag.obj");
+	meshList[GEO_SHOPBANNER] = MeshBuilder::GenerateOBJ("Shopbanner", "OBJ//Flag.obj");
 	meshList[GEO_SHOPBANNER]->textureID = LoadTGA("Image//Shopbanner.tga");
 
 	Mtx44 projection;
@@ -1063,7 +1063,7 @@ void Assignment3::Render()
 	for (int i = 0; i < 360; i += 30)
 	{
 		modelStack.PushMatrix();
-		modelStack.Rotate(i, 0, 1, 0);
+		modelStack.Rotate(i, 0, 1.f, 0);
 		modelStack.Translate(250, -10, 0);
 		modelStack.Scale(100, 100, 100);
 		RenderMesh(meshList[GEO_MOUNTAIN], true);
