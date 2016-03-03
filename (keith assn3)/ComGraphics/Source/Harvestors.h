@@ -1,8 +1,24 @@
+/******************************************************************************/
+/*!
+\file	Harvestors.h
+\author Leong Jun Xiang
+\par	email: 152907b@mymail.nyp.edu.sg
+\brief
+Harvest resources
+*/
+/******************************************************************************/
 #ifndef HARVESTORS_H
 #define HARVESTORS_H
 #include "Vector3.h"
 #include "Rock.h"
 #include "Player.h"
+
+/******************************************************************************/
+/*!
+Class Harvestors:
+\brief	Actions of Harvestors
+*/
+/******************************************************************************/
 class Harvestors
 {
 public:
