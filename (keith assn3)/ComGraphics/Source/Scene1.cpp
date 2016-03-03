@@ -1,7 +1,23 @@
+/******************************************************************************/
+/*!
+\file	Scene1.cpp
+\author 
+\par	email: 
+\brief
+Updates for sccene 1
+*/
+/******************************************************************************/
 #include "Assignment3.h"
 
 static float SpaceTruckRotation = 0.f;
 
+/******************************************************************************/
+/*!
+\brief	Update for scene1 only
+\param dt
+delta time
+*/
+/******************************************************************************/
 void Assignment3::Scene1Updates(double dt)
 {
 	//space truck rotation
@@ -153,7 +169,11 @@ void Assignment3::Scene1Updates(double dt)
 	//////////////////////////////////////////////
 }
 
-
+/******************************************************************************/
+/*!
+\brief	Render for scene1 only
+*/
+/******************************************************************************/
 void Assignment3::Scene1Render()
 {
 	//POLE
@@ -194,7 +214,11 @@ void Assignment3::Scene1Render()
 	RenderMesh(meshList[GEO_SHOPBANNER], true);
 	modelStack.PopMatrix();
 }
-
+/******************************************************************************/
+/*!
+\brief	UI rendering for scene1 only
+*/
+/******************************************************************************/
 void Assignment3::RenderScene1UI()
 {
 	if (f.getMagnitude(camera.position) <= 7.5f)
@@ -213,7 +237,11 @@ void Assignment3::RenderScene1UI()
 		}
 	}
 }
-
+/******************************************************************************/
+/*!
+\brief	Render interaction with astronaut for scene1 only
+*/
+/******************************************************************************/
 void Assignment3::RenderAstronautInteractions()
 {
 	if (gameState == GS_ASTRONAUT_INTERACTION && !a.errorWindow)

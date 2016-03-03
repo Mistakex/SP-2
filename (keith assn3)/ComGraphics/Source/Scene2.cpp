@@ -1,6 +1,21 @@
+/******************************************************************************/
+/*!
+\file	Grenade.cpp
+\author 
+\par	email: 
+\brief
+scene2 updates
+*/
+/******************************************************************************/
 #include "Assignment3.h"
 
-
+/******************************************************************************/
+/*!
+\brief	Empty all the Vector
+\param dt
+delta time
+*/
+/******************************************************************************/
 void Assignment3::EmptyVector()
 {
 	while (Aliens.empty() == false)
@@ -19,7 +34,24 @@ void Assignment3::EmptyVector()
 	{
 		Pillars.pop_back();
 	}
+	while (gameState == GS_SCENE2 && a.Harvestor.empty() == false)
+	{
+		a.Harvestor.pop_back();
+	}
 }
+/******************************************************************************/
+/*!
+\brief	Render the dome
+\param scale
+scaling for the dome
+\param x
+x coordinate
+\param y
+y coordinate
+\param z
+z coordinate
+*/
+/******************************************************************************/
 void Assignment3::RenderDome(float scale, float x, float y, float z)
 {
 	modelStack.PushMatrix();
@@ -28,7 +60,11 @@ void Assignment3::RenderDome(float scale, float x, float y, float z)
 	RenderMesh(meshList[GEO_DOME], false);
 	modelStack.PopMatrix();
 }
-
+/******************************************************************************/
+/*!
+\brief	Update for scene2
+*/
+/******************************************************************************/
 void Assignment3::Scene2Updates()
 {
 	if (camera.position.x < 5.5f &&camera.position.x >-5.5f && camera.position.z > 17 && camera.position.z < 26)
