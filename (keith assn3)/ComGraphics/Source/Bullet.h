@@ -1,7 +1,25 @@
+/******************************************************************************/
+/*!
+\file	Bullet.h
+\author Cheng Zi Wei Keith
+\par	email: 152639K@mymail.nyp.edu.sg
+\brief
+Bullet class for the bullets of enemies,turrets and player
+*/
+/******************************************************************************/
+
 #ifndef BULLET_H
 #define BULLET_H
 
 #include "Vector3.h"
+
+/******************************************************************************/
+/*!
+Class Bullet:
+\brief
+Bullet class which holds the position of the bullet, the view vector of the bullet and the functions to make the bullet move
+*/
+/******************************************************************************/
 
 class Bullet
 {

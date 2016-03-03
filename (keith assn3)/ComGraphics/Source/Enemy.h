@@ -1,3 +1,13 @@
+/******************************************************************************/
+/*!
+\file	Enemy.h
+\author Cheng Zi Wei Keith
+\par	email: 152639K@mymail.nyp.edu.sg
+\brief
+Enemies shooting and finding their way to the player, including the boss
+*/
+/******************************************************************************/
+
 #ifndef ENEMY_H
 #define ENEMY_H
 #include"Vector3.h"
@@ -9,16 +19,6 @@
 #include "Turret.h"
 
 using std::vector;
-
-/******************************************************************************/
-/*!
-\file	Enemy.h
-\author Cheng Zi Wei Keith
-\par	email: 152639K@mymail.nyp.edu.sg
-\brief
-Enemies shooting and finding their way to the player, including the boss
-*/
-/******************************************************************************/
 
 /******************************************************************************/
 /*!
