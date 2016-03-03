@@ -1,18 +1,60 @@
+/******************************************************************************/
+/*!
+\file	Camera3.cpp
+\author Cheng Zi Wei Keith
+\par	email: 152639K@mymail.nyp.edu.sg
+\brief
+Player camera colliding with objects and movement of camera
+*/
+/******************************************************************************/
+
 #include "Camera3.h"
 #include "Application.h"
 #include "Mtx44.h"
 
 extern GLFWwindow* m_window;
-extern bool moving;
+
+/******************************************************************************/
+/*!
+\brief
+Default constructor for Camera3, simply turns on the controls
+*/
+/******************************************************************************/
 
 Camera3::Camera3()
 {
 	OnControls = true;
 }
 
+/******************************************************************************/
+/*!
+\brief
+Default destructor for Camera3, does nothing
+*/
+/******************************************************************************/
+
 Camera3::~Camera3()
 {
 }
+
+/******************************************************************************/
+/*!
+\brief
+Initialize the variables for Camera3
+\param pos
+Setting default position for camera
+\param target
+Setting default target for camera
+\param up
+Setting where the up value for camera is
+\param *Rocks
+Saving the pointer of Rocks into camera which will be used for collision
+\param *flag
+Saving the pointer of the flag into camera which will be used for collision
+\param *Pillars
+Saving the pointer of Pillars into camera which will be used for collision
+*/
+/******************************************************************************/
 
 void Camera3::Init(const Vector3& pos, const Vector3& target, const Vector3& up, vector<Rock> *Rocks, Flag *flag, vector<CollisionObject> *Pillars)
 {
@@ -28,6 +70,15 @@ void Camera3::Init(const Vector3& pos, const Vector3& target, const Vector3& up,
 	this->flag = flag;
 	this->Pillars = Pillars;
 }
+
+/******************************************************************************/
+/*!
+\brief
+For camera rotation using mouse controls
+\param CAMERASPEED
+Speed of which the camera will move
+*/
+/******************************************************************************/
 
 void Camera3::CameraRotation(float CAMERASPEED)
 {
@@ -68,6 +119,23 @@ static bool JUMPING = false; // is the character jumping?
 static bool JUMPING_UP = true; // is the character in the middle of jumping?
 static float JUMP_SPEED = 10.f; // speed of jump
 
+/******************************************************************************/
+/*!
+\brief
+Checking collision between objects
+\param center
+The center coordinates of the collision object
+\param range
+The range coordinates of the collision object
+\param moveX
+The movement in X-coordinates of the player
+\param moveZ
+The movement in Z-coordinates of the player
+\return
+Returns true if it collides and false if it does not
+*/
+/******************************************************************************/
+
 bool Camera3::checkCollision(const Vector3 &center, const Vector3 &range,float moveX,float moveZ) // used to check collision for objects
 {
 	if (moveX > center.x - range.x && moveX < center.x + range.x
@@ -82,6 +150,23 @@ bool Camera3::checkCollision(const Vector3 &center, const Vector3 &range,float m
 	}
 }
 
+/******************************************************************************/
+/*!
+\brief
+Checking circle collision between objects
+\param center
+The center coordinates of the collision object
+\param range
+The radius range of the collision
+\param moveX
+The movement in X-coordinates of the player
+\param moveZ
+The movement in Z-coordinates of the player
+\return
+Returns true if it collides and false if it does not
+*/
+/******************************************************************************/
+
 bool Camera3::checkCircleCollision(Vector3 center,float range,float moveX, float moveZ) // used to check collision for objects
 {
 	if (sqrt(pow(moveX - center.x, 2) + pow(moveZ - center.z, 2)) < range)
@@ -94,6 +179,23 @@ bool Camera3::checkCircleCollision(Vector3 center,float range,float moveX, float
 	}
 }
 
+/******************************************************************************/
+/*!
+\brief
+Checking the inside-out circle collision between objects
+\param center
+The center coordinates of the collision object
+\param range
+The radius range of the collision
+\param moveX
+The movement in X-coordinates of the player
+\param moveZ
+The movement in Z-coordinates of the player
+\return
+Returns true if it collides and false if it does not
+*/
+/******************************************************************************/
+
 bool Camera3::checkReverseCircleCollision(Vector3 center, float range, float moveX, float moveZ) // used to check collision for objects
 {
 	if (sqrt(pow(moveX - center.x, 2) + pow(moveZ - center.z, 2)) > range)
@@ -105,6 +207,19 @@ bool Camera3::checkReverseCircleCollision(Vector3 center, float range, float mov
 		return false;
 	}
 }
+
+/******************************************************************************/
+/*!
+\brief
+Checking for collision with rocks
+\param moveX
+The movement in X-coordinates of the player
+\param moveZ
+The movement in Z-coordinates of the player
+\return
+Returns true if it collides and false if it does not
+*/
+/******************************************************************************/
 
 bool Camera3::checkRockCollision(float moveX, float moveZ) // used to check collision for objects
 {
@@ -119,6 +234,19 @@ bool Camera3::checkRockCollision(float moveX, float moveZ) // used to check coll
 	return false;
 }
 
+/******************************************************************************/
+/*!
+\brief
+Checking for collision with pillars
+\param moveX
+The movement in X-coordinates of the player
+\param moveZ
+The movement in Z-coordinates of the player
+\return
+Returns true if it collides and false if it does not
+*/
+/******************************************************************************/
+
 bool Camera3::checkPillarCollision(float moveX, float moveZ) // used to check collision for objects
 {
 	for (vector<CollisionObject>::iterator it = Pillars->begin(); it != Pillars->end(); ++it)
@@ -132,6 +260,75 @@ bool Camera3::checkPillarCollision(float moveX, float moveZ) // used to check co
 	return false;
 }
 
+/******************************************************************************/
+/*!
+\brief
+The code for the jetpack, where pressing O allows you to fly (Done by Hao Ming)
+\param dt
+Time between each frame
+*/
+/******************************************************************************/
+
+void Camera3::JetPack(const double &dt)
+{
+	debounce.TimeCountDown(dt);
+	if (Application::IsKeyPressed('O') && isFlyingOn == false && debounce.TimeCountDown(dt) < 0)
+	{
+		debounce.resetTime();
+		isFlyingOn = true;
+	}
+	if (Application::IsKeyPressed('O') && isFlyingOn == true && debounce.TimeCountDown(dt) < 0)
+	{
+		debounce.resetTime();
+		isFlyingOn = false;
+	}
+
+	if (isFlyingOn == true)
+	{
+		if (GetAsyncKeyState(' '))
+		{
+			isFlying = true;
+		}
+		else
+		{
+			isFlying = false;
+		}
+
+		if (isFlying == true)
+		{
+			position += Vector3(0.f, 5.5 * dt, 0.f);
+			JUMPING_UP = true;
+			if (position.y >= 50.f)
+			{
+				position -= Vector3(0.f, 7 * dt, 0.f);
+			}
+			if (position.y < 0.f)
+			{
+				position.y = 0.f;
+				JUMPING_UP = false;
+			}
+		}
+		else if (isFlying == false)
+		{
+			position -= Vector3(0.f, 7 * dt, 0.f);
+			if (position.y < 0.f)
+			{
+				position.y = 0.f;
+			}
+		}
+	}
+}
+
+/******************************************************************************/
+/*!
+\brief
+Updates the camera which includes movement controls and camera rotation and collision
+\param dt
+Time between each frame
+\param gameState
+The game state is passed into the camera to check for collision in different states
+*/
+/******************************************************************************/
 
 void Camera3::Update(double dt,int gameState)
 {
@@ -140,17 +337,7 @@ void Camera3::Update(double dt,int gameState)
 		static const float WALKSPEED = 5.f; // walkspeed
 		static const float CAMERA_SPEED = 50.f;
 
-		debounce.TimeCountDown(dt);
-		if (Application::IsKeyPressed('O') && isFlyingOn == false && debounce.TimeCountDown(dt) < 0)
-		{
-			debounce.resetTime();
-			isFlyingOn = true;
-		}
-		if (Application::IsKeyPressed('O') && isFlyingOn == true && debounce.TimeCountDown(dt) < 0)
-		{
-			debounce.resetTime();
-			isFlyingOn = false;
-		}
+		JetPack(dt);
 
 		if (isFlyingOn == false)
 		{
@@ -186,41 +373,6 @@ void Camera3::Update(double dt,int gameState)
 						JUMPING = false;
 					}
 				}
-				if (position.y < 0.f)
-				{
-					position.y = 0.f;
-				}
-			}
-		}
-
-		if (isFlyingOn == true)
-		{
-			if (GetAsyncKeyState(' '))
-			{
-				isFlying = true;
-			}
-			else
-			{
-				isFlying = false;
-			}
-
-			if (isFlying == true)
-			{
-				position += Vector3(0.f, 5.5 * dt, 0.f);
-				JUMPING_UP = true;
-				if (position.y >= 50.f)
-				{
-					position -= Vector3(0.f, 7 * dt, 0.f);
-				}
-				if (position.y < 0.f)
-				{
-					position.y = 0.f;
-					JUMPING_UP = false;
-				}
-			}
-			else if (isFlying == false)
-			{
-				position -= Vector3(0.f, 7 * dt, 0.f);
 				if (position.y < 0.f)
 				{
 					position.y = 0.f;
@@ -323,12 +475,6 @@ void Camera3::Update(double dt,int gameState)
 			position.z = bounds;
 		}
 
-		//reset
-		//if (Application::IsKeyPressed('R'))
-		//{
-		//	Reset();
-		//}
-
 		//mouse rotation of camera
 		CameraRotation(MouseSensitivity);
 
@@ -339,6 +485,13 @@ void Camera3::Update(double dt,int gameState)
 		this->up = right.Cross(view).Normalized();
 	}
 }
+
+/******************************************************************************/
+/*!
+\brief
+Resets the variables of the camera to their default values
+*/
+/******************************************************************************/
 
 void Camera3::Reset()
 {

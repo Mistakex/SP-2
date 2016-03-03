@@ -203,12 +203,12 @@ void Assignment3::Scene1Render()
 	//ShopBanner
 	modelStack.PushMatrix();
 	modelStack.Translate(a.GetAstronautPos().x + 2, -1.0f, a.GetAstronautPos().z);
-	modelStack.Scale(1.f, 1.5f, 1.f);
+	modelStack.Scale(1.f, 1.f, 1.f);
 	RenderMesh(meshList[GEO_FLAGPOLE], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	modelStack.Translate(a.GetAstronautPos().x+2, 2.8f, a.GetAstronautPos().z+0.2f);
+	modelStack.Translate(a.GetAstronautPos().x+2, 2.f, a.GetAstronautPos().z+0.2f);
 	modelStack.Rotate(-90, 0, 1, 0);
 	modelStack.Scale(1.2f, 1.2f, 1.2f);
 	RenderMesh(meshList[GEO_SHOPBANNER], true);
