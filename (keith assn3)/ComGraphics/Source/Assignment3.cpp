@@ -429,6 +429,7 @@ void Assignment3::Update(double dt)
 		if (Application::IsKeyPressed(VK_RETURN))
 		{
 			gameState = GS_MAIN;
+			Boss.bossIsSpawned = false;
 			player.reset();
 			player.Retry -= 1;
 			EmptyVector();

@@ -18,7 +18,8 @@ using std::vector;
 /******************************************************************************/
 /*!
 Class GameObject:
-\brief	Virtual parent class for every object that requires collision detection
+\brief	
+Virtual parent class for every object that requires collision detection. Holds position, range, and count.
 */
 /******************************************************************************/
 

@@ -1,11 +1,35 @@
+/******************************************************************************/
+/*!
+\file	Weapon.cpp
+\author Cheng Zi Wei Keith
+\par	email: 152639K@mymail.nyp.edu.sg
+\brief
+Weapon class which allows for shooting
+*/
+/******************************************************************************/
+
 #include "Weapon.h"
 
 #include <iostream>
 
-Weapon::Weapon(const int &dmg, const int &AmmoInMag, const int &MaxAmmoForWeap, const int &PriceOfWeap, const bool &AllowZoomForWeap) : Price(PriceOfWeap), initialDamage(dmg), initialUC(PriceOfWeap)
+/******************************************************************************/
+/*!
+\brief
+Constructor for weapon which takes in its stats and intializes its values
+\param dmg
+Damage of the gun
+\param AmmoInMag
+How many bullets in each magazine
+\param PriceOfWeap
+The price of the weapon
+\param AllowZoomForWeap
+To check whether the weapon allows for zooming
+*/
+/******************************************************************************/
+
+Weapon::Weapon(const int &dmg, const int &AmmoInMag, const int &PriceOfWeap, const bool &AllowZoomForWeap) : Price(PriceOfWeap), initialDamage(dmg), initialUC(PriceOfWeap)
 {
 	Damage = dmg;
-	MaxAmmo = MaxAmmoForWeap;
 	AllowZoom = AllowZoomForWeap;
 	AmmoInClip = AmmoInMag;
 	upgradeCost = Price;
@@ -15,16 +39,45 @@ Weapon::Weapon(const int &dmg, const int &AmmoInMag, const int &MaxAmmoForWeap, 
 	hitDelay = 0.f;
 }
 
+/******************************************************************************/
+/*!
+\brief
+Destructor which deletes the Magazine of the weapon
+*/
+/******************************************************************************/
+
 Weapon::~Weapon()
 {
 	delete[] Magazine;
 }
+
+/******************************************************************************/
+/*!
+\brief
+Loads the camera and pillars into the weapon to check for collision
+\param *camera
+Loads the camera into the weapon
+\param *Pillars
+Loads the pillars into the weapon
+*/
+/******************************************************************************/
 
 void Weapon::init(Camera3 *camera, vector<CollisionObject> *Pillars)
 {
 	this->camera = camera;
 	this->Pillars = Pillars;
 }
+
+/******************************************************************************/
+/*!
+\brief
+Fires the weapon,shoots the bullet and checks for collision with enemy
+\param *aliens
+Checks for collision with aliens
+\param *Boss
+Checks for collision with the Boss
+*/
+/******************************************************************************/
 
 void Weapon::Fire(vector<Enemy> *aliens,Enemy *Boss)
 {
@@ -43,6 +96,18 @@ void Weapon::Fire(vector<Enemy> *aliens,Enemy *Boss)
 		}
 	}
 }
+
+/******************************************************************************/
+/*!
+\brief
+Fires the sniper rifle,shoots the bullet and checks for collision with enemy (uses a piercing collision check)
+\param *aliens
+Checks for collision with aliens
+\param *Boss
+Checks for collision with the Boss
+*/
+/******************************************************************************/
+
 void Weapon::FireSR(vector<Enemy> *aliens,Enemy *Boss)
 {
 	if (bulletCount < AmmoInClip)
@@ -60,10 +125,29 @@ void Weapon::FireSR(vector<Enemy> *aliens,Enemy *Boss)
 		}
 	}
 }
+
+/******************************************************************************/
+/*!
+\brief
+Getter function to get whether or not the weapon allows for zooming
+\return
+Returns true if it allows for zooming and false if not
+*/
+/******************************************************************************/
+
 bool Weapon::GetAllowZoom()
 {
 	return AllowZoom;
 }
+
+/******************************************************************************/
+/*!
+\brief
+Getter function to get whether or not the weapon is zoomed currently
+\return
+Returns true if it is zoomed and false if not
+*/
+/******************************************************************************/
 
 bool Weapon::GetZoom()
 {
@@ -76,15 +160,42 @@ bool Weapon::GetZoom()
 	return false;
 }
 
+/******************************************************************************/
+/*!
+\brief
+Sets the new upgrade cost of the weapon (done by Zhi Yuan)
+\param newUC
+Sets the new upgrade cost as newUC
+*/
+/******************************************************************************/
+
 void Weapon::setUpgradeCost(int newUC)
 {
 	upgradeCost = newUC;
 }
 
+/******************************************************************************/
+/*!
+\brief
+Getter functions for the upgrade cost of the weapon
+\return
+Returns the upgrade cost of the weapon
+*/
+/******************************************************************************/
+
 int Weapon::getUpgradeCost()
 {
 	return upgradeCost;
 }
+
+/******************************************************************************/
+/*!
+\brief
+Updates the weapon. Moves the bullets and adds to the delay of each shot
+\param dt
+The time in between each frame
+*/
+/******************************************************************************/
 
 void Weapon::update(double dt)
 {
@@ -103,6 +214,21 @@ void Weapon::update(double dt)
 		}
 	}
 }
+
+/******************************************************************************/
+/*!
+\brief
+Checks for collision between the bullet and the enemy and update their hp using raycasting.
+\param *aliens
+The vector containing every alien to check for collision
+\param *Boss
+Used to check for collision with boss
+\param bullet
+To check whether that specific bullet will collide with the aliens
+\return
+Returns true if there is collision and false if there is no collision
+*/
+/******************************************************************************/
 
 bool Weapon::checkBulletCollision(vector<Enemy> *aliens, Enemy *Boss, Bullet bullet)
 {
@@ -140,6 +266,22 @@ bool Weapon::checkBulletCollision(vector<Enemy> *aliens, Enemy *Boss, Bullet bul
 	}
 	return false;
 }
+
+/******************************************************************************/
+/*!
+\brief
+Checks for collision between the bullet and the enemy and update their hp using raycasting (pierces through).
+\param *aliens
+The vector containing every alien to check for collision
+\param *Boss
+Used to check for collision with boss
+\param bullet
+To check whether that specific bullet will collide with the aliens
+\return
+Returns true if there is collision and false if there is no collision
+*/
+/******************************************************************************/
+
 bool Weapon::checkBulletCollisionSR(vector<Enemy> *aliens, Enemy *Boss, Bullet bullet)
 {
 	bool hitenemy = 0;

@@ -1,3 +1,13 @@
+/******************************************************************************/
+/*!
+\file	Weapon.h
+\author Cheng Zi Wei Keith
+\par	email: 152639K@mymail.nyp.edu.sg
+\brief
+Weapon class which allows for shooting
+*/
+/******************************************************************************/
+
 #ifndef WEAPON_H
 #define WEAPON_H
 
@@ -8,11 +18,19 @@
 
 using std::vector;
 
+/******************************************************************************/
+/*!
+Class Weapon:
+\brief
+Weapon class which is used for shooting and damaging enemies
+*/
+/******************************************************************************/
+
 class Weapon
 {
 public:
 	Weapon();
-	Weapon(const int &dmg,const int &AmmoInClip,const int &MaxAmmoForWeap, const int& price,const bool &AllowZoomForWeap);
+	Weapon(const int &dmg,const int &AmmoInClip, const int &price,const bool &AllowZoomForWeap);
 	~Weapon();
 	void init(Camera3 *camera, vector<CollisionObject> *Pillars);
 	void Fire(vector<Enemy> *aliens, Enemy *Boss);						//Goes into Update
@@ -33,7 +51,6 @@ public:
 	bool hit;
 private:
 	float hitDelay;
-	int MaxAmmo;
 	const int Price;
 	int bulletCount;
 	float FireDelay;
