@@ -2,7 +2,7 @@
 /*!
 \file	Enemy.h
 \author Cheng Zi Wei Keith
-\par	email: 152639K@mymail.nyp.edu.sg
+\par	email: 152639K\@mymail.nyp.edu.sg
 \brief
 Ship that is used for transition of scenes
 */

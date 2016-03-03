@@ -2,7 +2,7 @@
 /*!
 \file	Music.cpp
 \author Chin Hao Ming
-\par	email: 154158D@mymail.nyp.edu.sg
+\par	email: 154158D\@mymail.nyp.edu.sg
 \brief
 Play music, pause, resume, increase and decrease volumes.
 */
@@ -208,7 +208,7 @@ void Music::playSoundThreaded(string soundFile)
 /*!
 \brief
 Checks whether any sound is playing
-\Return
+\return
 Return whether sound has finish or still playing
 */
 /******************************************************************************/
@@ -352,7 +352,7 @@ void Music::decreaseVolume(int increment)
 /*!
 \brief
 Gets current volume of sound
-\Return
+\return
 Return volume
 */
 /******************************************************************************/

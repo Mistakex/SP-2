@@ -3,7 +3,7 @@
 /*!
 \file	CollisionObject.cpp
 \author Cheng Zi Wei Keith
-\par	email: 152639K@mymail.nyp.edu.sg
+\par	email: 152639K\@mymail.nyp.edu.sg
 \brief
 For objects that require collision between the player and object.
 */

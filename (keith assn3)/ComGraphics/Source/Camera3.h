@@ -2,7 +2,7 @@
 /*!
 \file	Camera3.h
 \author Cheng Zi Wei Keith
-\par	email: 152639K@mymail.nyp.edu.sg
+\par	email: 152639K\@mymail.nyp.edu.sg
 \brief
 Player camera colliding with objects and movement of camera
 */

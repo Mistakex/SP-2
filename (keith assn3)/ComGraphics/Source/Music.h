@@ -2,7 +2,7 @@
 /*!
 \file	Music.h
 \author Chin Hao Ming
-\par	email: 154158D@mymail.nyp.edu.sg
+\par	email: 154158D\@mymail.nyp.edu.sg
 \brief
 Play music, increase & decrease volumes.
 */

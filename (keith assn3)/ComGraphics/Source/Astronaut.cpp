@@ -2,7 +2,7 @@
 /*!
 \file	Astronaut.cpp
 \author Lim Zhi Yuan
-\par	email: 153432X@mymail.nyp.edu.sg
+\par	email: 153432X\@mymail.nyp.edu.sg
 \brief
 Class for the Astronaut, which functions as the shop for players to upgrade, and
 purchase items.

@@ -605,9 +605,6 @@ void SP2::Update(double dt)
 	
 	/********************************************/
 
-	// Alien feedback bool
-	//countdown for camera lock
-	countdownCameraLock.TimeCountDown(dt);
 	infoscreen.TimeCountDown(dt);
 
 	//mouse rotation of camera

@@ -2,7 +2,7 @@
 /*!
 \file	Grenade.cpp
 \author Leong Jun Xiang
-\par	email: 152907b@mymail.nyp.edu.sg
+\par	email: 152907b\@mymail.nyp.edu.sg
 \brief
 Grenade from flying till explosion
 */

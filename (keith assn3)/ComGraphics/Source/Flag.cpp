@@ -2,7 +2,7 @@
 /*!
 \file	Flag.cpp
 \author Chin Hao Ming
-\par	email: 154158D@mymail.nyp.edu.sg
+\par	email: 154158D\@mymail.nyp.edu.sg
 \brief
 Flag goes down while capturing. Flag changes to player's flag when successfully
 captured.

@@ -2,7 +2,7 @@
 /*!
 \file	GameObject.h
 \author Cheng Zi Wei Keith
-\par	email: 152639K@mymail.nyp.edu.sg
+\par	email: 152639K\@mymail.nyp.edu.sg
 \brief
 Virtual parent class for objects which require collision
 */

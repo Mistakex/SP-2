@@ -2,7 +2,7 @@
 /*!
 \file	Player.h
 \author Lim Zhi Yuan
-\par	email: 153432K@mymail.nyp.edu.sg
+\par	email: 153432K\@mymail.nyp.edu.sg
 \brief
 Class for the player, stores information of player's status.
 */

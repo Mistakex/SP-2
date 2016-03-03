@@ -2,7 +2,7 @@
 /*!
 \file	Flag.h
 \author Chin Hao Ming
-\par	email: 154158D@mymail.nyp.edu.sg
+\par	email: 154158D\@mymail.nyp.edu.sg
 \brief
 Captures enemy flag and flag changes to player's flag.
 */

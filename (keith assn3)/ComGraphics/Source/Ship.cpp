@@ -2,7 +2,7 @@
 /*!
 \file	Enemy.cpp
 \author Cheng Zi Wei Keith
-\par	email: 152639K@mymail.nyp.edu.sg
+\par	email: 152639K\@mymail.nyp.edu.sg
 \brief
 Ship transitions and cutscenes.
 */

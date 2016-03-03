@@ -243,7 +243,6 @@ private:
 	Countdown debounce = Countdown(0.2f);
 	Countdown rightClick = Countdown(0.2f);
 	Countdown countdownTurretSpawn = Countdown(1.0f);
-	Countdown countdownCameraLock = Countdown(0.5f);
 	Countdown infoscreen = Countdown(0.5f);
 	Countdown KillMessage = Countdown(0.3f);
 	Countdown CountdownSniperRifle = Countdown(1.0f);

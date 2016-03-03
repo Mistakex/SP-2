@@ -2,7 +2,7 @@
 /*!
 \file	Turret.h
 \author Leong Jun Xiang
-\par	email: 152907b@mymail.nyp.edu.sg
+\par	email: 152907b\@mymail.nyp.edu.sg
 \brief
 Turret stats and updates
 */
