@@ -20,8 +20,9 @@ public:
 	int TimesHealed;
 	int PlayerMaxHp;
 	int HealAmount;
+	const int initialTicks; // Base amount of times that it heals
+	const int initialHealingAmount; // Base amount of health it heals
 private:
-
 };
 
 

@@ -1,6 +1,7 @@
 #include "MedKit.h"
 
-Medkit::Medkit(int maxhp, int healing, int timesHealed,const float recoverydelay, const float usagedelay) :HealTime(recoverydelay), CoolDown(usagedelay)
+Medkit::Medkit(int maxhp, int healing, int timesHealed, const float recoverydelay, const float usagedelay)
+	:HealTime(recoverydelay), CoolDown(usagedelay), initialHealingAmount(healing), initialTicks(timesHealed)
 {
 	activated = false;
 	PlayerMaxHp = maxhp;

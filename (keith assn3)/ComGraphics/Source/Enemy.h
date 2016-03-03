@@ -85,7 +85,4 @@ private:
 	bool isBoss;
 };
 
-
-
-
 #endif // !ENEMY_H

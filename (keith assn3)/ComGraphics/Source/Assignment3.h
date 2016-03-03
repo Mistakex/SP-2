@@ -215,6 +215,7 @@ private:
 	void Scene3UI();
 	//Remove alien
 	void EmptyVector();
+	void restartScene();
 
 	// countdown
 	Countdown countdownRock = Countdown(10.0f);
@@ -247,7 +248,6 @@ private:
 
 	// Boss sounds
 	bool bossDead = false;
-	bool bossAlive = false;
 	bool playDead = false;
 
 	//info screen

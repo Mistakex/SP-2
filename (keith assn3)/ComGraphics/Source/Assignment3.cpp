@@ -41,11 +41,44 @@ float Assignment3::getMagnitude(const Vector3 object, const Vector3 target)
 	return sqrt(pow(a.x, 2) + pow(a.y, 2) + pow(a.z, 2));
 }
 
+void Assignment3::restartScene()
+{
+	// Pauses the sound
+	sound.pause();
+
+	// Resets the flag
+	f.flagIsBlue = false;
+	f.flagheight = 2.5;
+	isCapturing = false;
+	isCaptured = false;
+
+	// Resets boss
+	bossDead = false;
+	Boss.EnemySetHp(3000);
+	Boss.bossIsSpawned = false;
+	
+
+	// Resets Player
+	playDead = false;
+	player.gameOver();
+	camera.Reset();
+
+	// Resets astronaut upgrades(upgrade cost and damage)
+	a.resetAllUpgrades();
+	a.resetWeaponUpgrades(pistol);
+	a.resetWeaponUpgrades(SniperRifle);
+	a.resetMedkitUpgrades(medKit);
+	EmptyVector();
+
+	// changes gameState back to main
+	gameState = GS_MAIN;
+	CameraMouseUpdate = true;
+}
 void Assignment3::Init()
 {
 	gameState = GS_MAIN;
 	CameraMouseUpdate = true;
-	player.WeaponState = 5;
+	player.WeaponState = 2;
 	player.noOfGrenadesHeld = 5;
 	pistol.init(&camera,&Pillars);
 	ship.init(&camera);
@@ -345,22 +378,6 @@ static std::stringstream resources;
 
 void Assignment3::Update(double dt)
 {
-	//reset everything
-	//if (Application::IsKeyPressed('R'))
-	//{
-	//	sound.pause();
-	//	f.flagIsBlue = false;
-	//	f.flagheight = 2.5;
-	//	gameState = GS_MAIN;
-	//	isCapturing = false;
-	//	isCaptured = false;
-	//	bossDead = false;
-	//	bossAlive = false;
-	//	playDead = false;
-	//	Boss.EnemySetHp(3000);
-	//	player.Retry = 3;
-	//}
-
 	if (Application::IsKeyPressed('Z'))
 	{
 		std::cout << camera.position.x << std::endl;
@@ -457,29 +474,7 @@ void Assignment3::Update(double dt)
 				CameraMouseUpdate = true;
 				break;
 			case(P_OPT_RESTART) :
-				sound.pause();
-				f.flagIsBlue = false;
-				f.flagheight = 2.5;
-				gameState = GS_MAIN;
-				isCapturing = false;
-				isCaptured = false;
-				bossDead = false;
-				bossAlive = false;
-				playDead = false;
-				Boss.EnemySetHp(3000);
-				Boss.bossIsSpawned = false;
-				player.Retry = 3;
-				player.gameOver();
-				pistol.Damage = pistol.initialDamage;
-				SniperRifle.Damage = SniperRifle.initialDamage;
-				a.resetAllUpgrades();
-				a.resetWeaponUpgrades(pistol);
-				a.resetWeaponUpgrades(SniperRifle);
-				EmptyVector();
-				gameState = GS_MAIN;
-				CameraMouseUpdate = true;
-				player.setResources(0);
-				camera.Reset();
+				restartScene();
 				break;
 			case(P_OPT_QUITGAME) :
 				quitGame = true;
@@ -529,16 +524,7 @@ void Assignment3::Update(double dt)
 			switch (quitGameCursor)
 			{
 			case(P_OPT_RESTART) :
-				player.gameOver();
-				pistol.Damage = pistol.initialDamage;
-				SniperRifle.Damage = SniperRifle.initialDamage;
-				a.resetAllUpgrades();
-				a.resetWeaponUpgrades(pistol);
-				a.resetWeaponUpgrades(SniperRifle);
-				EmptyVector();
-				gameState = GS_MAIN;
-				CameraMouseUpdate = true;
-				playDead = false;
+				restartScene();
 				break;
 			case(P_OPT_QUITGAME) :
 				quitGame = true;
@@ -616,7 +602,6 @@ void Assignment3::Update(double dt)
 				player.WeaponState = 5;
 			}
 		}
-
 
 		if (gameState == GS_MAIN || gameState == GS_ASTRONAUT_INTERACTION || gameState == GS_SCENE2)
 		{

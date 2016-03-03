@@ -1,24 +1,64 @@
+/******************************************************************************/
+/*!
+\file	Astronaut.cpp
+\author Lim Zhi Yuan
+\par	email: 153432X@mymail.nyp.edu.sg
+\brief
+Class for the Astronaut, which functions as the shop for players to upgrade, and
+purchase items.
+*/
+/******************************************************************************/
 #include "Astronaut.h"
 
+/******************************************************************************/
+/*!
+\brief
+Constructor for Astronaut class
 
+\param	pos
+Position that the Astronaut will spawn at.
+*/
+/******************************************************************************/
 Astronaut::Astronaut(Vector3 pos)
 {
 	Position = pos;
 }
 
+/******************************************************************************/
+/*!
+\brief
+Default destructor for Astronaut class
+*/
+/******************************************************************************/
+
 Astronaut::~Astronaut()
 {
 }
+
+/******************************************************************************/
+/*!
+\brief
+A getter function for Astronaut's position
+\return
+Returns the position of the Astronaut
+*/
+/******************************************************************************/
 
 Vector3 Astronaut::GetAstronautPos()
 {
 	return Position;
 }
 
-void Astronaut::AstronautMoveAround()
-{
-
-}
+/******************************************************************************/
+/*!
+\brief
+Function to upgrade a weapon that the player has.
+\param weap
+Weapon to be upgraded
+\param p
+Player - To reduce the resources needed from.
+*/
+/******************************************************************************/
 
 void Astronaut::UpgradeWeapon(Weapon& weap,Player& p)
 {
@@ -38,6 +78,14 @@ void Astronaut::UpgradeWeapon(Weapon& weap,Player& p)
 	}
 }
 
+/******************************************************************************/
+/*!
+\brief
+Function to upgrade the turret's damage
+\param p
+Player - To reduce the resources needed from.
+*/
+/******************************************************************************/
 void Astronaut::UpgradeTurret(Player& p)
 {
 	if (p.getResources() < TurretNewDmg)
@@ -55,6 +103,14 @@ void Astronaut::UpgradeTurret(Player& p)
 	}
 }
 
+/******************************************************************************/
+/*!
+\brief
+Function to purchase a Harvestor from the Astronaut
+\param p
+Player - To reduce the resources needed from.
+*/
+/******************************************************************************/
 void Astronaut::PurchaseHarvestor(Player& p)
 {
 	// Limits the number of Harvestors to 3
@@ -81,6 +137,15 @@ void Astronaut::PurchaseHarvestor(Player& p)
 	}
 }
 
+/******************************************************************************/
+/*!
+\brief
+Function to purchase Grenades from the Astronaut.
+\param p
+Player - To reduce the resources needed from.
+*/
+/******************************************************************************/
+
 void Astronaut::PurchaseGrenades(Player& p)
 {
 	// Limits number of grenades held to 5
@@ -105,6 +170,16 @@ void Astronaut::PurchaseGrenades(Player& p)
 		enablePurchaseWindow = true;
 	}
 }
+
+/******************************************************************************/
+/*!
+\brief
+Function to upgrade the grenade's damage.
+\param p
+Player - To reduce the resources needed from.
+*/
+/******************************************************************************/
+
 void Astronaut::UpgradeGrenadeDamage(Player& p)
 {
 	// Sets cost of upgrade to be at 30 + 25*(number of times upgraded)
@@ -122,6 +197,16 @@ void Astronaut::UpgradeGrenadeDamage(Player& p)
 		enablePurchaseWindow = false;
 	}
 }
+
+/******************************************************************************/
+/*!
+\brief
+Function to upgrade the grenade's flying range.
+\param p
+Player - To reduce the resources needed from.
+*/
+/******************************************************************************/
+
 void Astronaut::UpgradeGrenadeRange(Player& p)
 {
 	if (p.getResources() < (GrenadeRange - 19) * 10)
@@ -138,6 +223,18 @@ void Astronaut::UpgradeGrenadeRange(Player& p)
 		enablePurchaseWindow = false;
 	}
 }
+
+/******************************************************************************/
+/*!
+\brief
+Function to upgrade the number of times the Medkit heals per use.
+\param p
+Player - To reduce the resources needed from.
+\param m
+Medkit to be upgraded.
+*/
+/******************************************************************************/
+
 void Astronaut::UpgradeMedkitTicks(Player& p, Medkit& m)
 {
 	if (p.getResources() < (m.MaxTimesHealed) * 10)
@@ -154,6 +251,18 @@ void Astronaut::UpgradeMedkitTicks(Player& p, Medkit& m)
 		enablePurchaseWindow = false;
 	}
 }
+
+/******************************************************************************/
+/*!
+\brief
+Function to upgrade how much health the Medkit recovers per tick. 
+\param p
+Player - To reduce the resources needed from.
+\param m
+Medkit to be upgraded.
+*/
+/******************************************************************************/
+
 void Astronaut::UpgradeMedkitHeal(Player& p, Medkit& m)
 {
 	if (p.getResources() < (m.HealAmount/10)*35)
@@ -171,11 +280,41 @@ void Astronaut::UpgradeMedkitHeal(Player& p, Medkit& m)
 	}
 }
 
+/******************************************************************************/
+/*!
+\brief
+Function to reset the medkit's upgrade cost, ticks, and amount of health
+recovered per use.
+\param m
+Medkit to reset.
+*/
+/******************************************************************************/
+void Astronaut::resetMedkitUpgrades(Medkit& m)
+{
+	m.HealAmount = m.initialHealingAmount;
+	m.MaxTimesHealed = m.initialTicks;
+}
+
+/******************************************************************************/
+/*!
+\brief
+Function to reset a weapon's damage and upgrade cost.
+\param weap
+Weapon to reset.
+*/
+/******************************************************************************/
 void Astronaut::resetWeaponUpgrades(Weapon& weap)
 {
 	weap.Damage = weap.initialDamage;
 	weap.setUpgradeCost(weap.initialUC);
 }
+
+/******************************************************************************/
+/*!
+\brief
+Function to reset the upgrade cost of Turrets, Grenades, and amount of Harvestors.
+*/
+/******************************************************************************/
 void Astronaut::resetAllUpgrades()
 {
 	TurretNewDmg = 20;
