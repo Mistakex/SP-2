@@ -1,6 +1,22 @@
+/******************************************************************************/
+/*!
+\file	UpdateObject.cpp
+\author 
+\par	email:
+\brief
+Contains all the update functions for the object
+*/
+/******************************************************************************/
 #include "Assignment3.h"
 
+/******************************************************************************/
+/*!
+\brief	Updates turret
 
+\param	dt
+delta time value
+*/
+/******************************************************************************/
 void Assignment3::TurretUpdate(double dt)
 {
 	for (size_t i = 0; i < Turrets.size(); i++)
@@ -68,6 +84,14 @@ void Assignment3::TurretUpdate(double dt)
 		}
 	}
 }
+/******************************************************************************/
+/*!
+\brief	Updates Alien objects
+
+\param	dt
+delta time value
+*/
+/******************************************************************************/
 void Assignment3::AlienUpdate(double dt)
 {
 	for (vector<Enemy>::iterator it = Aliens.begin(); it != Aliens.end();)
@@ -86,6 +110,14 @@ void Assignment3::AlienUpdate(double dt)
 		}
 	}
 }
+/******************************************************************************/
+/*!
+\brief	Update for harvestor
+
+\param	dt
+delta time value
+*/
+/******************************************************************************/
 void Assignment3::HarvestorUpdate(double dt)
 {
 	if (a.Harvestor.empty() == false && Rocks.empty() == false)
@@ -105,6 +137,14 @@ void Assignment3::HarvestorUpdate(double dt)
 		}
 	}
 }
+/******************************************************************************/
+/*!
+\brief	the grenade flying around in the sky
+
+\param	dt
+delta time value
+*/
+/******************************************************************************/
 void Assignment3::GrenadeUpdate(double dt)
 {
 	if (GrenadesFlying.empty() == false)
@@ -133,6 +173,11 @@ void Assignment3::GrenadeUpdate(double dt)
 		}
 	}
 }
+/******************************************************************************/
+/*!
+\brief	Update for mining
+*/
+/******************************************************************************/
 void Assignment3::MiningUpdate()
 {
 	vector<Rock>::iterator i = Rocks.begin();

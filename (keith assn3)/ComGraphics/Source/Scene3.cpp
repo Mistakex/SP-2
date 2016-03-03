@@ -1,6 +1,19 @@
+/******************************************************************************/
+/*!
+\file	Scene3.cpp
+\author 
+\par	email:
+\brief
+Functions that only runs in scene 3
+*/
+/******************************************************************************/
 #include "Assignment3.h"
 #include "Music.h"
-
+/******************************************************************************/
+/*!
+\brief	render objects only in scene3
+*/
+/******************************************************************************/
 void Assignment3::Scene3Render()
 {
 	Boss.bossIsSpawned = true;
@@ -47,7 +60,11 @@ void Assignment3::Scene3Render()
 		}
 	}
 }
-
+/******************************************************************************/
+/*!
+\brief	updates for objects for scene3
+*/
+/******************************************************************************/
 void Assignment3::Scene3Updates()
 {
 	for (int i = 0; i < sizeof(Boss.projectiles) / sizeof(Boss.projectiles[0]); ++i)
@@ -71,7 +88,11 @@ void Assignment3::Scene3Updates()
 		}
 	}
 }
-
+/******************************************************************************/
+/*!
+\brief	scene 3 UI
+*/
+/******************************************************************************/
 void Assignment3::Scene3UI()
 {
 	if (Boss.GetEnemyHp() <= 0)

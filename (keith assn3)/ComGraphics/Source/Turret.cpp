@@ -97,7 +97,7 @@ void Turret::TargetEnemy(Vector3 alien)
 }
 /******************************************************************************/
 /*!
-\brief	reduce the hp of the turret
+\brief	reduce the hp of the turret by dmg
 \param	dmg
 damage value
 */
@@ -113,14 +113,35 @@ void Turret::ReduceHp(int dmg)
 		Hp -= dmg;
 	}
 }
+/******************************************************************************/
+/*!
+\brief	return damage of turret
+\return
+damage of turret
+*/
+/******************************************************************************/
 int Turret::GetDamage()
 {
 	return damage;
 }
+/******************************************************************************/
+/*!
+\brief	return position of turret
+\return
+position of turret
+*/
+/******************************************************************************/
 Vector3 Turret::GetPosition()
 {
 	return position;
 }
+/******************************************************************************/
+/*!
+\brief	if turret is shooting
+\return
+return value of shooting
+*/
+/******************************************************************************/
 bool Turret::GetShooting()
 {
 	return shooting;
