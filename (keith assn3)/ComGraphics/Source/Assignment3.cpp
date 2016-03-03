@@ -407,6 +407,17 @@ void Assignment3::Update(double dt)
 
 	// Checks if player is dead and changes the gamestate accordingly
 	/*******************HP = 0*******************/
+	if (player.isDead())
+	{
+		if (player.Retry <= 0)
+		{
+			CameraMouseUpdate = false;
+			gameState = GS_GAMEOVER;
+			return;
+		}
+		gameState = GS_DIED;
+	}
+
 	if (gameState == GS_DIED)
 	{
 		if (playDead == false)
@@ -533,16 +544,7 @@ void Assignment3::Update(double dt)
 		}
 	}
 
-	if (player.isDead())
-	{
-		if (player.Retry <= 0)
-		{
-			CameraMouseUpdate = false;
-			gameState = GS_GAMEOVER;
-			return;
-		}
-		gameState = GS_DIED;
-	}
+	
 	/********************************************/
 
 	// Alien feedback bool

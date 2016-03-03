@@ -1,9 +1,25 @@
+/******************************************************************************/
+/*!
+\file	Enemy.h
+\author Cheng Zi Wei Keith
+\par	email: 152639K@mymail.nyp.edu.sg
+\brief
+Enemies shooting and finding their way to the player, including the boss
+*/
+/******************************************************************************/
+
 #ifndef SHIP_H
 #define SHIP_H
 
 #include "Camera3.h"
 #include "GameObject.h"
 
+/******************************************************************************/
+/*!
+Class Ship:
+\brief	Ship status and functions It is a child of GameObject
+*/
+/******************************************************************************/
 class Ship :public GameObject
 {
 public:

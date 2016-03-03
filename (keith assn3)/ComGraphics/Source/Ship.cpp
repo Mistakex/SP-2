@@ -1,5 +1,24 @@
+/******************************************************************************/
+/*!
+\file	Enemy.cpp
+\author Cheng Zi Wei Keith
+\par	email: 152639K@mymail.nyp.edu.sg
+\brief
+Ship transitions and cutscenes.
+*/
+/******************************************************************************/
 #include "Ship.h"
 
+/******************************************************************************/
+/*!
+\brief
+Default constructor for enemy class
+\param pos
+Ship position
+\param range
+Collision range of ship
+*/
+/******************************************************************************/
 Ship::Ship(const Vector3 &pos,const Vector3 &range)
 {
 	position = pos;
@@ -9,16 +28,38 @@ Ship::Ship(const Vector3 &pos,const Vector3 &range)
 	fadesize = 0.1f;
 }
 
+/******************************************************************************/
+/*!
+\brief
+Default destructor for ship class
+*/
+/******************************************************************************/
 Ship::~Ship()
 {
 
 }
 
+/******************************************************************************/
+/*!
+\brief
+Initialization of camera to ship
+\param camera
+Change camera to ship
+*/
+/******************************************************************************/
 void Ship::init(Camera3 *camera)
 {
 	Camera = camera;
 }
 
+/******************************************************************************/
+/*!
+\brief
+Cutscene for ship
+\param dt
+timer for cutscene
+*/
+/******************************************************************************/
 void Ship::cutscene(const double &dt)
 {
 	if (updateCutscene)
