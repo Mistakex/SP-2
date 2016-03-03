@@ -166,11 +166,11 @@ public:
 	vector<Grenade> GrenadesFlying;
 	vector<CollisionObject> Pillars;
 
-	Weapon pistol = Weapon(20, 30, 100, 10, false);
+	Weapon pistol = Weapon(20, 30, 10, false);
 	Flag f = Flag(Vector3(0, 0.75f, 0), Vector3(1, 1, 1));
 	Astronaut a = Astronaut(Vector3(0, -1, 9));
 	Ship ship = Ship(Vector3(0, 0, -50), Vector3(5, 5, 5));
-	Weapon SniperRifle = Weapon(80, 10, 100, 100, true);	
+	Weapon SniperRifle = Weapon(80, 10, 100, true);	
 	Medkit medKit = Medkit(100, 10, 5, 0.5, 10);
 private:
 	void RenderText(Mesh* mesh, std::string text, Color color);
