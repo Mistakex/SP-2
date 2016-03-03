@@ -1,5 +1,18 @@
+/******************************************************************************/
+/*!
+\file	RenderObject.cpp
+\author 
+\par	email:
+\brief
+Contains different rendering of objects
+*/
+/******************************************************************************/
 #include "Assignment3.h"
-
+/******************************************************************************/
+/*!
+\brief	Renders GEO_FLAGPOLE
+*/
+/******************************************************************************/
 void Assignment3::RenderPole()
 {
 	modelStack.PushMatrix();
@@ -11,6 +24,11 @@ void Assignment3::RenderPole()
 	RenderMesh(meshList[GEO_FLAGPOLE], true);
 	modelStack.PopMatrix();
 }
+/******************************************************************************/
+/*!
+\brief	Renders the flag
+*/
+/******************************************************************************/
 void Assignment3::RenderFlag()
 {
 	if (!f.flagIsBlue)
@@ -45,6 +63,11 @@ void Assignment3::RenderFlag()
 	}
 	modelStack.PopMatrix();
 }
+/******************************************************************************/
+/*!
+\brief	funtion that renders the aliens
+*/
+/******************************************************************************/
 void Assignment3::RenderAlien(float armRotate,bool isRed)
 {
 	modelStack.PushMatrix();
@@ -89,6 +112,11 @@ void Assignment3::RenderAlien(float armRotate,bool isRed)
 	modelStack.PopMatrix();
 	modelStack.PopMatrix();
 }
+/******************************************************************************/
+/*!
+\brief	Renders craters on the floor
+*/
+/******************************************************************************/
 void Assignment3::RenderCraters()
 {
 	for (int i = 0; i < 3; ++i)
@@ -122,6 +150,11 @@ void Assignment3::RenderCraters()
 		}
 	}
 }
+/******************************************************************************/
+/*!
+\brief	Renders Turrets
+*/
+/******************************************************************************/
 void Assignment3::RenderTurret()
 {
 	for (size_t i = 0; i < Turrets.size(); i++)
@@ -149,6 +182,11 @@ void Assignment3::RenderTurret()
 		}
 	}
 }
+/******************************************************************************/
+/*!
+\brief	Renders aliens
+*/
+/******************************************************************************/
 void Assignment3::RenderAliens()
 {
 	for (size_t i = 0; i < Aliens.size(); ++i)
@@ -170,6 +208,11 @@ void Assignment3::RenderAliens()
 		}
 	}
 }
+/******************************************************************************/
+/*!
+\brief	Renders astronaut
+*/
+/******************************************************************************/
 void Assignment3::RenderAstronaut()
 {
 	modelStack.PushMatrix();

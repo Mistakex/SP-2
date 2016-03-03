@@ -1,7 +1,22 @@
+/******************************************************************************/
+/*!
+\file	Rock.h
+\author Leong Jun Xiang
+\par	email: 152907b@mymail.nyp.edu.sg
+\brief
+Conatains Rock functions
+*/
+/******************************************************************************/
 #ifndef ROCK_H
 #define ROCK_H
 #include "Vector3.h"
 #include "GameObject.h"
+/******************************************************************************/
+/*!
+Class Rock:
+\brief	Rock stats and updates
+*/
+/******************************************************************************/
 class Rock : public GameObject
 {
 public:

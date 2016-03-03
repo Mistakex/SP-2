@@ -1,8 +1,22 @@
+/******************************************************************************/
+/*!
+\file	Medkit.h
+\author Leong Jun Xiang
+\par	email: 152907b@mymail.nyp.edu.sg
+\brief
+Medkit Functions
+*/
+/******************************************************************************/
 #ifndef MEDKIT_H
 #define MEDKIT_H
 #include "Player.h"
 #include "CountDown.h"
-
+/******************************************************************************/
+/*!
+Class Medkit:
+\brief	Medkit functions and stats
+*/
+/******************************************************************************/
 class Medkit
 {
 public:
